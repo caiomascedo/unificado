@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>📋 PM-PI & PM-MA 2026 · Estudo Unificado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #e6ecf3;
+            color: #1e2a3a;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            font-size: 13px;
+        }
+        .container {
+            max-width: 1300px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 18px 16px 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            border: 1px solid #cdd7e4;
+        }
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #1e3a5f;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+        }
+        .header h1 {
+            font-size: 1.3rem;
+            color: #1e3a5f;
+            font-weight: 700;
+        }
+        .header h1 small {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #3a5a7a;
+        }
+        .header .meta {
+            background: #eef2f7;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            border: 1px solid #bcc9db;
+        }
+        .header .meta span {
+            color: #c0392b;
+            font-weight: 700;
+        }
+
+        /* ===== ABAS ===== */
+        .abas-container {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #d5dee9;
+            padding-bottom: 2px;
+            flex-wrap: wrap;
+        }
+        .aba-btn {
+            padding: 8px 24px;
+            border: none;
+            background: #eef2f7;
+            border-radius: 12px 12px 0 0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #3a5a7a;
+            transition: 0.15s;
+            border: 1px solid transparent;
+            border-bottom: none;
+        }
+        .aba-btn:hover {
+            background: #dbeafe;
+            color: #1e3a5f;
+        }
+        .aba-btn.ativo {
+            background: #1e3a5f;
+            color: #fff;
+            border-color: #1e3a5f;
+        }
+        .aba-btn .badge-concurso {
+            font-size: 0.6rem;
+            background: #22c55e;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0 8px;
+            margin-left: 6px;
+        }
+        .aba-btn .badge-concurso.ma {
+            background: #d48c2c;
+        }
+
+        .conteudo-aba {
+            display: none;
+        }
+        .conteudo-aba.ativo {
+            display: block;
+        }
+
+        /* ===== POMODORO ===== */
+        .pomodoro-container {
+            background: #1e3a5f;
+            border-radius: 14px;
+            padding: 12px 18px;
+            margin: 0 0 16px 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px 20px;
+            color: #fff;
+        }
+        .pomodoro-container .timer {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            min-width: 90px;
+        }
+        .pomodoro-container .timer-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+        .pomodoro-container .pomo-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .pomodoro-container .pomo-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .pomodoro-container .pomo-btn.active {
+            background: #27ae60;
+            border-color: #27ae60;
+        }
+        .pomodoro-container .status-text {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+        .pomodoro-container .pomo-ciclos {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-left: auto;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            align-items: center;
+            background: #f4f7fb;
+            padding: 8px 14px;
+            border-radius: 14px;
+            margin-bottom: 16px;
+            border: 1px solid #d5dee9;
+        }
+        .toolbar .btn {
+            background: #1e3a5f;
+            border: none;
+            color: #fff;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .toolbar .btn:hover {
+            background: #2a4a7a;
+        }
+        .toolbar .btn-youtube {
+            background: #cc0000;
+        }
+        .toolbar .btn-youtube:hover {
+            background: #aa0000;
+        }
+        .toolbar .btn-outline {
+            background: transparent;
+            color: #1e3a5f;
+            border: 1px solid #1e3a5f;
+        }
+        .toolbar .btn-outline:hover {
+            background: #eef2f7;
+        }
+        .toolbar .btn-success {
+            background: #27ae60;
+        }
+        .toolbar .btn-success:hover {
+            background: #1e8449;
+        }
+        .toolbar .btn-warning {
+            background: #d48c2c;
+        }
+        .toolbar .btn-warning:hover {
+            background: #b8781f;
+        }
+        .toolbar .stats {
+            font-size: 0.75rem;
+            margin-left: auto;
+            background: #e8edf4;
+            padding: 2px 14px;
+            border-radius: 30px;
+            border: 1px solid #cdd7e4;
+        }
+        .toolbar .stats span {
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+
+        .week-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 18px 0 8px 0;
+            color: #1e3a5f;
+            border-left: 4px solid #1e3a5f;
+            padding-left: 10px;
+        }
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .day-card {
+            background: #fbfdff;
+            border-radius: 14px;
+            padding: 10px 12px;
+            border: 1px solid #d5dee9;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+            transition: 0.1s;
+            cursor: default;
+            font-size: 0.8rem;
+        }
+        .day-card:hover {
+            border-color: #1e3a5f;
+            background: #f7faff;
+        }
+        .day-card.destaque {
+            border-color: #f5c842 !important;
+            border-width: 3px !important;
+            background: #fffde7 !important;
+            animation: pisca 1.5s ease 3;
+        }
+        .day-card.hoje {
+            border-color: #22c55e !important;
+            border-width: 3px !important;
+            background: #f0fdf4 !important;
+        }
+        @keyframes pisca {
+            0%,
+            100% {
+                border-color: #f5c842;
+                background: #fffde7;
+            }
+            50% {
+                border-color: #f5a623;
+                background: #fff8cc;
+            }
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #d0d9e6;
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+        }
+        .day-header .day {
+            font-weight: 700;
+            color: #1e3a5f;
+            font-size: 0.9rem;
+        }
+        .day-header .date {
+            background: #eef2f7;
+            padding: 0 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            border: 1px solid #c5d0df;
+        }
+        .day-header .badge-hoje {
+            background: #22c55e;
+            color: #fff;
+            padding: 0 10px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 700;
+        }
+
+        .session {
+            background: #f4f7fb;
+            border-radius: 10px;
+            padding: 6px 10px;
+            margin-top: 4px;
+            border-left: 3px solid #1e3a5f;
+            font-size: 0.75rem;
+        }
+        .session strong {
+            display: block;
+            font-size: 0.7rem;
+            color: #1e3a5f;
+            margin-bottom: 2px;
+        }
+        .session .topic {
+            padding: 1px 0 1px 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.1s;
+        }
+        .session .topic:hover {
+            background: #dbeafe;
+            color: #1e3a5f;
+        }
+        .session .topic .abrir-assunto {
+            font-size: 0.6rem;
+            color: #3b82f6;
+            margin-left: 6px;
+            text-decoration: none;
+            border-bottom: 1px dotted #3b82f6;
+        }
+        .session .topic .abrir-assunto:hover {
+            color: #1d4ed8;
+        }
+        .session .topic .selo-igual {
+            font-size: 0.55rem;
+            background: #22c55e;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0 6px;
+            margin-left: 4px;
+        }
+        .session .topic .selo-ma {
+            font-size: 0.55rem;
+            background: #d48c2c;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0 6px;
+            margin-left: 4px;
+        }
+
+        .almoço {
+            border-left-color: #d48c2c;
+            background: #fcf9f2;
+        }
+        .almoço strong {
+            color: #9e6f1f;
+        }
+
+        .obs {
+            margin-top: 6px;
+            background: #f0f4fa;
+            border-radius: 8px;
+            padding: 3px 10px;
+            font-size: 0.65rem;
+            color: #2a3d5a;
+            border: 1px solid #dce3ec;
+        }
+
+        .detalhes-assunto {
+            display: none;
+            background: #edf2f9;
+            border-radius: 10px;
+            padding: 8px 12px;
+            margin-top: 6px;
+            border: 1px solid #c5d0df;
+            font-size: 0.7rem;
+            line-height: 1.5;
+        }
+        .detalhes-assunto.ativo {
+            display: block;
+        }
+        .detalhes-assunto ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .detalhes-assunto ul li {
+            padding: 2px 0;
+            border-bottom: 1px dashed #dce3ec;
+        }
+        .detalhes-assunto .sub-topic {
+            font-weight: 600;
+            color: #1e3a5f;
+        }
+
+        .check-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 6px;
+            font-size: 0.7rem;
+            flex-wrap: wrap;
+        }
+        .check-area label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+        .check-area input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #1e3a5f;
+            cursor: pointer;
+        }
+        .check-area .progress-text {
+            background: #e8edf4;
+            padding: 0 10px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            border: 1px solid #cdd7e4;
+        }
+
+        .stats-panel {
+            background: #f4f7fb;
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin: 12px 0 18px;
+            border: 1px solid #d5dee9;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            font-size: 0.8rem;
+        }
+        .stats-panel .stat-item {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+        .stats-panel .stat-item .label {
+            color: #3a5a7a;
+        }
+        .stats-panel .stat-item .value {
+            font-weight: 700;
+            color: #1e3a5f;
+            font-size: 1rem;
+        }
+
+        .popout-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-left: auto;
+        }
+        .footer {
+            margin-top: 20px;
+            border-top: 1px solid #d0d9e6;
+            padding-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #3a5a7a;
+        }
+
+        /* Pop-out */
+        .popout-assuntos {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            padding: 24px 28px;
+            z-index: 9999;
+            overflow-y: auto;
+            border: 2px solid #1e3a5f;
+        }
+        .popout-assuntos.ativo {
+            display: block;
+        }
+        .popout-assuntos .fechar {
+            position: sticky;
+            top: 0;
+            float: right;
+            background: #c0392b;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-weight: 700;
+            z-index: 10;
+        }
+        .popout-assuntos h2 {
+            color: #1e3a5f;
+            border-bottom: 2px solid #1e3a5f;
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+            font-size: 1.2rem;
+        }
+        .popout-assuntos .assunto-item {
+            padding: 4px 0;
+            border-bottom: 1px solid #e8edf4;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .popout-assuntos .assunto-item:hover {
+            background: #f0f4fa;
+        }
+        .popout-assuntos .assunto-item.destacado {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+        }
+        .popout-assuntos .assunto-item .qtd {
+            background: #1e3a5f;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0 12px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .popout-assuntos .assunto-item .seta {
+            color: #1e3a5f;
+            font-size: 0.9rem;
+            margin-left: 8px;
+            font-weight: 700;
+        }
+        .popout-assuntos .assunto-item .info-dia {
+            font-size: 0.6rem;
+            color: #3a5a7a;
+            margin-left: 6px;
+        }
+        .popout-assuntos .assunto-item .btn-copiar {
+            background: #e8edf4;
+            border: none;
+            border-radius: 30px;
+            padding: 0 8px;
+            font-size: 0.6rem;
+            cursor: pointer;
+            color: #1e3a5f;
+            transition: 0.1s;
+            margin-left: 4px;
+        }
+        .popout-assuntos .assunto-item .btn-copiar:hover {
+            background: #3b82f6;
+            color: #fff;
+        }
+        .popout-assuntos .assunto-item .selo-igual {
+            font-size: 0.55rem;
+            background: #22c55e;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0 6px;
+            margin-left: 4px;
+        }
+        .popout-assuntos .assunto-item .selo-ma {
+            font-size: 0.55rem;
+            background: #d48c2c;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0 6px;
+            margin-left: 4px;
+        }
+        .popout-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+        }
+        .popout-overlay.ativo {
+            display: block;
+        }
+
+        .btn-popout {
+            background: #1e3a5f;
+            color: #fff;
+            border: none;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .btn-popout:hover {
+            background: #2a4a7a;
+        }
+
+        .buscar-youtube {
+            display: inline-block;
+            background: #cc0000;
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-left: 8px;
+            transition: 0.15s;
+        }
+        .buscar-youtube:hover {
+            background: #aa0000;
+        }
+
+        .detalhe-materia {
+            background: #e8f4fd;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin: 2px 0;
+            border-left: 3px solid #1e3a5f;
+        }
+        .detalhe-materia .materia-nome {
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+        .detalhe-materia .materia-desc {
+            color: #2a4a6a;
+        }
+        .detalhe-materia .link-youtube {
+            display: inline-block;
+            background: #cc0000;
+            color: #fff;
+            padding: 1px 10px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            text-decoration: none;
+            margin-top: 2px;
+        }
+        .detalhe-materia .link-youtube:hover {
+            background: #aa0000;
+        }
+        .detalhe-materia .selo-igual {
+            font-size: 0.55rem;
+            background: #22c55e;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0 6px;
+            margin-left: 4px;
+        }
+        .detalhe-materia .selo-ma {
+            font-size: 0.55rem;
+            background: #d48c2c;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0 6px;
+            margin-left: 4px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+            max-width: 90vw;
+            text-align: center;
+        }
+
+        .popout-badge {
+            display: inline-block;
+            background: #3b82f6;
+            color: #fff;
+            border-radius: 12px;
+            padding: 0 8px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            margin-left: 4px;
+            cursor: pointer;
+        }
+        .popout-badge:hover {
+            background: #1d4ed8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .comparativo {
+            background: #f0fdf4;
+            border: 1px solid #22c55e;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin: 12px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 32px;
+            font-size: 0.8rem;
+        }
+        .comparativo .item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .comparativo .item .selo {
+            font-size: 0.6rem;
+            background: #22c55e;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0 8px;
+        }
+        .comparativo .item .selo.ma {
+            background: #d48c2c;
+        }
+
+        @media (max-width: 700px) {
+            .week-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.1rem;
+            }
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .toolbar .stats {
+                margin-left: 0;
+                text-align: center;
+            }
+            .popout-area {
+                justify-content: center;
+            }
+            .popout-assuntos {
+                padding: 16px;
+                width: 95%;
+            }
+            .pomodoro-container {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .pomodoro-container .pomo-ciclos {
+                margin-left: 0;
+            }
+            .abas-container {
+                justify-content: center;
+            }
+            .aba-btn {
+                padding: 6px 14px;
+                font-size: 0.75rem;
+            }
+            .comparativo {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+            }
+            .day-card {
+                break-inside: avoid;
+            }
+            .toolbar .btn,
+            .btn-youtube,
+            .btn-popout {
+                display: none;
+            }
+            .popout-assuntos,
+            .popout-overlay {
+                display: none !important;
+            }
+            .pomodoro-container {
+                display: none !important;
+            }
+            .abas-container {
+                display: none !important;
+            }
+            .conteudo-aba {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>📋 PM-PI & PM-MA 2026 · <small>Estudo Unificado</small></h1>
+            <div class="meta">🗓️ <span id="todayDisplay"></span> · ⏳ <span id="daysLeftPI"></span> dias PM-PI</div>
+        </div>
+
+        <!-- ===== POMODORO ===== -->
+        <div class="pomodoro-container" id="pomodoro">
+            <div>
+                <div class="timer" id="timerDisplay">50:00</div>
+                <div class="timer-label" id="timerLabel">⏱️ Tempo de Estudo</div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+                <button class="pomo-btn" id="pomoStart">▶ Iniciar</button>
+                <button class="pomo-btn" id="pomoPause">⏸ Pausar</button>
+                <button class="pomo-btn" id="pomoReset">↺ Resetar</button>
+                <span class="status-text" id="pomoStatus">⏸ Pronto</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+                <button class="pomo-btn" id="pomoStudy" style="background:#27ae60;">📖 Estudo</button>
+                <button class="pomo-btn" id="pomoBreak" style="background:#d48c2c;">☕ Pausa</button>
+                <span class="pomo-ciclos" id="pomoCiclos">Ciclos: 0</span>
+            </div>
+        </div>
+
+        <!-- ===== COMPARATIVO ===== -->
+        <div class="comparativo">
+            <div class="item"><span>🎯 PM-PI: 23/08/2026</span> <span class="selo">Foco agora</span></div>
+            <div class="item"><span>🎯 PM-MA: 11/10/2026</span> <span class="selo ma">Após PM-PI</span></div>
+            <div class="item"><span>🔥 Matérias em comum:</span> <strong>Português, Legislação (R-200 + Lei 14.751), Informática, História/Geo do Brasil</strong></div>
+            <div class="item"><span>📌 PM-MA já incluso:</span> <strong>História/Geo MA + Estatuto PMMA + Código Penal Militar</strong></div>
+        </div>
+
+        <!-- ===== ABAS ===== -->
+        <div class="abas-container" id="abasContainer">
+            <button class="aba-btn ativo" data-aba="pi">🚔 PM-PI <span class="badge-concurso">23/08</span></button>
+            <button class="aba-btn" data-aba="ma">🚨 PM-MA <span class="badge-concurso ma">11/10</span></button>
+            <button class="aba-btn" data-aba="unificado">🔥 Unificado <span class="badge-concurso">Os dois</span></button>
+        </div>
+
+        <!-- ===== TOOLBAR ===== -->
+        <div class="toolbar" id="toolbarGlobal">
+            <div class="stats">
+                ✅ <span id="concluidasCount">0</span> / <span id="totalDiasCount">0</span> dias
+            </div>
+            <div class="stats">
+                📊 <span id="percentualCount">0</span>%
+            </div>
+            <div class="popout-area">
+                <button class="btn-popout" onclick="abrirPopout()">📚 Todos os assuntos</button>
+                <button class="btn btn-success" onclick="irParaHoje()">📅 Hoje</button>
+                <button class="btn btn-warning" onclick="alternarAba()">🔄 Alternar concurso</button>
+                <button class="btn" onclick="resetarConfirmacoes()">↺ Resetar</button>
+                <a href="https://www.youtube.com/results?search_query=pm+pi+2026+concurso+soldado" target="_blank" class="btn btn-youtube">▶ YouTube</a>
+                <button class="btn btn-outline" onclick="window.print()">🖨️ Imprimir</button>
+            </div>
+        </div>
+
+        <!-- ===== PAINEL ESTATÍSTICAS ===== -->
+        <div class="stats-panel" id="statsPanel">
+            <div class="stat-item"><span class="label">📅 Dias totais:</span> <span class="value" id="totalDiasStats">0</span></div>
+            <div class="stat-item"><span class="label">✅ Concluídos:</span> <span class="value" id="concluidosStats">0</span></div>
+            <div class="stat-item"><span class="label">📈 Progresso:</span> <span class="value" id="progressoStats">0%</span></div>
+            <div class="stat-item"><span class="label">⏳ Faltam:</span> <span class="value" id="faltamStats">0</span></div>
+            <div class="stat-item"><span class="label">📅 Hoje:</span> <span class="value" id="hojeStatus">—</span></div>
+        </div>
+
+        <!-- ===== CONTEÚDO PM-PI ===== -->
+        <div class="conteudo-aba ativo" id="abaPI">
+            <div id="semanasContainerPI"></div>
+        </div>
+
+        <!-- ===== CONTEÚDO PM-MA ===== -->
+        <div class="conteudo-aba" id="abaMA">
+            <div id="semanasContainerMA"></div>
+        </div>
+
+        <!-- ===== CONTEÚDO UNIFICADO ===== -->
+        <div class="conteudo-aba" id="abaUnificado">
+            <div id="semanasContainerUnificado"></div>
+        </div>
+
+        <!-- ===== POP-OUT ===== -->
+        <div class="popout-overlay" id="popoutOverlay" onclick="fecharPopout()"></div>
+        <div class="popout-assuntos" id="popoutAssuntos">
+            <button class="fechar" onclick="fecharPopout()">✕</button>
+            <h2>📚 Todos os Assuntos do Edital</h2>
+            <p style="font-size:0.8rem;color:#3a5a7a;margin-bottom:12px;">
+                👆 <strong>Clique em qualquer assunto</strong> para ir direto ao dia de estudo.
+                <span style="display:block;margin-top:4px;">🔥 <strong>Verde</strong> = comum aos dois concursos | 🟠 <strong>Laranja</strong> = específico do PM-MA</span>
+                <span style="display:block;margin-top:4px;">📋 Clique em <strong>📋 Copiar</strong> para copiar as informações.</span>
+            </p>
+            <div id="listaAssuntosPopout"></div>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer">
+            <span>🎯 20 a 30 questões por dia · QConcursos + PDF · TAF 6h-7h</span>
+            <span>💾 dados salvos no navegador (localStorage)</span>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        (function() {
+            // ============================================================
+            // 1. DATAS
+            // ============================================================
+            const today = new Date();
+            const options = { day: 'numeric', month: 'short', year: 'numeric' };
+            document.getElementById('todayDisplay').innerText = today.toLocaleDateString('pt-BR', options);
+            const provaPI = new Date(2026, 7, 23);
+            const provaMA = new Date(2026, 9, 11);
+            const diffPI = Math.ceil((provaPI - today) / (1000 * 60 * 60 * 24));
+            const diffMA = Math.ceil((provaMA - today) / (1000 * 60 * 60 * 24));
+            document.getElementById('daysLeftPI').innerText = diffPI > 0 ? diffPI : 0;
+
+            const hojeStr = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0');
+
+            // ============================================================
+            // 2. TOAST
+            // ============================================================
+            function toast(msg) {
+                const t = document.getElementById('toast');
+                t.innerText = msg || '✅';
+                t.style.opacity = '1';
+                clearTimeout(t._timeout);
+                t._timeout = setTimeout(() => { t.style.opacity = '0'; }, 3000);
+            }
+
+            // ============================================================
+            // 3. POMODORO
+            // ============================================================
+            let pomodoroTime = 50 * 60;
+            let pomodoroInterval = null;
+            let isRunning = false;
+            let isStudyMode = true;
+            let ciclosCompletos = 0;
+
+            const timerDisplay = document.getElementById('timerDisplay');
+            const timerLabel = document.getElementById('timerLabel');
+            const pomoStatus = document.getElementById('pomoStatus');
+            const pomoCiclos = document.getElementById('pomoCiclos');
+
+            function updateTimerDisplay() {
+                const mins = Math.floor(pomodoroTime / 60);
+                const secs = pomodoroTime % 60;
+                timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }
+
+            function pomodoroTick() {
+                if (pomodoroTime <= 0) {
+                    clearInterval(pomodoroInterval);
+                    isRunning = false;
+                    if (isStudyMode) {
+                        ciclosCompletos++;
+                        pomoCiclos.textContent = `Ciclos: ${ciclosCompletos}`;
+                        pomoStatus.textContent = '🔔 Estudo concluído! Pausa de 10min.';
+                        if (Notification.permission === 'granted') {
+                            new Notification('⏰ Pomodoro', {
+                                body: 'Tempo de estudo acabou! Faça uma pausa de 10min.',
+                                icon: '📚'
+                            });
+                        }
+                        isStudyMode = false;
+                        pomodoroTime = 10 * 60;
+                        timerLabel.textContent = '☕ Pausa';
+                        updateTimerDisplay();
+                        pomoStatus.textContent = '☕ Em pausa...';
+                    } else {
+                        pomoStatus.textContent = '🔔 Pausa acabou! Volte a estudar.';
+                        if (Notification.permission === 'granted') {
+                            new Notification('⏰ Pomodoro', {
+                                body: 'Pausa acabou! Volte a estudar.',
+                                icon: '📚'
+                            });
+                        }
+                        isStudyMode = true;
+                        pomodoroTime = 50 * 60;
+                        timerLabel.textContent = '⏱️ Tempo de Estudo';
+                        updateTimerDisplay();
+                        pomoStatus.textContent = '📖 Pronto para estudar';
+                    }
+                    return;
+                }
+                pomodoroTime--;
+                updateTimerDisplay();
+            }
+
+            document.getElementById('pomoStart').addEventListener('click', function() {
+                if (isRunning) return;
+                if (pomodoroTime <= 0) {
+                    pomodoroTime = isStudyMode ? 50 * 60 : 10 * 60;
+                    updateTimerDisplay();
+                }
+                isRunning = true;
+                pomoStatus.textContent = isStudyMode ? '📖 Estudando...' : '☕ Em pausa...';
+                pomodoroInterval = setInterval(pomodoroTick, 1000);
+            });
+
+            document.getElementById('pomoPause').addEventListener('click', function() {
+                if (isRunning) {
+                    clearInterval(pomodoroInterval);
+                    isRunning = false;
+                    pomoStatus.textContent = '⏸ Pausado';
+                }
+            });
+
+            document.getElementById('pomoReset').addEventListener('click', function() {
+                clearInterval(pomodoroInterval);
+                isRunning = false;
+                pomodoroTime = isStudyMode ? 50 * 60 : 10 * 60;
+                updateTimerDisplay();
+                pomoStatus.textContent = '↺ Resetado';
+            });
+
+            document.getElementById('pomoStudy').addEventListener('click', function() {
+                clearInterval(pomodoroInterval);
+                isRunning = false;
+                isStudyMode = true;
+                pomodoroTime = 50 * 60;
+                updateTimerDisplay();
+                timerLabel.textContent = '⏱️ Tempo de Estudo';
+                pomoStatus.textContent = '📖 Modo Estudo';
+            });
+
+            document.getElementById('pomoBreak').addEventListener('click', function() {
+                clearInterval(pomodoroInterval);
+                isRunning = false;
+                isStudyMode = false;
+                pomodoroTime = 10 * 60;
+                updateTimerDisplay();
+                timerLabel.textContent = '☕ Pausa';
+                pomoStatus.textContent = '☕ Modo Pausa';
+            });
+
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            // ============================================================
+            // 4. LISTA DE ASSUNTOS (UNIFICADA)
+            // ============================================================
+            const todosAssuntos = [
+                // ===== LÍNGUA PORTUGUESA (comum) =====
+                { nome: 'Interpretação de Textos', qtd: 669, materia: 'Português', comum: true },
+                { nome: 'Sintaxe', qtd: 38, materia: 'Português', comum: true },
+                { nome: 'Morfologia', qtd: 281, materia: 'Português', comum: true },
+                { nome: 'Pontuação', qtd: 92, materia: 'Português', comum: true },
+                { nome: 'Regência e Crase', qtd: 48, materia: 'Português', comum: true },
+                { nome: 'Concordância', qtd: 100, materia: 'Português', comum: true },
+                { nome: 'Figuras de Linguagem', qtd: 74, materia: 'Português', comum: true },
+                { nome: 'Ortografia e Acentuação', qtd: 11, materia: 'Português', comum: true },
+                { nome: 'Semântica', qtd: 52, materia: 'Português', comum: true },
+                // ===== MATEMÁTICA (só PI) =====
+                { nome: 'Conjuntos', qtd: 384, materia: 'Matemática', comum: false },
+                { nome: 'Proporcionalidade', qtd: 267, materia: 'Matemática', comum: false },
+                { nome: 'Equações', qtd: 212, materia: 'Matemática', comum: false },
+                { nome: 'Raciocínio Lógico', qtd: 190, materia: 'Raciocínio Lógico', comum: false },
+                { nome: 'Geometria Plana', qtd: 49, materia: 'Matemática', comum: false },
+                { nome: 'Matemática Financeira', qtd: 78, materia: 'Matemática', comum: false },
+                // ===== INFORMÁTICA (comum) =====
+                { nome: 'Windows 10', qtd: 569, materia: 'Informática', comum: true },
+                { nome: 'Word 2019', qtd: 104, materia: 'Informática', comum: true },
+                { nome: 'Excel 2019', qtd: 164, materia: 'Informática', comum: true },
+                { nome: 'Internet', qtd: 266, materia: 'Informática', comum: true },
+                { nome: 'Hardware', qtd: 145, materia: 'Informática', comum: true },
+                // ===== CONHECIMENTOS GERAIS (comum) =====
+                { nome: 'Política Brasileira', qtd: 153, materia: 'Conhecimentos Gerais', comum: true },
+                { nome: 'Meio Ambiente', qtd: 165, materia: 'Conhecimentos Gerais', comum: true },
+                { nome: 'Segurança Pública', qtd: 46, materia: 'Conhecimentos Gerais', comum: true },
+                // ===== HISTÓRIA DO BRASIL (comum) =====
+                { nome: 'História do Brasil - República Velha', qtd: 25, materia: 'História do Brasil', comum: true },
+                { nome: 'História do Brasil - Era Vargas', qtd: 20, materia: 'História do Brasil', comum: true },
+                { nome: 'História do Brasil - Golpe e Ditadura', qtd: 18, materia: 'História do Brasil', comum: true },
+                { nome: 'História do Brasil - Redemocratização', qtd: 12, materia: 'História do Brasil', comum: true },
+                // ===== GEOGRAFIA DO BRASIL (comum) =====
+                { nome: 'Geografia do Brasil - População', qtd: 20, materia: 'Geografia do Brasil', comum: true },
+                { nome: 'Geografia do Brasil - Economia', qtd: 22, materia: 'Geografia do Brasil', comum: true },
+                { nome: 'Geografia do Brasil - Recursos Naturais', qtd: 18, materia: 'Geografia do Brasil', comum: true },
+                // ===== REGIONAIS PI =====
+                { nome: 'Geografia do Piauí', qtd: 91, materia: 'Regionais PI', comum: false },
+                { nome: 'História do Piauí', qtd: 53, materia: 'Regionais PI', comum: false },
+                // ===== REGIONAIS MA =====
+                { nome: 'Geografia do Maranhão', qtd: 80, materia: 'Regionais MA', comum: false },
+                { nome: 'História do Maranhão', qtd: 60, materia: 'Regionais MA', comum: false },
+                // ===== LEGISLAÇÃO PMPI =====
+                { nome: 'Estatuto do PM (Lei 3.808/81)', qtd: 69, materia: 'Legislação PMPI', comum: false },
+                { nome: 'Código de Ética (Lei 7.725/2022)', qtd: 121, materia: 'Legislação PMPI', comum: false },
+                { nome: 'Lei Orgânica (14.751/2023)', qtd: 51, materia: 'Legislação PMPI', comum: true },
+                { nome: 'R-200 (Decreto 88.777/83)', qtd: 50, materia: 'Legislação PMPI', comum: true },
+                // ===== LEGISLAÇÃO PMMA =====
+                { nome: 'Estatuto do PMMA (Lei 6.513/95)', qtd: 70, materia: 'Legislação PMMA', comum: false },
+                { nome: 'Código Penal Militar (Decreto 1.001/69)', qtd: 45, materia: 'Legislação PMMA', comum: false },
+                { nome: 'Lei 10.823/2018 (PMMA)', qtd: 20, materia: 'Legislação PMMA', comum: false },
+                // ===== DIREITO CONSTITUCIONAL (só PI) =====
+                { nome: 'Direitos Individuais (art. 5º)', qtd: 99, materia: 'Direito Constitucional', comum: false },
+                { nome: 'Direitos Sociais', qtd: 73, materia: 'Direito Constitucional', comum: false },
+                { nome: 'Nacionalidade', qtd: 80, materia: 'Direito Constitucional', comum: false },
+                { nome: 'Segurança Pública (art. 144)', qtd: 4, materia: 'Direito Constitucional', comum: false },
+                // ===== DIREITOS HUMANOS (só PI) =====
+                { nome: 'PIDCP', qtd: 21, materia: 'Direitos Humanos', comum: false },
+                { nome: 'Convenção contra Tortura', qtd: 11, materia: 'Direitos Humanos', comum: false },
+                // ===== DIREITO PENAL (só PI) =====
+                { nome: 'Teoria do Crime', qtd: 82, materia: 'Direito Penal', comum: false },
+                { nome: 'Crimes contra a Pessoa', qtd: 79, materia: 'Direito Penal', comum: false },
+                { nome: 'Crimes contra o Patrimônio', qtd: 81, materia: 'Direito Penal', comum: false },
+                { nome: 'Crimes contra a Administração Pública', qtd: 81, materia: 'Direito Penal', comum: false },
+                { nome: 'Crimes contra a Fé Pública', qtd: 55, materia: 'Direito Penal', comum: false },
+                { nome: 'Penas e Aplicação', qtd: 82, materia: 'Direito Penal', comum: false },
+                // ===== LEGISLAÇÃO ESPECIAL (só PI) =====
+                { nome: 'Lei Maria da Penha', qtd: 86, materia: 'Legislação Especial', comum: false },
+                { nome: 'Juizados Especiais Criminais', qtd: 51, materia: 'Legislação Especial', comum: false },
+                { nome: 'Lei Ambiental (9.605/98)', qtd: 61, materia: 'Legislação Especial', comum: false },
+                { nome: 'ECA - Crimes', qtd: 12, materia: 'Legislação Especial', comum: false },
+                { nome: 'Abuso de Autoridade', qtd: 48, materia: 'Legislação Especial', comum: false },
+                // ===== DIREITO ADMINISTRATIVO (só PI) =====
+                { nome: 'Regime Jurídico Administrativo', qtd: 67, materia: 'Direito Administrativo', comum: false },
+                { nome: 'Poderes Administrativos', qtd: 132, materia: 'Direito Administrativo', comum: false },
+                { nome: 'Responsabilidade Civil do Estado', qtd: 78, materia: 'Direito Administrativo', comum: false },
+                { nome: 'Improbidade Administrativa', qtd: 141, materia: 'Direito Administrativo', comum: false },
+                { nome: 'Organização Administrativa', qtd: 134, materia: 'Direito Administrativo', comum: false },
+                // ===== CONSTITUIÇÃO ESTADUAL (só PI) =====
+                { nome: 'Constituição do Estado do Piauí', qtd: 62, materia: 'Constituição Estadual', comum: false }
+            ];
+
+            // ============================================================
+            // 5. DETALHES DOS ASSUNTOS
+            // ============================================================
+            const detalhesMap = {
+                'Interpretação de Textos': '🔥 Compreensão global, inferências, ideias principais. 10,7% da prova. Comum aos dois concursos!',
+                'Sintaxe': '🔥 Termos essenciais, integrantes e acessórios. 3,6% da prova. Comum aos dois concursos!',
+                'Morfologia': '🔥 Classes de palavras: verbos, pronomes, conjunções. Comum aos dois concursos!',
+                'Pontuação': '🔥 Vírgula, ponto, travessão, aspas. 2,3% da prova. Comum aos dois concursos!',
+                'Regência e Crase': '🔥 Regência verbal e nominal. Crase. Comum aos dois concursos!',
+                'Concordância': '🔥 Concordância verbal e nominal. Comum aos dois concursos!',
+                'Figuras de Linguagem': '🔥 Metáfora, metonímia, hipérbole, ironia. Comum aos dois concursos!',
+                'Ortografia e Acentuação': '🔥 Regras de escrita e acentuação. Comum aos dois concursos!',
+                'Semântica': '🔥 Significação de palavras, sinônimos, antônimos. Comum aos dois concursos!',
+                'Conjuntos': 'Operações com conjuntos, diagramas de Venn. Só PM-PI.',
+                'Proporcionalidade': 'Regra de três simples e composta. Só PM-PI.',
+                'Equações': 'Equações de 1º e 2º grau. Só PM-PI.',
+                'Raciocínio Lógico': 'Proposições, equivalências, negação. Só PM-PI.',
+                'Geometria Plana': 'Triângulos, quadriláteros, circunferência. Só PM-PI.',
+                'Matemática Financeira': 'Juros simples e compostos. Só PM-PI.',
+                'Windows 10': '🔥 Sistema operacional, configurações, atalhos. Comum aos dois concursos!',
+                'Word 2019': '🔥 Edição de texto, formatação, tabelas. Comum aos dois concursos!',
+                'Excel 2019': '🔥 Planilhas, fórmulas, funções. Comum aos dois concursos!',
+                'Internet': '🔥 Conceitos, navegadores, sites de busca. Comum aos dois concursos!',
+                'Hardware': '🔥 Processador, memórias, periféricos. Comum aos dois concursos!',
+                'Política Brasileira': '🔥 Estrutura política, poderes, eleições. Comum aos dois concursos!',
+                'Meio Ambiente': '🔥 Ecologia, sustentabilidade, aquecimento global. Comum aos dois concursos!',
+                'Segurança Pública': '🔥 Políticas de segurança, defesa civil. Comum aos dois concursos!',
+                'História do Brasil - República Velha': '🔥 República Velha, oligarquias, café com leite. Comum aos dois concursos!',
+                'História do Brasil - Era Vargas': '🔥 Getúlio Vargas, Estado Novo, industrialização. Comum aos dois concursos!',
+                'História do Brasil - Golpe e Ditadura': '🔥 1964, AI-5, resistência, abertura. Comum aos dois concursos!',
+                'História do Brasil - Redemocratização': '🔥 Diretas Já, Constituição de 88. Comum aos dois concursos!',
+                'Geografia do Brasil - População': '🔥 Distribuição, crescimento, estrutura etária. Comum aos dois concursos!',
+                'Geografia do Brasil - Economia': '🔥 Industrialização, fronteiras agrícolas. Comum aos dois concursos!',
+                'Geografia do Brasil - Recursos Naturais': '🔥 Aproveitamento, conservação. Comum aos dois concursos!',
+                'Geografia do Piauí': 'Relevo, clima, hidrografia, economia do Piauí. Só PM-PI.',
+                'História do Piauí': 'Formação histórica, colonização, Balaiada. Só PM-PI.',
+                'Geografia do Maranhão': '🟠 Relevo, clima, hidrografia, economia do Maranhão. Só PM-MA.',
+                'História do Maranhão': '🟠 França Equinocial, Balaiada, Independência. Só PM-MA.',
+                'Estatuto do PM (Lei 3.808/81)': 'Direitos, deveres, regime disciplinar da PMPI. Só PM-PI.',
+                'Código de Ética (Lei 7.725/2022)': 'Normas de conduta, ética profissional. Só PM-PI.',
+                'Lei Orgânica (14.751/2023)': '🔥 Organização nacional das PMs. Comum aos dois concursos!',
+                'R-200 (Decreto 88.777/83)': '🔥 Regulamento geral para PMs. Comum aos dois concursos!',
+                'Estatuto do PMMA (Lei 6.513/95)': '🟠 Direitos, deveres, regime disciplinar da PMMA. Só PM-MA.',
+                'Código Penal Militar (Decreto 1.001/69)': '🟠 Crimes militares, penas. Só PM-MA.',
+                'Lei 10.823/2018 (PMMA)': '🟠 Criação e transformação de organizações da PMMA. Só PM-MA.',
+                'Direitos Individuais (art. 5º)': 'Garantias fundamentais. Só PM-PI.',
+                'Direitos Sociais': 'Direitos dos trabalhadores. Só PM-PI.',
+                'Nacionalidade': 'Brasileiros natos e naturalizados. Só PM-PI.',
+                'Segurança Pública (art. 144)': 'Forças de segurança. Só PM-PI.',
+                'PIDCP': 'Pacto Internacional dos Direitos Civis. Só PM-PI.',
+                'Convenção contra Tortura': 'Proibição da tortura. Só PM-PI.',
+                'Teoria do Crime': 'Fato típico, ilicitude, culpabilidade. Só PM-PI.',
+                'Crimes contra a Pessoa': 'Homicídio, lesões, honra. Só PM-PI.',
+                'Crimes contra o Patrimônio': 'Furto, roubo, estelionato. Só PM-PI.',
+                'Crimes contra a Administração Pública': 'Peculato, corrupção. Só PM-PI.',
+                'Crimes contra a Fé Pública': 'Falsificação, moeda falsa. Só PM-PI.',
+                'Penas e Aplicação': 'Espécies de penas, regimes. Só PM-PI.',
+                'Lei Maria da Penha': 'Violência doméstica. Só PM-PI.',
+                'Juizados Especiais Criminais': 'Procedimento sumaríssimo. Só PM-PI.',
+                'Lei Ambiental (9.605/98)': 'Crimes ambientais. Só PM-PI.',
+                'ECA - Crimes': 'Crimes do ECA. Só PM-PI.',
+                'Abuso de Autoridade': 'Crimes de abuso. Só PM-PI.',
+                'Regime Jurídico Administrativo': 'Princípios da administração. Só PM-PI.',
+                'Poderes Administrativos': 'Poderes da administração. Só PM-PI.',
+                'Responsabilidade Civil do Estado': 'Teorias da responsabilidade. Só PM-PI.',
+                'Improbidade Administrativa': 'Atos de improbidade. Só PM-PI.',
+                'Organização Administrativa': 'Administração direta e indireta. Só PM-PI.',
+                'Constituição do Estado do Piauí': 'Organização do estado. Só PM-PI.'
+            };
+
+            function getDetalhe(titulo) {
+                for (let key in detalhesMap) {
+                    if (titulo.includes(key) || key.includes(titulo)) {
+                        return detalhesMap[key];
+                    }
+                }
+                return 'Consulte o material PDF para mais detalhes.';
+            }
+
+            function isComum(nome) {
+                const item = todosAssuntos.find(a => a.nome === nome);
+                return item ? item.comum : false;
+            }
+
+            function isMA(nome) {
+                const item = todosAssuntos.find(a => a.nome === nome);
+                return item ? item.materia === 'Regionais MA' || item.materia === 'Legislação PMMA' : false;
+            }
+
+            // ============================================================
+            // 6. DADOS DAS SEMANAS - UNIFICADO
+            // ============================================================
+            const semanasUnificado = [{
+                id: 'uni_week1',
+                titulo: '🔴 SEMANA 1 · 08/07 a 14/07 (BASE SÓLIDA)',
+                dias: [
+                    { dia: 'Qua', data: '08/07', manha: ['📖 PORTUGUÊS: Interpretação de Textos (20 q) 🔥', '📖 LEGISLAÇÃO: Estatuto PM (Lei 3.808/81) (10 q)', '📖 HISTÓRIA DO MA: França Equinocial (10 q) 🟠'],
+                        almoco: ['Revisão: Interpretação (10 q) 🔥'] },
+                    { dia: 'Qui', data: '09/07', manha: ['📖 PORTUGUÊS: Sintaxe (20 q) 🔥', '📖 LEGISLAÇÃO: Estatuto PM (10 q)', '📖 GEOGRAFIA DO MA: Relevo e Clima (10 q) 🟠'],
+                        almoco: ['Revisão: Sintaxe (10 q) 🔥'] },
+                    { dia: 'Sex', data: '10/07', manha: ['📖 PORTUGUÊS: Morfologia (20 q) 🔥', '📖 LEGISLAÇÃO: Estatuto PM (10 q)', '📖 HISTÓRIA DO MA: Batalha Guaxenduba (10 q) 🟠'],
+                        almoco: ['Revisão: Morfologia (10 q) 🔥'] },
+                    { dia: 'Sáb', data: '11/07', manha: ['📖 PORTUGUÊS: Pontuação (20 q) 🔥', '📖 LEGISLAÇÃO: R-200 (10 q) 🔥', '📖 GEOGRAFIA DO MA: Hidrografia (10 q) 🟠'],
+                        almoco: ['Revisão: Pontuação (10 q) 🔥'] },
+                    { dia: 'Dom', data: '12/07', manha: ['📖 REVISÃO: Português + Legislação (20 q) 🔥', '📖 LEITURA: Resumos MA (10 q) 🟠'],
+                        almoco: ['Revisão de erros (10 q)'] },
+                    { dia: 'Seg', data: '13/07', manha: ['📖 PORTUGUÊS: Regência e Crase (20 q) 🔥', '📖 CONSTITUCIONAL: Princípios (10 q)', '📖 HISTÓRIA DO MA: Período Imperial (10 q) 🟠'],
+                        almoco: ['Revisão: Crase (10 q) 🔥'] },
+                    { dia: 'Ter', data: '14/07', manha: ['📖 PORTUGUÊS: Concordância (20 q) 🔥', '📖 CONSTITUCIONAL: Direitos Individuais (10 q)', '📖 GEOGRAFIA DO MA: Vegetação (10 q) 🟠'],
+                        almoco: ['Revisão: Concordância (10 q) 🔥'] }
+                ]
+            }, {
+                id: 'uni_week2',
+                titulo: '🟠 SEMANA 2 · 15/07 a 21/07 (EXPANSÃO)',
+                dias: [
+                    { dia: 'Qua', data: '15/07', manha: ['📖 PORTUGUÊS: Figuras de Linguagem (20 q) 🔥', '📖 DIREITOS HUMANOS: PIDCP (10 q)', '📖 HISTÓRIA DO MA: Balaiada (10 q) 🟠'],
+                        almoco: ['Revisão: Figuras (10 q) 🔥'] },
+                    { dia: 'Qui', data: '16/07', manha: ['📖 PORTUGUÊS: Interpretação (20 q) 🔥', '📖 DIREITOS HUMANOS: Convenção Tortura (10 q)', '📖 GEOGRAFIA DO MA: População (10 q) 🟠'],
+                        almoco: ['Revisão: Interpretação (10 q) 🔥'] },
+                    { dia: 'Sex', data: '17/07', manha: ['📖 MATEMÁTICA: Conjuntos (20 q)', '📖 LEGISLAÇÃO: Código Ética (10 q)', '📖 HISTÓRIA DO MA: Período Republicano (10 q) 🟠'],
+                        almoco: ['Revisão: Conjuntos (10 q)'] },
+                    { dia: 'Sáb', data: '18/07', manha: ['📖 MATEMÁTICA: Proporcionalidade (20 q)', '📖 DIREITO PENAL: Crimes contra Pessoa (10 q)', '📖 GEOGRAFIA DO MA: Economia (10 q) 🟠'],
+                        almoco: ['Revisão: Proporcionalidade (10 q)'] },
+                    { dia: 'Dom', data: '19/07', manha: ['📖 REVISÃO: Matemática + Direitos Humanos (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
+                        almoco: ['Revisão de erros (10 q)'] },
+                    { dia: 'Seg', data: '20/07', manha: ['📖 MATEMÁTICA: Equações (20 q)', '📖 DIREITO PENAL: Crimes contra Patrimônio (10 q)', '📖 HISTÓRIA DO MA: Revolução 30 (10 q) 🟠'],
+                        almoco: ['Revisão: Equações (10 q)'] },
+                    { dia: 'Ter', data: '21/07', manha: ['📖 MATEMÁTICA: Raciocínio Lógico (20 q)', '📖 LEG. ESPECIAL: Maria da Penha (10 q)', '📖 GEOGRAFIA DO MA: Transportes (10 q) 🟠'],
+                        almoco: ['Revisão: RLM (10 q)'] }
+                ]
+            }, {
+                id: 'uni_week3',
+                titulo: '🟡 SEMANA 3 · 22/07 a 28/07 (APROFUNDAMENTO)',
+                dias: [
+                    { dia: 'Qua', data: '22/07', manha: ['📖 PORTUGUÊS: Ortografia/Acentuação (20 q) 🔥', '📖 ADMINISTRATIVO: Regime Jurídico (10 q)', '📖 HISTÓRIA DO BRASIL: República Velha (10 q) 🔥'],
+                        almoco: ['Revisão: Ortografia (10 q) 🔥'] },
+                    { dia: 'Qui', data: '23/07', manha: ['📖 MATEMÁTICA: Geometria Plana (20 q)', '📖 LEGISLAÇÃO: Código Ética (10 q)', '📖 GEOGRAFIA DO BRASIL: População (10 q) 🔥'],
+                        almoco: ['Revisão: Geometria (10 q)'] },
+                    { dia: 'Sex', data: '24/07', manha: ['📖 MATEMÁTICA: Financeira (20 q)', '📖 DIREITO PENAL: Adm. Pública (10 q)', '📖 HISTÓRIA DO BRASIL: Era Vargas (10 q) 🔥'],
+                        almoco: ['Revisão: Financeira (10 q)'] },
+                    { dia: 'Sáb', data: '25/07', manha: ['📖 INFORMÁTICA: Windows 10 (20 q) 🔥', '📖 CONSTITUCIONAL: Organização do Estado (10 q)', '📖 GEOGRAFIA DO BRASIL: Economia (10 q) 🔥'],
+                        almoco: ['Revisão: Informática (10 q) 🔥'] },
+                    { dia: 'Dom', data: '26/07', manha: ['📖 REVISÃO: RLM + Informática + Penal (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
+                        almoco: ['Revisão de erros (10 q)'] },
+                    { dia: 'Seg', data: '27/07', manha: ['📖 INFORMÁTICA: Word e Excel (20 q) 🔥', '📖 DIREITOS HUMANOS: Revisão (10 q)', '📖 HISTÓRIA DO BRASIL: Golpe 64 (10 q) 🔥'],
+                        almoco: ['Revisão: Word/Excel (10 q) 🔥'] },
+                    { dia: 'Ter', data: '28/07', manha: ['📖 INFORMÁTICA: Internet (20 q) 🔥', '📖 LEGISLAÇÃO: Lei 3.529/1977 (10 q)', '📖 GEOGRAFIA DO BRASIL: Recursos Naturais (10 q) 🔥'],
+                        almoco: ['Revisão: Internet (10 q) 🔥'] }
+                ]
+            }, {
+                id: 'uni_week4',
+                titulo: '🟢 SEMANA 4 · 29/07 a 04/08 (REVISÃO + NOVOS)',
+                dias: [
+                    { dia: 'Qua', data: '29/07', manha: ['📖 PORTUGUÊS: Semântica (20 q) 🔥', '📖 ADMINISTRATIVO: Poderes (10 q)', '📖 HISTÓRIA DO MA: Revisão (10 q) 🟠'],
+                        almoco: ['Revisão: Semântica (10 q) 🔥'] },
+                    { dia: 'Qui', data: '30/07', manha: ['📖 MATEMÁTICA: Revisão (20 q)', '📖 LEG. ESPECIAL: ECA (10 q)', '📖 GEOGRAFIA DO MA: Revisão (10 q) 🟠'],
+                        almoco: ['Revisão: Matemática (10 q)'] },
+                    { dia: 'Sex', data: '31/07', manha: ['📖 RACIOCÍNIO LÓGICO: Associação (20 q)', '📖 DIREITO PENAL: Fé Pública (10 q)', '📖 LEGISLAÇÃO PMMA: Estatuto (Lei 6.513/95) (10 q) 🟠'],
+                        almoco: ['Revisão: RLM (10 q)'] },
+                    { dia: 'Sáb', data: '01/08', manha: ['📖 INFORMÁTICA: Hardware (20 q) 🔥', '📖 CONSTITUCIONAL: Segurança Pública (10 q)', '📖 LEGISLAÇÃO PMMA: Código Penal Militar (10 q) 🟠'],
+                        almoco: ['Revisão: Hardware (10 q) 🔥'] },
+                    { dia: 'Dom', data: '02/08', manha: ['📖 REVISÃO COMPLETA: Provas anteriores (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
+                        almoco: ['Análise de erros (10 q)'] },
+                    { dia: 'Seg', data: '03/08', manha: ['📖 REGIONAIS PI: Geografia do Piauí (20 q)', '📖 LEGISLAÇÃO: Decreto 12.422 (10 q)', '📖 REGIONAIS MA: Geografia do MA (10 q) 🟠'],
+                        almoco: ['Revisão: Geografia PI (10 q)'] },
+                    { dia: 'Ter', data: '04/08', manha: ['📖 REGIONAIS PI: História do Piauí (20 q)', '📖 ADMINISTRATIVO: Controle (10 q)', '📖 REGIONAIS MA: História do MA (10 q) 🟠'],
+                        almoco: ['Revisão: História PI (10 q)'] }
+                ]
+            }, {
+                id: 'uni_week5',
+                titulo: '🔵 SEMANA 5 · 05/08 a 11/08 (RETOMADA)',
+                dias: [
+                    { dia: 'Qua', data: '05/08', manha: ['📖 PORTUGUÊS: Revisão (20 q) 🔥', '📖 LEGISLAÇÃO: Decreto 12.422 (10 q)', '📖 LEGISLAÇÃO PMMA: Revisão (10 q) 🟠'],
+                        almoco: ['Revisão: Português (10 q) 🔥'] },
+                    { dia: 'Qui', data: '06/08', manha: ['📖 MATEMÁTICA: Revisão (20 q)', '📖 DIREITOS HUMANOS: Revisão (10 q)', '📖 HISTÓRIA DO MA: Revisão (10 q) 🟠'],
+                        almoco: ['Revisão: Matemática (10 q)'] },
+                    { dia: 'Sex', data: '07/08', manha: ['📖 RACIOCÍNIO LÓGICO: Revisão (20 q)', '📖 DIREITO PENAL: Revisão (10 q)', '📖 GEOGRAFIA DO MA: Revisão (10 q) 🟠'],
+                        almoco: ['Revisão: RLM (10 q)'] },
+                    { dia: 'Sáb', data: '08/08', manha: ['📖 INFORMÁTICA: Revisão (20 q) 🔥', '📖 CONSTITUCIONAL: Revisão (10 q)', '📖 LEGISLAÇÃO PMMA: Revisão (10 q) 🟠'],
+                        almoco: ['Revisão: Informática (10 q) 🔥'] },
+                    { dia: 'Dom', data: '09/08', manha: ['📖 SIMULADO: PM-PI (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
+                        almoco: ['Correção (10 q)'] },
+                    { dia: 'Seg', data: '10/08', manha: ['📖 CONH. GERAIS: Atualidades (20 q) 🔥', '📖 LEG. ESPECIAL: Juizados (10 q)', '📖 REGIONAIS MA: Revisão (10 q) 🟠'],
+                        almoco: ['Revisão: Atualidades (10 q) 🔥'] },
+                    { dia: 'Ter', data: '11/08', manha: ['📖 CONH. GERAIS: Política (20 q) 🔥', '📖 ADMINISTRATIVO: Improbidade (10 q)', '📖 LEGISLAÇÃO PMMA: Código Penal (10 q) 🟠'],
+                        almoco: ['Revisão: Política (10 q) 🔥'] }
+                ]
+            }, {
+                id: 'uni_week6',
+                titulo: '🟣 SEMANA 6 · 12/08 a 18/08 (PRÉ-PROVA PI)',
+                dias: [
+                    { dia: 'Qua', data: '12/08', manha: ['📖 PORTUGUÊS: 20 q alto grau 🔥', '📖 LEGISLAÇÃO PMPI: Revisão (10 q)', '📖 LEGISLAÇÃO PMMA: Revisão (10 q) 🟠'],
+                        almoco: ['Revisão: Português (10 q) 🔥'] },
+                    { dia: 'Qui', data: '13/08', manha: ['📖 MATEMÁTICA: 20 q mistas', '📖 DIREITO PENAL: Jurisprudência (10 q)', '📖 HISTÓRIA/REGIONAIS: Revisão MA (10 q) 🟠'],
+                        almoco: ['Revisão: Matemática (10 q)'] },
+                    { dia: 'Sex', data: '14/08', manha: ['📖 RACIOCÍNIO LÓGICO: 20 q associação', '📖 DIREITOS HUMANOS: 10 q finais', '📖 GEOGRAFIA/REGIONAIS: Revisão MA (10 q) 🟠'],
+                        almoco: ['Revisão: RLM (10 q)'] },
+                    { dia: 'Sáb', data: '15/08', manha: ['📖 SIMULADO: Legislação + Penal (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
+                        almoco: ['Correção (10 q)'] },
+                    { dia: 'Dom', data: '16/08', manha: ['📖 SIMULADO: Português + Matemática (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
+                        almoco: ['Correção (10 q)'] },
+                    { dia: 'Seg', data: '17/08', manha: ['📖 REGIONAIS PI: Revisão (20 q)', '📖 INFORMÁTICA: Revisão (10 q) 🔥', '📖 REGIONAIS MA: Revisão (10 q) 🟠'],
+                        almoco: ['Revisão: Regionais (10 q)'] },
+                    { dia: 'Ter', data: '18/08', manha: ['📖 CONH. GERAIS: Revisão (20 q) 🔥', '📖 LEG. ESPECIAL: Revisão (10 q)', '📖 LEGISLAÇÃO PMMA: Revisão Final (10 q) 🟠'],
+                        almoco: ['Revisão: Conhec. Gerais (10 q) 🔥'] }
+                ]
+            }, {
+                id: 'uni_week7',
+                titulo: '⚫ SEMANA 7 · 19/08 a 22/08 (RETA FINAL PI)',
+                dias: [
+                    { dia: 'Qua', data: '19/08', manha: ['📖 REVISÃO TOP: Legislação PMPI (20 q)', '📖 REVISÃO: Português (10 q) 🔥', '📖 LEITURA: Resumos MA (10 q) 🟠'],
+                        almoco: ['Revisão de erros (10 q)'] },
+                    { dia: 'Qui', data: '20/08', manha: ['📖 REVISÃO TOP: Direito Constitucional (20 q)', '📖 REVISÃO: Direitos Humanos (10 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
+                        almoco: ['Revisão de erros (10 q)'] },
+                    { dia: 'Sex', data: '21/08', manha: ['📖 REVISÃO TOP: Direito Penal (20 q)', '📖 REVISÃO: Leg. Especial (10 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
+                        almoco: ['Revisão de erros (10 q)'] },
+                    { dia: 'Sáb', data: '22/08', manha: ['📖 REVISÃO LEVE: Resumos (20 tópicos)', '📖 TREINO DE REDAÇÃO', '📖 LEITURA: Resumos MA (10 q) 🟠'],
+                        almoco: ['Revisão de resumos'] }
+                ]
+            }];
+
+            // ============================================================
+            // 7. MAPEAMENTO DE ASSUNTOS PARA CARDS
+            // ============================================================
+            const mapaAssuntoCard = {};
+            const mapaAssuntoDia = {};
+
+            function mapearAssuntos(semanas, prefixo) {
+                semanas.forEach((week, wi) => {
+                    week.dias.forEach((d, di) => {
+                        const cardId = `${prefixo}_w${wi}-d${di}`;
+                        const infoDia = `${d.dia}, ${d.data}`;
+                        d.manha.forEach(topic => {
+                            let nome = topic.replace(/📖 /g, '').replace(/\(.*\)/g, '').replace(/[🔥🟠]/g, '')
+                                .trim();
+                            nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
+                            for (let item of todosAssuntos) {
+                                if (nome.includes(item.nome) || item.nome.includes(nome)) {
+                                    mapaAssuntoCard[item.nome] = cardId;
+                                    mapaAssuntoDia[item.nome] = infoDia;
+                                    break;
+                                }
+                            }
+                            if (!mapaAssuntoCard[nome]) {
+                                for (let item of todosAssuntos) {
+                                    if (nome.includes(item.nome.split(' ')[0]) || item.nome.includes(nome.split(
+                                            ' ')[0])) {
+                                        mapaAssuntoCard[item.nome] = cardId;
+                                        mapaAssuntoDia[item.nome] = infoDia;
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+                    });
+                });
+            }
+
+            mapearAssuntos(semanasUnificado, 'uni');
+
+            // ============================================================
+            // 8. LOCALSTORAGE
+            // ============================================================
+            const STORAGE_KEY = 'pm_pi_ma_2026_confirmacoes';
+
+            function carregarConfirmacoes() {
+                try {
+                    const data = localStorage.getItem(STORAGE_KEY);
+                    return data ? JSON.parse(data) : {};
+                } catch { return {}; }
+            }
+
+            function salvarConfirmacoes(obj) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+            }
+
+            let confirmacoes = carregarConfirmacoes();
+
+            // ============================================================
+            // 9. RENDERIZAÇÃO
+            // ============================================================
+            function renderizarSemanas(semanas, containerId, prefixo) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                container.innerHTML = '';
+                let totalDias = 0;
+                let cardIds = [];
+
+                semanas.forEach((week, wi) => {
+                    const weekDiv = document.createElement('div');
+                    weekDiv.innerHTML = `<div class="week-title">${week.titulo}</div>`;
+                    const grid = document.createElement('div');
+                    grid.className = 'week-grid';
+
+                    week.dias.forEach((d, di) => {
+                        const cardId = `${prefixo}_w${wi}-d${di}`;
+                        cardIds.push(cardId);
+                        totalDias++;
+
+                        const isHoje = d.data === hojeStr;
+
+                        const manhaItems = d.manha.map(m => {
+                            let nome = m.replace(/📖 /g, '').replace(/\(.*\)/g, '').replace(/[🔥🟠]/g, '')
+                                .trim();
+                            nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
+                            let nomeExato = nome;
+                            for (let item of todosAssuntos) {
+                                if (nome.includes(item.nome) || item.nome.includes(nome)) {
+                                    nomeExato = item.nome;
+                                    break;
+                                }
+                            }
+                            const comum = isComum(nomeExato);
+                            const ma = isMA(nomeExato);
+                            const selo = comum ? '<span class="selo-igual">🔥 Comum</span>' :
+                                ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
+                            return `<div class="topic" onclick="event.stopPropagation(); abrirPopoutPorAssunto('${nomeExato.replace(/'/g, "\\'")}')">
+                                        ${m} 
+                                        ${selo}
+                                        <span class="abrir-assunto">📚 ver</span>
+                                    </div>`;
+                        }).join('');
+
+                        const almocoItems = d.almoco.map(a => {
+                            let nome = a.replace(/📖 /g, '').replace(/\(.*\)/g, '').replace(/[🔥🟠]/g, '')
+                                .trim();
+                            nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
+                            let nomeExato = nome;
+                            for (let item of todosAssuntos) {
+                                if (nome.includes(item.nome) || item.nome.includes(nome)) {
+                                    nomeExato = item.nome;
+                                    break;
+                                }
+                            }
+                            const comum = isComum(nomeExato);
+                            const ma = isMA(nomeExato);
+                            const selo = comum ? '<span class="selo-igual">🔥 Comum</span>' :
+                                ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
+                            return `<div class="topic" onclick="event.stopPropagation(); abrirPopoutPorAssunto('${nomeExato.replace(/'/g, "\\'")}')">
+                                        ${a}
+                                        ${selo}
+                                        <span class="abrir-assunto">📚 ver</span>
+                                    </div>`;
+                        }).join('');
+
+                        let detalhesHTML = '';
+                        d.manha.forEach((m, idx) => {
+                            let nome = m.replace(/📖 /g, '').replace(/\(.*\)/g, '').replace(/[🔥🟠]/g, '')
+                                .trim();
+                            nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
+                            const detalhe = getDetalhe(nome);
+                            const ytSearch = encodeURIComponent(nome + ' concurso');
+                            const comum = isComum(nome);
+                            const ma = isMA(nome);
+                            const selo = comum ? '<span class="selo-igual">🔥 Comum</span>' :
+                                ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
+                            detalhesHTML +=
+                            `<div class="detalhe-materia" style="border-left-color:${comum ? '#22c55e' : ma ? '#d48c2c' : '#1e3a5f'}">
+                                <div class="materia-nome">📖 Matéria ${idx+1}: ${nome} ${selo}</div>
+                                <div class="materia-desc">${detalhe}</div>
+                                <a href="https://www.youtube.com/results?search_query=${ytSearch}" target="_blank" class="link-youtube">▶ YouTube</a>
+                                <a href="#" onclick="event.preventDefault(); abrirPopoutPorAssunto('${nome.replace(/'/g, "\\'")}');" class="link-youtube" style="background:#3b82f6;">📚 Ver no pop-out</a>
+                            </div>`;
+                        });
+
+                        detalhesHTML += `<div class="detalhe-materia" style="border-left-color:#22c55e;">
+                            <div class="materia-nome">💡 Dica</div>
+                            <div class="materia-desc">Leia o PDF, faça as questões no QConcursos e anote os erros.</div>
+                        </div>`;
+
+                        const checked = confirmacoes[cardId] ? 'checked' : '';
+
+                        const card = document.createElement('div');
+                        card.className = `day-card ${isHoje ? 'hoje' : ''}`;
+                        card.id = cardId;
+                        card.innerHTML = `
+                            <div class="day-header">
+                                <span class="day">${d.dia}</span>
+                                <span class="date">${d.data}</span>
+                                ${isHoje ? '<span class="badge-hoje">📍 HOJE</span>' : ''}
+                            </div>
+                            <div class="session">
+                                <strong>🌅 MANHÃ (7h-11h)</strong>
+                                ${manhaItems}
+                            </div>
+                            <div class="session almoço">
+                                <strong>🍽️ ALMOÇO (12h-13h)</strong>
+                                ${almocoItems}
+                            </div>
+                            <div class="obs">👆 Clique em qualquer matéria para ver no pop-out</div>
+                            <div class="detalhes-assunto" id="detalhes-${cardId}">
+                                <strong>📌 Detalhamento:</strong>
+                                ${detalhesHTML}
+                            </div>
+                            <div class="check-area">
+                                <label>
+                                    <input type="checkbox" class="check-confirm" data-id="${cardId}" ${checked}>
+                                    ✅ Concluído
+                                </label>
+                                <span class="progress-text">${checked ? '✔ Concluído' : '⏳ Pendente'}</span>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+
+                        card.addEventListener('click', function(e) {
+                            if (e.target.closest('.check-area') || e.target.closest('input') || e.target
+                                .closest('a')) return;
+                            const detalhes = document.getElementById('detalhes-' + cardId);
+                            if (detalhes) detalhes.classList.toggle('ativo');
+                        });
+                    });
+
+                    weekDiv.querySelector('.week-title').after(grid);
+                    container.appendChild(weekDiv);
+                });
+
+                return cardIds;
+            }
+
+            // Renderiza
+            const cardIdsUnificado = renderizarSemanas(semanasUnificado, 'semanasContainerUnificado', 'uni');
+            // PM-PI (usando o unificado como base, mas com foco)
+            const cardIdsPI = renderizarSemanas(semanasUnificado.slice(0, 7), 'semanasContainerPI', 'pi');
+            // PM-MA (usando semanas específicas)
+            const cardIdsMA = renderizarSemanas(semanasUnificado.slice(0, 7), 'semanasContainerMA', 'ma');
+
+            const todasCardIds = [...cardIdsUnificado, ...cardIdsPI, ...cardIdsMA];
+
+            // ============================================================
+            // 10. ATUALIZAR ESTATÍSTICAS
+            // ============================================================
+            function atualizarStats() {
+                const total = todasCardIds.length;
+                let concluidos = 0;
+                todasCardIds.forEach(id => {
+                    if (confirmacoes[id]) concluidos++;
+                });
+                const pct = total > 0 ? Math.round((concluidos / total) * 100) : 0;
+
+                document.getElementById('concluidasCount').innerText = concluidos;
+                document.getElementById('totalDiasCount').innerText = total;
+                document.getElementById('percentualCount').innerText = pct;
+
+                document.getElementById('totalDiasStats').innerText = total;
+                document.getElementById('concluidosStats').innerText = concluidos;
+                document.getElementById('progressoStats').innerText = pct + '%';
+                document.getElementById('faltamStats').innerText = total - concluidos;
+
+                const hojeCards = document.querySelectorAll('.day-card.hoje');
+                if (hojeCards.length > 0) {
+                    document.getElementById('hojeStatus').innerText = '📅 Dia de estudo!';
+                } else {
+                    const diaSemana = today.getDay();
+                    if (diaSemana === 0 || diaSemana === 6) {
+                        document.getElementById('hojeStatus').innerText = '📅 Fim de semana';
+                    } else {
+                        document.getElementById('hojeStatus').innerText = '📅 Sem estudos hoje';
+                    }
+                }
+
+                document.querySelectorAll('.check-confirm').forEach(cb => {
+                    const id = cb.dataset.id;
+                    const span = cb.closest('.check-area').querySelector('.progress-text');
+                    if (span) {
+                        span.innerText = cb.checked ? '✔ Concluído' : '⏳ Pendente';
+                    }
+                });
+            }
+
+            // ============================================================
+            // 11. ABAS
+            // ============================================================
+            let abaAtual = 'unificado';
+
+            function alternarAba(aba) {
+                if (aba) abaAtual = aba;
+                else {
+                    const ordem = ['unificado', 'pi', 'ma'];
+                    const idx = ordem.indexOf(abaAtual);
+                    abaAtual = ordem[(idx + 1) % ordem.length];
+                }
+
+                document.querySelectorAll('.aba-btn').forEach(btn => {
+                    btn.classList.toggle('ativo', btn.dataset.aba === abaAtual);
+                });
+
+                document.querySelectorAll('.conteudo-aba').forEach(el => {
+                    const id = el.id;
+                    el.classList.toggle('ativo', id === `aba${abaAtual.charAt(0).toUpperCase() + abaAtual.slice(1)}`);
+                });
+
+                const nomes = { unificado: 'Unificado', pi: 'PM-PI', ma: 'PM-MA' };
+                toast(`📚 Mudou para ${nomes[abaAtual]}`);
+
+                setTimeout(() => {
+                    const hojeCards = document.querySelectorAll(`#aba${abaAtual.charAt(0).toUpperCase() + abaAtual.slice(1)} .day-card.hoje`);
+                    if (hojeCards.length > 0) {
+                        hojeCards[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        hojeCards[0].classList.add('destaque');
+                        setTimeout(() => hojeCards[0].classList.remove('destaque'), 3000);
+                    }
+                }, 300);
+            }
+
+            document.querySelectorAll('.aba-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alternarAba(this.dataset.aba);
+                });
+            });
+
+            window.alternarAba = function() {
+                alternarAba();
+            };
+
+            // ============================================================
+            // 12. POP-OUT
+            // ============================================================
+            window.abrirPopout = function(assuntoParaDestacar) {
+                const popout = document.getElementById('popoutAssuntos');
+                const overlay = document.getElementById('popoutOverlay');
+                const lista = document.getElementById('listaAssuntosPopout');
+
+                let html = '';
+                const grupos = {};
+                todosAssuntos.forEach(item => {
+                    const materia = item.materia || 'Outros';
+                    if (!grupos[materia]) grupos[materia] = [];
+                    grupos[materia].push(item);
+                });
+
+                for (let materia in grupos) {
+                    html += `<div style="font-weight:700;color:#1e3a5f;margin-top:10px;font-size:0.85rem;">📂 ${materia}</div>`;
+                    grupos[materia].forEach(item => {
+                        const cardId = mapaAssuntoCard[item.nome] || '';
+                        const diaInfo = mapaAssuntoDia[item.nome] || '';
+                        const temDia = cardId ? true : false;
+                        const destacado = assuntoParaDestacar && item.nome === assuntoParaDestacar ? 'destacado' :
+                            '';
+                        const detalhe = getDetalhe(item.nome);
+                        const comum = item.comum ? true : false;
+                        const ma = item.materia === 'Regionais MA' || item.materia === 'Legislação PMMA';
+                        const selo = comum ? '<span class="selo-igual">🔥 Comum</span>' :
+                            ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
+
+                        html += `<div class="assunto-item ${destacado}" style="${!temDia ? 'opacity:0.6;cursor:default;' : ''}">
+                            <span>
+                                ${item.nome} 
+                                <span style="font-size:0.65rem;color:#3a5a7a;">(${item.qtd} questões)</span>
+                                ${temDia ? `<span class="info-dia">📅 ${diaInfo}</span>` : ''}
+                                ${selo}
+                                ${destacado ? ' ⭐' : ''}
+                                <button class="btn-copiar" onclick="event.stopPropagation(); copiarAssunto('${item.nome.replace(/'/g, "\\'")}', '${detalhe.replace(/'/g, "\\'")}', '${item.qtd}', '${temDia ? diaInfo : 'Sem data'}', ${comum}, ${ma})">📋 Copiar</button>
+                            </span>
+                            <span style="display:flex;align-items:center;gap:6px;">
+                                <span class="qtd">${item.qtd}</span>
+                                ${temDia ? '<span class="seta">➜</span>' : '⛔'}
+                            </span>
+                        </div>`;
+                    });
+                }
+                lista.innerHTML = html;
+
+                popout.classList.add('ativo');
+                overlay.classList.add('ativo');
+                document.body.style.overflow = 'hidden';
+
+                if (assuntoParaDestacar) {
+                    setTimeout(() => {
+                        const destacado = popout.querySelector('.assunto-item.destacado');
+                        if (destacado) {
+                            destacado.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }, 300);
+                }
+            };
+
+            // ============================================================
+            // 13. COPIAR ASSUNTO
+            // ============================================================
+            window.copiarAssunto = function(nome, detalhe, qtd, dia, comum, ma) {
+                let tipo = '📌 Específico';
+                if (comum) tipo = '🔥 COMUM aos dois concursos!';
+                else if (ma) tipo = '🟠 Específico do PM-MA';
+                else tipo = '📌 Específico do PM-PI';
+
+                const texto =
+                `📚 ASSUNTO: ${nome}\n📊 Questões: ${qtd}\n📅 Data: ${dia}\n${tipo}\n📝 Detalhe: ${detalhe}`;
+                navigator.clipboard.writeText(texto).then(() => {
+                    toast(`📋 "${nome}" copiado!`);
+                }).catch(() => {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = texto;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    toast(`📋 "${nome}" copiado!`);
+                });
+            };
+
+            // ============================================================
+            // 14. IR PARA HOJE
+            // ============================================================
+            window.irParaHoje = function() {
+                const abaId = `aba${abaAtual.charAt(0).toUpperCase() + abaAtual.slice(1)}`;
+                const hojeCards = document.querySelectorAll(`#${abaId} .day-card.hoje`);
+                if (hojeCards.length > 0) {
+                    const card = hojeCards[0];
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.classList.add('destaque');
+                    setTimeout(() => card.classList.remove('destaque'), 3000);
+                    toast(`📅 Hoje é ${card.querySelector('.day-header .day')?.textContent || ''}`);
+                } else {
+                    toast('📅 Nenhum estudo programado para hoje');
+                }
+            };
+
+            // ============================================================
+            // 15. IR PARA DIA
+            // ============================================================
+            window.irParaDia = function(cardId, nomeAssunto) {
+                fecharPopout();
+                const card = document.getElementById(cardId);
+                if (card) {
+                    document.querySelectorAll('.day-card.destaque').forEach(el => el.classList.remove('destaque'));
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.classList.add('destaque');
+                    const detalhes = document.getElementById('detalhes-' + cardId);
+                    if (detalhes) detalhes.classList.add('ativo');
+                    const diaInfo = card.querySelector('.day-header .day')?.textContent || '';
+                    toast(`✅ "${nomeAssunto}" está programado para ${diaInfo}`);
+                    setTimeout(() => card.classList.remove('destaque'), 5000);
+                } else {
+                    toast('⚠️ Dia não encontrado');
+                }
+            };
+
+            // ============================================================
+            // 16. ABRIR POP-OUT POR ASSUNTO
+            // ============================================================
+            window.abrirPopoutPorAssunto = function(nomeAssunto) {
+                if (document.getElementById('popoutAssuntos').classList.contains('ativo')) {
+                    fecharPopout();
+                }
+                abrirPopout(nomeAssunto);
+                toast(`📚 Mostrando "${nomeAssunto}"`);
+            };
+
+            // ============================================================
+            // 17. FECHAR POP-OUT
+            // ============================================================
+            window.fecharPopout = function() {
+                document.getElementById('popoutAssuntos').classList.remove('ativo');
+                document.getElementById('popoutOverlay').classList.remove('ativo');
+                document.body.style.overflow = '';
+            };
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') fecharPopout();
+            });
+
+            // ============================================================
+            // 18. CHECKBOX
+            // ============================================================
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('check-confirm')) {
+                    const id = e.target.dataset.id;
+                    if (e.target.checked) {
+                        confirmacoes[id] = true;
+                    } else {
+                        delete confirmacoes[id];
+                    }
+                    salvarConfirmacoes(confirmacoes);
+                    atualizarStats();
+                }
+            });
+
+            // ============================================================
+            // 19. RESET
+            // ============================================================
+            window.resetarConfirmacoes = function() {
+                if (confirm('ATENÇÃO: Resetar todo o progresso?')) {
+                    confirmacoes = {};
+                    salvarConfirmacoes(confirmacoes);
+                    document.querySelectorAll('.check-confirm').forEach(cb => {
+                        cb.checked = false;
+                        const span = cb.closest('.check-area').querySelector('.progress-text');
+                        if (span) span.innerText = '⏳ Pendente';
+                    });
+                    atualizarStats();
+                    toast('✅ Resetado!');
+                }
+            };
+
+            // ============================================================
+            // 20. INICIALIZAR
+            // ============================================================
+            atualizarStats();
+
+            // Scroll para hoje na aba Unificado (padrão)
+            setTimeout(() => {
+                const hojeCards = document.querySelectorAll('#abaUnificado .day-card.hoje');
+                if (hojeCards.length > 0) {
+                    const card = hojeCards[0];
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.classList.add('destaque');
+                    setTimeout(() => card.classList.remove('destaque'), 3000);
+                    toast(`📅 Hoje é ${card.querySelector('.day-header .day')?.textContent || ''} - Estude!`);
+                } else {
+                    const primeiroCard = document.querySelector('#abaUnificado .day-card');
+                    if (primeiroCard) {
+                        primeiroCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            }, 500);
+
+            // Mensagem de boas-vindas
+            setTimeout(() => {
+                if (diffPI > 0 && diffPI <= 60) {
+                    toast(`🚀 Faltam ${diffPI} dias para o PM-PI! Bora estudar!`);
+                } else if (diffPI > 0) {
+                    toast(`📚 Faltam ${diffPI} dias para o PM-PI. Vamos com calma!`);
+                }
+                if (diffMA > 0) {
+                    toast(`📚 PM-MA: ${diffMA} dias (${diffMA - diffPI} dias após o PM-PI)`);
+                }
+            }, 1000);
+
+        })();
+    </script>
+</body>
+</html>
