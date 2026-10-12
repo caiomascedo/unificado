@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>📋 PM-PI & PM-MA 2026 · Estudo Unificado</title>
+    <title>📋 PM-PI & Bombeiro 2026 · Estudo Unificado</title>
     <style>
         * {
             margin: 0;
@@ -820,7 +820,7 @@
 
         <!-- HEADER -->
         <div class="header">
-            <h1>📋 PM-PI & PM-MA 2026 · <small>Estudo Unificado</small></h1>
+            <h1>📋 PM-PI & Bombeiro 2026 · <small>Estudo Unificado</small></h1>
             <div class="meta">🗓️ <span id="todayDisplay"></span> · ⏳ <span id="daysLeftPI"></span> dias PM-PI</div>
         </div>
 
@@ -845,16 +845,16 @@
 
         <!-- ===== COMPARATIVO ===== -->
         <div class="comparativo">
-            <div class="item"><span>🎯 PM-PI: 23/08/2026</span> <span class="selo">Foco agora</span></div>
-            <div class="item"><span>🎯 PM-MA: 11/10/2026</span> <span class="selo ma">Após PM-PI</span></div>
-            <div class="item"><span>🔥 Matérias em comum:</span> <strong>Português, Legislação (R-200 + Lei 14.751), Informática, História/Geo do Brasil</strong></div>
-            <div class="item"><span>📌 PM-MA já incluso:</span> <strong>História/Geo MA + Estatuto PMMA + Código Penal Militar</strong></div>
+            <div class="item"><span>🎯 PM-PI: 04/12/2026 (previsão)</span> <span class="selo">Foco agora</span></div>
+            <div class="item"><span>🚒 Bombeiro: início em 19/10/2026</span> <span class="selo ma">Próxima semana</span></div>
+            <div class="item"><span>📚 Base para Bombeiro:</span> <strong>Português, Matemática, Raciocínio Lógico e Informática — conferir no edital</strong></div>
+            <div class="item"><span>📌 Planejamento:</span> <strong>PM-PI: 12/10 a 04/12 · Bombeiro: base provisória, estado e prova a confirmar</strong></div>
         </div>
 
         <!-- ===== ABAS ===== -->
         <div class="abas-container" id="abasContainer">
-            <button class="aba-btn ativo" data-aba="pi">🚔 PM-PI <span class="badge-concurso">23/08</span></button>
-            <button class="aba-btn" data-aba="ma">🚨 PM-MA <span class="badge-concurso ma">11/10</span></button>
+            <button class="aba-btn ativo" data-aba="pi">🚔 PM-PI <span class="badge-concurso">04/12*</span></button>
+            <button class="aba-btn" data-aba="ma">🚒 Bombeiro <span class="badge-concurso ma">19/10</span></button>
             <button class="aba-btn" data-aba="unificado">🔥 Unificado <span class="badge-concurso">Os dois</span></button>
         </div>
 
@@ -904,10 +904,10 @@
         <div class="popout-overlay" id="popoutOverlay" onclick="fecharPopout()"></div>
         <div class="popout-assuntos" id="popoutAssuntos">
             <button class="fechar" onclick="fecharPopout()">✕</button>
-            <h2>📚 Todos os Assuntos do Edital</h2>
+            <h2>📚 Assuntos do planejamento</h2>
             <p style="font-size:0.8rem;color:#3a5a7a;margin-bottom:12px;">
                 👆 <strong>Clique em qualquer assunto</strong> para ir direto ao dia de estudo.
-                <span style="display:block;margin-top:4px;">🔥 <strong>Verde</strong> = comum aos dois concursos | 🟠 <strong>Laranja</strong> = específico do PM-MA</span>
+                <span style="display:block;margin-top:4px;">O conteúdo de PM-PI foi mantido. A base de Bombeiro depende da confirmação do edital.</span>
                 <span style="display:block;margin-top:4px;">📋 Clique em <strong>📋 Copiar</strong> para copiar as informações.</span>
             </p>
             <div id="listaAssuntosPopout"></div>
@@ -931,10 +931,11 @@
             const today = new Date();
             const options = { day: 'numeric', month: 'short', year: 'numeric' };
             document.getElementById('todayDisplay').innerText = today.toLocaleDateString('pt-BR', options);
-            const provaPI = new Date(2026, 7, 23);
-            const provaMA = new Date(2026, 9, 11);
+            const inicioEstudos = new Date(2026, 9, 12);
+            const inicioBombeiro = new Date(2026, 9, 19);
+            const provaPI = new Date(2026, 11, 4);
+            today.setHours(0, 0, 0, 0);
             const diffPI = Math.ceil((provaPI - today) / (1000 * 60 * 60 * 24));
-            const diffMA = Math.ceil((provaMA - today) / (1000 * 60 * 60 * 24));
             document.getElementById('daysLeftPI').innerText = diffPI > 0 ? diffPI : 0;
 
             const hojeStr = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0');
@@ -978,7 +979,7 @@
                         ciclosCompletos++;
                         pomoCiclos.textContent = `Ciclos: ${ciclosCompletos}`;
                         pomoStatus.textContent = '🔔 Estudo concluído! Pausa de 10min.';
-                        if (Notification.permission === 'granted') {
+                        if ('Notification' in window && Notification.permission === 'granted') {
                             new Notification('⏰ Pomodoro', {
                                 body: 'Tempo de estudo acabou! Faça uma pausa de 10min.',
                                 icon: '📚'
@@ -991,7 +992,7 @@
                         pomoStatus.textContent = '☕ Em pausa...';
                     } else {
                         pomoStatus.textContent = '🔔 Pausa acabou! Volte a estudar.';
-                        if (Notification.permission === 'granted') {
+                        if ('Notification' in window && Notification.permission === 'granted') {
                             new Notification('⏰ Pomodoro', {
                                 body: 'Pausa acabou! Volte a estudar.',
                                 icon: '📚'
@@ -1065,15 +1066,15 @@
             // ============================================================
             const todosAssuntos = [
                 // ===== LÍNGUA PORTUGUESA (comum) =====
-                { nome: 'Interpretação de Textos', qtd: 669, materia: 'Português', comum: true },
-                { nome: 'Sintaxe', qtd: 38, materia: 'Português', comum: true },
-                { nome: 'Morfologia', qtd: 281, materia: 'Português', comum: true },
-                { nome: 'Pontuação', qtd: 92, materia: 'Português', comum: true },
-                { nome: 'Regência e Crase', qtd: 48, materia: 'Português', comum: true },
-                { nome: 'Concordância', qtd: 100, materia: 'Português', comum: true },
-                { nome: 'Figuras de Linguagem', qtd: 74, materia: 'Português', comum: true },
-                { nome: 'Ortografia e Acentuação', qtd: 11, materia: 'Português', comum: true },
-                { nome: 'Semântica', qtd: 52, materia: 'Português', comum: true },
+                { nome: 'Interpretação de Textos', qtd: 669, materia: 'Português', comum: false },
+                { nome: 'Sintaxe', qtd: 38, materia: 'Português', comum: false },
+                { nome: 'Morfologia', qtd: 281, materia: 'Português', comum: false },
+                { nome: 'Pontuação', qtd: 92, materia: 'Português', comum: false },
+                { nome: 'Regência e Crase', qtd: 48, materia: 'Português', comum: false },
+                { nome: 'Concordância', qtd: 100, materia: 'Português', comum: false },
+                { nome: 'Figuras de Linguagem', qtd: 74, materia: 'Português', comum: false },
+                { nome: 'Ortografia e Acentuação', qtd: 11, materia: 'Português', comum: false },
+                { nome: 'Semântica', qtd: 52, materia: 'Português', comum: false },
                 // ===== MATEMÁTICA (só PI) =====
                 { nome: 'Conjuntos', qtd: 384, materia: 'Matemática', comum: false },
                 { nome: 'Proporcionalidade', qtd: 267, materia: 'Matemática', comum: false },
@@ -1082,39 +1083,32 @@
                 { nome: 'Geometria Plana', qtd: 49, materia: 'Matemática', comum: false },
                 { nome: 'Matemática Financeira', qtd: 78, materia: 'Matemática', comum: false },
                 // ===== INFORMÁTICA (comum) =====
-                { nome: 'Windows 10', qtd: 569, materia: 'Informática', comum: true },
-                { nome: 'Word 2019', qtd: 104, materia: 'Informática', comum: true },
-                { nome: 'Excel 2019', qtd: 164, materia: 'Informática', comum: true },
-                { nome: 'Internet', qtd: 266, materia: 'Informática', comum: true },
-                { nome: 'Hardware', qtd: 145, materia: 'Informática', comum: true },
+                { nome: 'Windows 10', qtd: 569, materia: 'Informática', comum: false },
+                { nome: 'Word 2019', qtd: 104, materia: 'Informática', comum: false },
+                { nome: 'Excel 2019', qtd: 164, materia: 'Informática', comum: false },
+                { nome: 'Internet', qtd: 266, materia: 'Informática', comum: false },
+                { nome: 'Hardware', qtd: 145, materia: 'Informática', comum: false },
                 // ===== CONHECIMENTOS GERAIS (comum) =====
-                { nome: 'Política Brasileira', qtd: 153, materia: 'Conhecimentos Gerais', comum: true },
-                { nome: 'Meio Ambiente', qtd: 165, materia: 'Conhecimentos Gerais', comum: true },
-                { nome: 'Segurança Pública', qtd: 46, materia: 'Conhecimentos Gerais', comum: true },
+                { nome: 'Política Brasileira', qtd: 153, materia: 'Conhecimentos Gerais', comum: false },
+                { nome: 'Meio Ambiente', qtd: 165, materia: 'Conhecimentos Gerais', comum: false },
+                { nome: 'Segurança Pública', qtd: 46, materia: 'Conhecimentos Gerais', comum: false },
                 // ===== HISTÓRIA DO BRASIL (comum) =====
-                { nome: 'História do Brasil - República Velha', qtd: 25, materia: 'História do Brasil', comum: true },
-                { nome: 'História do Brasil - Era Vargas', qtd: 20, materia: 'História do Brasil', comum: true },
-                { nome: 'História do Brasil - Golpe e Ditadura', qtd: 18, materia: 'História do Brasil', comum: true },
-                { nome: 'História do Brasil - Redemocratização', qtd: 12, materia: 'História do Brasil', comum: true },
+                { nome: 'História do Brasil - República Velha', qtd: 25, materia: 'História do Brasil', comum: false },
+                { nome: 'História do Brasil - Era Vargas', qtd: 20, materia: 'História do Brasil', comum: false },
+                { nome: 'História do Brasil - Golpe e Ditadura', qtd: 18, materia: 'História do Brasil', comum: false },
+                { nome: 'História do Brasil - Redemocratização', qtd: 12, materia: 'História do Brasil', comum: false },
                 // ===== GEOGRAFIA DO BRASIL (comum) =====
-                { nome: 'Geografia do Brasil - População', qtd: 20, materia: 'Geografia do Brasil', comum: true },
-                { nome: 'Geografia do Brasil - Economia', qtd: 22, materia: 'Geografia do Brasil', comum: true },
-                { nome: 'Geografia do Brasil - Recursos Naturais', qtd: 18, materia: 'Geografia do Brasil', comum: true },
+                { nome: 'Geografia do Brasil - População', qtd: 20, materia: 'Geografia do Brasil', comum: false },
+                { nome: 'Geografia do Brasil - Economia', qtd: 22, materia: 'Geografia do Brasil', comum: false },
+                { nome: 'Geografia do Brasil - Recursos Naturais', qtd: 18, materia: 'Geografia do Brasil', comum: false },
                 // ===== REGIONAIS PI =====
                 { nome: 'Geografia do Piauí', qtd: 91, materia: 'Regionais PI', comum: false },
                 { nome: 'História do Piauí', qtd: 53, materia: 'Regionais PI', comum: false },
-                // ===== REGIONAIS MA =====
-                { nome: 'Geografia do Maranhão', qtd: 80, materia: 'Regionais MA', comum: false },
-                { nome: 'História do Maranhão', qtd: 60, materia: 'Regionais MA', comum: false },
                 // ===== LEGISLAÇÃO PMPI =====
                 { nome: 'Estatuto do PM (Lei 3.808/81)', qtd: 69, materia: 'Legislação PMPI', comum: false },
                 { nome: 'Código de Ética (Lei 7.725/2022)', qtd: 121, materia: 'Legislação PMPI', comum: false },
-                { nome: 'Lei Orgânica (14.751/2023)', qtd: 51, materia: 'Legislação PMPI', comum: true },
-                { nome: 'R-200 (Decreto 88.777/83)', qtd: 50, materia: 'Legislação PMPI', comum: true },
-                // ===== LEGISLAÇÃO PMMA =====
-                { nome: 'Estatuto do PMMA (Lei 6.513/95)', qtd: 70, materia: 'Legislação PMMA', comum: false },
-                { nome: 'Código Penal Militar (Decreto 1.001/69)', qtd: 45, materia: 'Legislação PMMA', comum: false },
-                { nome: 'Lei 10.823/2018 (PMMA)', qtd: 20, materia: 'Legislação PMMA', comum: false },
+                { nome: 'Lei Orgânica (14.751/2023)', qtd: 51, materia: 'Legislação PMPI', comum: false },
+                { nome: 'R-200 (Decreto 88.777/83)', qtd: 50, materia: 'Legislação PMPI', comum: false },
                 // ===== DIREITO CONSTITUCIONAL (só PI) =====
                 { nome: 'Direitos Individuais (art. 5º)', qtd: 99, materia: 'Direito Constitucional', comum: false },
                 { nome: 'Direitos Sociais', qtd: 73, materia: 'Direito Constitucional', comum: false },
@@ -1145,6 +1139,12 @@
                 // ===== CONSTITUIÇÃO ESTADUAL (só PI) =====
                 { nome: 'Constituição do Estado do Piauí', qtd: 62, materia: 'Constituição Estadual', comum: false }
             ];
+
+
+            const materiasBaseBombeiro = ['Português', 'Matemática', 'Raciocínio Lógico', 'Informática'];
+            todosAssuntos.forEach(item => { item.comum = materiasBaseBombeiro.includes(item.materia); });
+            const assuntosPI = todosAssuntos;
+            const assuntosBombeiro = todosAssuntos.filter(item => item.comum);
 
             // ============================================================
             // 5. DETALHES DOS ASSUNTOS
@@ -1182,15 +1182,10 @@
                 'Geografia do Brasil - Recursos Naturais': '🔥 Aproveitamento, conservação. Comum aos dois concursos!',
                 'Geografia do Piauí': 'Relevo, clima, hidrografia, economia do Piauí. Só PM-PI.',
                 'História do Piauí': 'Formação histórica, colonização, Balaiada. Só PM-PI.',
-                'Geografia do Maranhão': '🟠 Relevo, clima, hidrografia, economia do Maranhão. Só PM-MA.',
-                'História do Maranhão': '🟠 França Equinocial, Balaiada, Independência. Só PM-MA.',
                 'Estatuto do PM (Lei 3.808/81)': 'Direitos, deveres, regime disciplinar da PMPI. Só PM-PI.',
                 'Código de Ética (Lei 7.725/2022)': 'Normas de conduta, ética profissional. Só PM-PI.',
                 'Lei Orgânica (14.751/2023)': '🔥 Organização nacional das PMs. Comum aos dois concursos!',
                 'R-200 (Decreto 88.777/83)': '🔥 Regulamento geral para PMs. Comum aos dois concursos!',
-                'Estatuto do PMMA (Lei 6.513/95)': '🟠 Direitos, deveres, regime disciplinar da PMMA. Só PM-MA.',
-                'Código Penal Militar (Decreto 1.001/69)': '🟠 Crimes militares, penas. Só PM-MA.',
-                'Lei 10.823/2018 (PMMA)': '🟠 Criação e transformação de organizações da PMMA. Só PM-MA.',
                 'Direitos Individuais (art. 5º)': 'Garantias fundamentais. Só PM-PI.',
                 'Direitos Sociais': 'Direitos dos trabalhadores. Só PM-PI.',
                 'Nacionalidade': 'Brasileiros natos e naturalizados. Só PM-PI.',
@@ -1219,7 +1214,7 @@
             function getDetalhe(titulo) {
                 for (let key in detalhesMap) {
                     if (titulo.includes(key) || key.includes(titulo)) {
-                        return detalhesMap[key];
+                        return detalhesMap[key].replace(/🔥 /g, '').replace(/Comum aos dois concursos!/g, '').replace(/Só PM-PI\./g, '').trim();
                     }
                 }
                 return 'Consulte o material PDF para mais detalhes.';
@@ -1232,173 +1227,78 @@
 
             function isMA(nome) {
                 const item = todosAssuntos.find(a => a.nome === nome);
-                return item ? item.materia === 'Regionais MA' || item.materia === 'Legislação PMMA' : false;
+                return false;
             }
 
             // ============================================================
             // 6. DADOS DAS SEMANAS - UNIFICADO
             // ============================================================
-            const semanasUnificado = [{
-                id: 'uni_week1',
-                titulo: '🔴 SEMANA 1 · 08/07 a 14/07 (BASE SÓLIDA)',
-                dias: [
-                    { dia: 'Qua', data: '08/07', manha: ['📖 PORTUGUÊS: Interpretação de Textos (20 q) 🔥', '📖 LEGISLAÇÃO: Estatuto PM (Lei 3.808/81) (10 q)', '📖 HISTÓRIA DO MA: França Equinocial (10 q) 🟠'],
-                        almoco: ['Revisão: Interpretação (10 q) 🔥'] },
-                    { dia: 'Qui', data: '09/07', manha: ['📖 PORTUGUÊS: Sintaxe (20 q) 🔥', '📖 LEGISLAÇÃO: Estatuto PM (10 q)', '📖 GEOGRAFIA DO MA: Relevo e Clima (10 q) 🟠'],
-                        almoco: ['Revisão: Sintaxe (10 q) 🔥'] },
-                    { dia: 'Sex', data: '10/07', manha: ['📖 PORTUGUÊS: Morfologia (20 q) 🔥', '📖 LEGISLAÇÃO: Estatuto PM (10 q)', '📖 HISTÓRIA DO MA: Batalha Guaxenduba (10 q) 🟠'],
-                        almoco: ['Revisão: Morfologia (10 q) 🔥'] },
-                    { dia: 'Sáb', data: '11/07', manha: ['📖 PORTUGUÊS: Pontuação (20 q) 🔥', '📖 LEGISLAÇÃO: R-200 (10 q) 🔥', '📖 GEOGRAFIA DO MA: Hidrografia (10 q) 🟠'],
-                        almoco: ['Revisão: Pontuação (10 q) 🔥'] },
-                    { dia: 'Dom', data: '12/07', manha: ['📖 REVISÃO: Português + Legislação (20 q) 🔥', '📖 LEITURA: Resumos MA (10 q) 🟠'],
-                        almoco: ['Revisão de erros (10 q)'] },
-                    { dia: 'Seg', data: '13/07', manha: ['📖 PORTUGUÊS: Regência e Crase (20 q) 🔥', '📖 CONSTITUCIONAL: Princípios (10 q)', '📖 HISTÓRIA DO MA: Período Imperial (10 q) 🟠'],
-                        almoco: ['Revisão: Crase (10 q) 🔥'] },
-                    { dia: 'Ter', data: '14/07', manha: ['📖 PORTUGUÊS: Concordância (20 q) 🔥', '📖 CONSTITUCIONAL: Direitos Individuais (10 q)', '📖 GEOGRAFIA DO MA: Vegetação (10 q) 🟠'],
-                        almoco: ['Revisão: Concordância (10 q) 🔥'] }
-                ]
-            }, {
-                id: 'uni_week2',
-                titulo: '🟠 SEMANA 2 · 15/07 a 21/07 (EXPANSÃO)',
-                dias: [
-                    { dia: 'Qua', data: '15/07', manha: ['📖 PORTUGUÊS: Figuras de Linguagem (20 q) 🔥', '📖 DIREITOS HUMANOS: PIDCP (10 q)', '📖 HISTÓRIA DO MA: Balaiada (10 q) 🟠'],
-                        almoco: ['Revisão: Figuras (10 q) 🔥'] },
-                    { dia: 'Qui', data: '16/07', manha: ['📖 PORTUGUÊS: Interpretação (20 q) 🔥', '📖 DIREITOS HUMANOS: Convenção Tortura (10 q)', '📖 GEOGRAFIA DO MA: População (10 q) 🟠'],
-                        almoco: ['Revisão: Interpretação (10 q) 🔥'] },
-                    { dia: 'Sex', data: '17/07', manha: ['📖 MATEMÁTICA: Conjuntos (20 q)', '📖 LEGISLAÇÃO: Código Ética (10 q)', '📖 HISTÓRIA DO MA: Período Republicano (10 q) 🟠'],
-                        almoco: ['Revisão: Conjuntos (10 q)'] },
-                    { dia: 'Sáb', data: '18/07', manha: ['📖 MATEMÁTICA: Proporcionalidade (20 q)', '📖 DIREITO PENAL: Crimes contra Pessoa (10 q)', '📖 GEOGRAFIA DO MA: Economia (10 q) 🟠'],
-                        almoco: ['Revisão: Proporcionalidade (10 q)'] },
-                    { dia: 'Dom', data: '19/07', manha: ['📖 REVISÃO: Matemática + Direitos Humanos (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
-                        almoco: ['Revisão de erros (10 q)'] },
-                    { dia: 'Seg', data: '20/07', manha: ['📖 MATEMÁTICA: Equações (20 q)', '📖 DIREITO PENAL: Crimes contra Patrimônio (10 q)', '📖 HISTÓRIA DO MA: Revolução 30 (10 q) 🟠'],
-                        almoco: ['Revisão: Equações (10 q)'] },
-                    { dia: 'Ter', data: '21/07', manha: ['📖 MATEMÁTICA: Raciocínio Lógico (20 q)', '📖 LEG. ESPECIAL: Maria da Penha (10 q)', '📖 GEOGRAFIA DO MA: Transportes (10 q) 🟠'],
-                        almoco: ['Revisão: RLM (10 q)'] }
-                ]
-            }, {
-                id: 'uni_week3',
-                titulo: '🟡 SEMANA 3 · 22/07 a 28/07 (APROFUNDAMENTO)',
-                dias: [
-                    { dia: 'Qua', data: '22/07', manha: ['📖 PORTUGUÊS: Ortografia/Acentuação (20 q) 🔥', '📖 ADMINISTRATIVO: Regime Jurídico (10 q)', '📖 HISTÓRIA DO BRASIL: República Velha (10 q) 🔥'],
-                        almoco: ['Revisão: Ortografia (10 q) 🔥'] },
-                    { dia: 'Qui', data: '23/07', manha: ['📖 MATEMÁTICA: Geometria Plana (20 q)', '📖 LEGISLAÇÃO: Código Ética (10 q)', '📖 GEOGRAFIA DO BRASIL: População (10 q) 🔥'],
-                        almoco: ['Revisão: Geometria (10 q)'] },
-                    { dia: 'Sex', data: '24/07', manha: ['📖 MATEMÁTICA: Financeira (20 q)', '📖 DIREITO PENAL: Adm. Pública (10 q)', '📖 HISTÓRIA DO BRASIL: Era Vargas (10 q) 🔥'],
-                        almoco: ['Revisão: Financeira (10 q)'] },
-                    { dia: 'Sáb', data: '25/07', manha: ['📖 INFORMÁTICA: Windows 10 (20 q) 🔥', '📖 CONSTITUCIONAL: Organização do Estado (10 q)', '📖 GEOGRAFIA DO BRASIL: Economia (10 q) 🔥'],
-                        almoco: ['Revisão: Informática (10 q) 🔥'] },
-                    { dia: 'Dom', data: '26/07', manha: ['📖 REVISÃO: RLM + Informática + Penal (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
-                        almoco: ['Revisão de erros (10 q)'] },
-                    { dia: 'Seg', data: '27/07', manha: ['📖 INFORMÁTICA: Word e Excel (20 q) 🔥', '📖 DIREITOS HUMANOS: Revisão (10 q)', '📖 HISTÓRIA DO BRASIL: Golpe 64 (10 q) 🔥'],
-                        almoco: ['Revisão: Word/Excel (10 q) 🔥'] },
-                    { dia: 'Ter', data: '28/07', manha: ['📖 INFORMÁTICA: Internet (20 q) 🔥', '📖 LEGISLAÇÃO: Lei 3.529/1977 (10 q)', '📖 GEOGRAFIA DO BRASIL: Recursos Naturais (10 q) 🔥'],
-                        almoco: ['Revisão: Internet (10 q) 🔥'] }
-                ]
-            }, {
-                id: 'uni_week4',
-                titulo: '🟢 SEMANA 4 · 29/07 a 04/08 (REVISÃO + NOVOS)',
-                dias: [
-                    { dia: 'Qua', data: '29/07', manha: ['📖 PORTUGUÊS: Semântica (20 q) 🔥', '📖 ADMINISTRATIVO: Poderes (10 q)', '📖 HISTÓRIA DO MA: Revisão (10 q) 🟠'],
-                        almoco: ['Revisão: Semântica (10 q) 🔥'] },
-                    { dia: 'Qui', data: '30/07', manha: ['📖 MATEMÁTICA: Revisão (20 q)', '📖 LEG. ESPECIAL: ECA (10 q)', '📖 GEOGRAFIA DO MA: Revisão (10 q) 🟠'],
-                        almoco: ['Revisão: Matemática (10 q)'] },
-                    { dia: 'Sex', data: '31/07', manha: ['📖 RACIOCÍNIO LÓGICO: Associação (20 q)', '📖 DIREITO PENAL: Fé Pública (10 q)', '📖 LEGISLAÇÃO PMMA: Estatuto (Lei 6.513/95) (10 q) 🟠'],
-                        almoco: ['Revisão: RLM (10 q)'] },
-                    { dia: 'Sáb', data: '01/08', manha: ['📖 INFORMÁTICA: Hardware (20 q) 🔥', '📖 CONSTITUCIONAL: Segurança Pública (10 q)', '📖 LEGISLAÇÃO PMMA: Código Penal Militar (10 q) 🟠'],
-                        almoco: ['Revisão: Hardware (10 q) 🔥'] },
-                    { dia: 'Dom', data: '02/08', manha: ['📖 REVISÃO COMPLETA: Provas anteriores (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
-                        almoco: ['Análise de erros (10 q)'] },
-                    { dia: 'Seg', data: '03/08', manha: ['📖 REGIONAIS PI: Geografia do Piauí (20 q)', '📖 LEGISLAÇÃO: Decreto 12.422 (10 q)', '📖 REGIONAIS MA: Geografia do MA (10 q) 🟠'],
-                        almoco: ['Revisão: Geografia PI (10 q)'] },
-                    { dia: 'Ter', data: '04/08', manha: ['📖 REGIONAIS PI: História do Piauí (20 q)', '📖 ADMINISTRATIVO: Controle (10 q)', '📖 REGIONAIS MA: História do MA (10 q) 🟠'],
-                        almoco: ['Revisão: História PI (10 q)'] }
-                ]
-            }, {
-                id: 'uni_week5',
-                titulo: '🔵 SEMANA 5 · 05/08 a 11/08 (RETOMADA)',
-                dias: [
-                    { dia: 'Qua', data: '05/08', manha: ['📖 PORTUGUÊS: Revisão (20 q) 🔥', '📖 LEGISLAÇÃO: Decreto 12.422 (10 q)', '📖 LEGISLAÇÃO PMMA: Revisão (10 q) 🟠'],
-                        almoco: ['Revisão: Português (10 q) 🔥'] },
-                    { dia: 'Qui', data: '06/08', manha: ['📖 MATEMÁTICA: Revisão (20 q)', '📖 DIREITOS HUMANOS: Revisão (10 q)', '📖 HISTÓRIA DO MA: Revisão (10 q) 🟠'],
-                        almoco: ['Revisão: Matemática (10 q)'] },
-                    { dia: 'Sex', data: '07/08', manha: ['📖 RACIOCÍNIO LÓGICO: Revisão (20 q)', '📖 DIREITO PENAL: Revisão (10 q)', '📖 GEOGRAFIA DO MA: Revisão (10 q) 🟠'],
-                        almoco: ['Revisão: RLM (10 q)'] },
-                    { dia: 'Sáb', data: '08/08', manha: ['📖 INFORMÁTICA: Revisão (20 q) 🔥', '📖 CONSTITUCIONAL: Revisão (10 q)', '📖 LEGISLAÇÃO PMMA: Revisão (10 q) 🟠'],
-                        almoco: ['Revisão: Informática (10 q) 🔥'] },
-                    { dia: 'Dom', data: '09/08', manha: ['📖 SIMULADO: PM-PI (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
-                        almoco: ['Correção (10 q)'] },
-                    { dia: 'Seg', data: '10/08', manha: ['📖 CONH. GERAIS: Atualidades (20 q) 🔥', '📖 LEG. ESPECIAL: Juizados (10 q)', '📖 REGIONAIS MA: Revisão (10 q) 🟠'],
-                        almoco: ['Revisão: Atualidades (10 q) 🔥'] },
-                    { dia: 'Ter', data: '11/08', manha: ['📖 CONH. GERAIS: Política (20 q) 🔥', '📖 ADMINISTRATIVO: Improbidade (10 q)', '📖 LEGISLAÇÃO PMMA: Código Penal (10 q) 🟠'],
-                        almoco: ['Revisão: Política (10 q) 🔥'] }
-                ]
-            }, {
-                id: 'uni_week6',
-                titulo: '🟣 SEMANA 6 · 12/08 a 18/08 (PRÉ-PROVA PI)',
-                dias: [
-                    { dia: 'Qua', data: '12/08', manha: ['📖 PORTUGUÊS: 20 q alto grau 🔥', '📖 LEGISLAÇÃO PMPI: Revisão (10 q)', '📖 LEGISLAÇÃO PMMA: Revisão (10 q) 🟠'],
-                        almoco: ['Revisão: Português (10 q) 🔥'] },
-                    { dia: 'Qui', data: '13/08', manha: ['📖 MATEMÁTICA: 20 q mistas', '📖 DIREITO PENAL: Jurisprudência (10 q)', '📖 HISTÓRIA/REGIONAIS: Revisão MA (10 q) 🟠'],
-                        almoco: ['Revisão: Matemática (10 q)'] },
-                    { dia: 'Sex', data: '14/08', manha: ['📖 RACIOCÍNIO LÓGICO: 20 q associação', '📖 DIREITOS HUMANOS: 10 q finais', '📖 GEOGRAFIA/REGIONAIS: Revisão MA (10 q) 🟠'],
-                        almoco: ['Revisão: RLM (10 q)'] },
-                    { dia: 'Sáb', data: '15/08', manha: ['📖 SIMULADO: Legislação + Penal (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
-                        almoco: ['Correção (10 q)'] },
-                    { dia: 'Dom', data: '16/08', manha: ['📖 SIMULADO: Português + Matemática (20 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
-                        almoco: ['Correção (10 q)'] },
-                    { dia: 'Seg', data: '17/08', manha: ['📖 REGIONAIS PI: Revisão (20 q)', '📖 INFORMÁTICA: Revisão (10 q) 🔥', '📖 REGIONAIS MA: Revisão (10 q) 🟠'],
-                        almoco: ['Revisão: Regionais (10 q)'] },
-                    { dia: 'Ter', data: '18/08', manha: ['📖 CONH. GERAIS: Revisão (20 q) 🔥', '📖 LEG. ESPECIAL: Revisão (10 q)', '📖 LEGISLAÇÃO PMMA: Revisão Final (10 q) 🟠'],
-                        almoco: ['Revisão: Conhec. Gerais (10 q) 🔥'] }
-                ]
-            }, {
-                id: 'uni_week7',
-                titulo: '⚫ SEMANA 7 · 19/08 a 22/08 (RETA FINAL PI)',
-                dias: [
-                    { dia: 'Qua', data: '19/08', manha: ['📖 REVISÃO TOP: Legislação PMPI (20 q)', '📖 REVISÃO: Português (10 q) 🔥', '📖 LEITURA: Resumos MA (10 q) 🟠'],
-                        almoco: ['Revisão de erros (10 q)'] },
-                    { dia: 'Qui', data: '20/08', manha: ['📖 REVISÃO TOP: Direito Constitucional (20 q)', '📖 REVISÃO: Direitos Humanos (10 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
-                        almoco: ['Revisão de erros (10 q)'] },
-                    { dia: 'Sex', data: '21/08', manha: ['📖 REVISÃO TOP: Direito Penal (20 q)', '📖 REVISÃO: Leg. Especial (10 q)', '📖 LEITURA: Resumos MA (10 q) 🟠'],
-                        almoco: ['Revisão de erros (10 q)'] },
-                    { dia: 'Sáb', data: '22/08', manha: ['📖 REVISÃO LEVE: Resumos (20 tópicos)', '📖 TREINO DE REDAÇÃO', '📖 LEITURA: Resumos MA (10 q) 🟠'],
-                        almoco: ['Revisão de resumos'] }
-                ]
-            }];
+            function formatarData(data) {
+                return String(data.getDate()).padStart(2, '0') + '/' + String(data.getMonth() + 1).padStart(2, '0');
+            }
+            function dataISO(data) {
+                return `${data.getFullYear()}-${String(data.getMonth()+1).padStart(2, '0')}-${String(data.getDate()).padStart(2, '0')}`;
+            }
+            function gerarSemanas(assuntos, inicio, tipo) {
+                const semanas = [];
+                let indice = 0;
+                for (let data = new Date(inicio); data <= provaPI; data.setDate(data.getDate() + 1), indice++) {
+                    const semana = Math.floor(indice / 7);
+                    if (!semanas[semana]) semanas[semana] = { dias: [] };
+                    const diaProva = data.getTime() === provaPI.getTime();
+                    const revisao = data >= new Date(2026, 10, 27) || indice * 2 >= assuntos.length;
+                    const temas = [assuntos[(indice * 2) % assuntos.length], assuntos[(indice * 2 + 1) % assuntos.length]];
+                    let manha = temas.map(item => `📖 ${item.materia.toUpperCase()}: ${item.nome} (${revisao ? 'revisão · ' : ''}10 q)`);
+                    let almoco = ['Revisão dos erros do dia (10 q)'];
+                    if (diaProva && tipo === 'pi') {
+                        manha = ['🎯 DIA DA PROVA PM-PI (data prevista)', 'Documentos, local de prova e revisão leve'];
+                        almoco = ['Boa prova! Sem novas matérias hoje.'];
+                    }
+                    if (tipo === 'bombeiro') almoco.push('Base provisória: confirmar matérias específicas no edital de Bombeiro.');
+                    semanas[semana].dias.push({
+                        dia: data.toLocaleDateString('pt-BR', { weekday: 'short' }),
+                        data: formatarData(data), iso: dataISO(data), manha, almoco,
+                        estudo: !(diaProva && tipo === 'pi')
+                    });
+                }
+                return semanas.map((semana, i) => ({ ...semana,
+                    titulo: `📚 SEMANA ${i + 1} · ${semana.dias[0].data} a ${semana.dias.at(-1).data}`
+                }));
+            }
+            const semanasPI = gerarSemanas(assuntosPI, inicioEstudos, 'pi');
+            const semanasBombeiro = gerarSemanas(assuntosBombeiro, inicioBombeiro, 'bombeiro');
+            const diasBombeiro = new Map(semanasBombeiro.flatMap(s => s.dias).map(d => [d.iso, d]));
+            const semanasUnificado = semanasPI.map(semana => ({ ...semana,
+                dias: semana.dias.map(dia => {
+                    const bombeiro = diasBombeiro.get(dia.iso);
+                    return { ...dia, manha: [...dia.manha, ...(bombeiro && dia.estudo ? ['🚒 BOMBEIRO (base): ' + bombeiro.manha[0].replace('📖 ', '').replace('(10 q)', '(leitura)')] : [])] };
+                })
+            }));
 
             // ============================================================
             // 7. MAPEAMENTO DE ASSUNTOS PARA CARDS
             // ============================================================
-            const mapaAssuntoCard = {};
-            const mapaAssuntoDia = {};
+            let mapaAssuntoCard = {};
+            let mapaAssuntoDia = {};
 
             function mapearAssuntos(semanas, prefixo) {
                 semanas.forEach((week, wi) => {
                     week.dias.forEach((d, di) => {
-                        const cardId = `${prefixo}_w${wi}-d${di}`;
+                        const cardId = `${prefixo}_${d.iso}`;
                         const infoDia = `${d.dia}, ${d.data}`;
                         d.manha.forEach(topic => {
-                            let nome = topic.replace(/📖 /g, '').replace(/\(.*\)/g, '').replace(/[🔥🟠]/g, '')
+                            let nome = topic.replace(/📖 /g, '').replace(/\([^)]*(?:q|leitura)\)/g, '').replace(/[🔥🟠]/gu, '')
                                 .trim();
                             nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
-                            for (let item of todosAssuntos) {
+                            for (let item of [...todosAssuntos].sort((a, b) => Number(b.nome === nome) - Number(a.nome === nome) || b.nome.length - a.nome.length)) {
                                 if (nome.includes(item.nome) || item.nome.includes(nome)) {
+                                    if (mapaAssuntoCard[item.nome]) break;
                                     mapaAssuntoCard[item.nome] = cardId;
                                     mapaAssuntoDia[item.nome] = infoDia;
                                     break;
                                 }
                             }
-                            if (!mapaAssuntoCard[nome]) {
-                                for (let item of todosAssuntos) {
-                                    if (nome.includes(item.nome.split(' ')[0]) || item.nome.includes(nome.split(
-                                            ' ')[0])) {
-                                        mapaAssuntoCard[item.nome] = cardId;
-                                        mapaAssuntoDia[item.nome] = infoDia;
-                                        break;
-                                    }
-                                }
-                            }
+
                         });
                     });
                 });
@@ -1409,17 +1309,19 @@
             // ============================================================
             // 8. LOCALSTORAGE
             // ============================================================
-            const STORAGE_KEY = 'pm_pi_ma_2026_confirmacoes';
+            const STORAGE_KEY = 'pm_pi_bombeiro_2026_10_confirmacoes';
 
             function carregarConfirmacoes() {
                 try {
                     const data = localStorage.getItem(STORAGE_KEY);
-                    return data ? JSON.parse(data) : {};
+                    const parsed = data ? JSON.parse(data) : {};
+                    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
                 } catch { return {}; }
             }
 
             function salvarConfirmacoes(obj) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)); }
+                catch { toast('⚠️ Não foi possível salvar neste navegador.'); }
             }
 
             let confirmacoes = carregarConfirmacoes();
@@ -1441,18 +1343,18 @@
                     grid.className = 'week-grid';
 
                     week.dias.forEach((d, di) => {
-                        const cardId = `${prefixo}_w${wi}-d${di}`;
-                        cardIds.push(cardId);
+                        const cardId = `${prefixo}_${d.iso}`;
+                        if (d.estudo) cardIds.push(cardId);
                         totalDias++;
 
-                        const isHoje = d.data === hojeStr;
+                        const isHoje = d.iso === dataISO(today);
 
                         const manhaItems = d.manha.map(m => {
-                            let nome = m.replace(/📖 /g, '').replace(/\(.*\)/g, '').replace(/[🔥🟠]/g, '')
+                            let nome = m.replace(/📖 /g, '').replace(/\([^)]*(?:q|leitura)\)/g, '').replace(/[🔥🟠]/gu, '')
                                 .trim();
                             nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
                             let nomeExato = nome;
-                            for (let item of todosAssuntos) {
+                            for (let item of [...todosAssuntos].sort((a, b) => Number(b.nome === nome) - Number(a.nome === nome) || b.nome.length - a.nome.length)) {
                                 if (nome.includes(item.nome) || item.nome.includes(nome)) {
                                     nomeExato = item.nome;
                                     break;
@@ -1460,7 +1362,7 @@
                             }
                             const comum = isComum(nomeExato);
                             const ma = isMA(nomeExato);
-                            const selo = comum ? '<span class="selo-igual">🔥 Comum</span>' :
+                            const selo = comum ? '<span class="selo-igual">🔥 Base</span>' :
                                 ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
                             return `<div class="topic" onclick="event.stopPropagation(); abrirPopoutPorAssunto('${nomeExato.replace(/'/g, "\\'")}')">
                                         ${m} 
@@ -1470,11 +1372,11 @@
                         }).join('');
 
                         const almocoItems = d.almoco.map(a => {
-                            let nome = a.replace(/📖 /g, '').replace(/\(.*\)/g, '').replace(/[🔥🟠]/g, '')
+                            let nome = a.replace(/📖 /g, '').replace(/\([^)]*(?:q|leitura)\)/g, '').replace(/[🔥🟠]/gu, '')
                                 .trim();
                             nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
                             let nomeExato = nome;
-                            for (let item of todosAssuntos) {
+                            for (let item of [...todosAssuntos].sort((a, b) => Number(b.nome === nome) - Number(a.nome === nome) || b.nome.length - a.nome.length)) {
                                 if (nome.includes(item.nome) || item.nome.includes(nome)) {
                                     nomeExato = item.nome;
                                     break;
@@ -1482,7 +1384,7 @@
                             }
                             const comum = isComum(nomeExato);
                             const ma = isMA(nomeExato);
-                            const selo = comum ? '<span class="selo-igual">🔥 Comum</span>' :
+                            const selo = comum ? '<span class="selo-igual">🔥 Base</span>' :
                                 ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
                             return `<div class="topic" onclick="event.stopPropagation(); abrirPopoutPorAssunto('${nomeExato.replace(/'/g, "\\'")}')">
                                         ${a}
@@ -1493,14 +1395,14 @@
 
                         let detalhesHTML = '';
                         d.manha.forEach((m, idx) => {
-                            let nome = m.replace(/📖 /g, '').replace(/\(.*\)/g, '').replace(/[🔥🟠]/g, '')
+                            let nome = m.replace(/📖 /g, '').replace(/\([^)]*(?:q|leitura)\)/g, '').replace(/[🔥🟠]/gu, '')
                                 .trim();
                             nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
                             const detalhe = getDetalhe(nome);
                             const ytSearch = encodeURIComponent(nome + ' concurso');
                             const comum = isComum(nome);
                             const ma = isMA(nome);
-                            const selo = comum ? '<span class="selo-igual">🔥 Comum</span>' :
+                            const selo = comum ? '<span class="selo-igual">🔥 Base</span>' :
                                 ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
                             detalhesHTML +=
                             `<div class="detalhe-materia" style="border-left-color:${comum ? '#22c55e' : ma ? '#d48c2c' : '#1e3a5f'}">
@@ -1516,7 +1418,8 @@
                             <div class="materia-desc">Leia o PDF, faça as questões no QConcursos e anote os erros.</div>
                         </div>`;
 
-                        const checked = confirmacoes[cardId] ? 'checked' : '';
+                        const progressId = `${prefixo === 'uni' ? 'pi' : prefixo}_${d.iso}`;
+                        const checked = confirmacoes[progressId] ? 'checked' : '';
 
                         const card = document.createElement('div');
                         card.className = `day-card ${isHoje ? 'hoje' : ''}`;
@@ -1542,8 +1445,8 @@
                             </div>
                             <div class="check-area">
                                 <label>
-                                    <input type="checkbox" class="check-confirm" data-id="${cardId}" ${checked}>
-                                    ✅ Concluído
+                                    <input type="checkbox" class="check-confirm" data-id="${progressId}" ${checked} ${d.estudo ? '' : 'disabled'}>
+                                    ${d.estudo ? '✅ Concluído' : '🎯 Prova prevista'}
                                 </label>
                                 <span class="progress-text">${checked ? '✔ Concluído' : '⏳ Pendente'}</span>
                             </div>
@@ -1567,21 +1470,24 @@
 
             // Renderiza
             const cardIdsUnificado = renderizarSemanas(semanasUnificado, 'semanasContainerUnificado', 'uni');
-            // PM-PI (usando o unificado como base, mas com foco)
-            const cardIdsPI = renderizarSemanas(semanasUnificado.slice(0, 7), 'semanasContainerPI', 'pi');
-            // PM-MA (usando semanas específicas)
-            const cardIdsMA = renderizarSemanas(semanasUnificado.slice(0, 7), 'semanasContainerMA', 'ma');
+            // Planos por concurso
+            const cardIdsPI = renderizarSemanas(semanasPI, 'semanasContainerPI', 'pi');
+            // Base de Bombeiro, com início na próxima semana
+            const cardIdsMA = renderizarSemanas(semanasBombeiro, 'semanasContainerMA', 'bm');
 
-            const todasCardIds = [...cardIdsUnificado, ...cardIdsPI, ...cardIdsMA];
+            const idsPorAba = { unificado: cardIdsUnificado, pi: cardIdsPI, ma: cardIdsMA };
+            const idAba = { unificado: 'abaUnificado', pi: 'abaPI', ma: 'abaMA' };
+            let abaAtual = 'pi';
 
             // ============================================================
             // 10. ATUALIZAR ESTATÍSTICAS
             // ============================================================
             function atualizarStats() {
-                const total = todasCardIds.length;
+                const cardIdsAtuais = idsPorAba[abaAtual];
+                const total = cardIdsAtuais.length;
                 let concluidos = 0;
-                todasCardIds.forEach(id => {
-                    if (confirmacoes[id]) concluidos++;
+                cardIdsAtuais.forEach(id => {
+                    if (confirmacoes[id.replace(/^uni_/, 'pi_')]) concluidos++;
                 });
                 const pct = total > 0 ? Math.round((concluidos / total) * 100) : 0;
 
@@ -1594,12 +1500,14 @@
                 document.getElementById('progressoStats').innerText = pct + '%';
                 document.getElementById('faltamStats').innerText = total - concluidos;
 
-                const hojeCards = document.querySelectorAll('.day-card.hoje');
+                const hojeCards = document.querySelectorAll(`#${idAba[abaAtual]} .day-card.hoje`);
                 if (hojeCards.length > 0) {
                     document.getElementById('hojeStatus').innerText = '📅 Dia de estudo!';
                 } else {
                     const diaSemana = today.getDay();
-                    if (diaSemana === 0 || diaSemana === 6) {
+                    if (abaAtual === 'ma' && today < inicioBombeiro) {
+                        document.getElementById('hojeStatus').innerText = 'Início em 19/10';
+                    } else if (diaSemana === 0 || diaSemana === 6) {
                         document.getElementById('hojeStatus').innerText = '📅 Fim de semana';
                     } else {
                         document.getElementById('hojeStatus').innerText = '📅 Sem estudos hoje';
@@ -1618,7 +1526,6 @@
             // ============================================================
             // 11. ABAS
             // ============================================================
-            let abaAtual = 'unificado';
 
             function alternarAba(aba) {
                 if (aba) abaAtual = aba;
@@ -1634,14 +1541,15 @@
 
                 document.querySelectorAll('.conteudo-aba').forEach(el => {
                     const id = el.id;
-                    el.classList.toggle('ativo', id === `aba${abaAtual.charAt(0).toUpperCase() + abaAtual.slice(1)}`);
+                    el.classList.toggle('ativo', id === idAba[abaAtual]);
                 });
 
-                const nomes = { unificado: 'Unificado', pi: 'PM-PI', ma: 'PM-MA' };
+                const nomes = { unificado: 'Unificado', pi: 'PM-PI', ma: 'Bombeiro' };
+                atualizarStats();
                 toast(`📚 Mudou para ${nomes[abaAtual]}`);
 
                 setTimeout(() => {
-                    const hojeCards = document.querySelectorAll(`#aba${abaAtual.charAt(0).toUpperCase() + abaAtual.slice(1)} .day-card.hoje`);
+                    const hojeCards = document.querySelectorAll(`#${idAba[abaAtual]} .day-card.hoje`);
                     if (hojeCards.length > 0) {
                         hojeCards[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
                         hojeCards[0].classList.add('destaque');
@@ -1668,9 +1576,11 @@
                 const overlay = document.getElementById('popoutOverlay');
                 const lista = document.getElementById('listaAssuntosPopout');
 
+                mapaAssuntoCard = {}; mapaAssuntoDia = {};
+                mapearAssuntos(abaAtual === 'ma' ? semanasBombeiro : abaAtual === 'pi' ? semanasPI : semanasUnificado, abaAtual === 'ma' ? 'bm' : abaAtual === 'pi' ? 'pi' : 'uni');
                 let html = '';
                 const grupos = {};
-                todosAssuntos.forEach(item => {
+                (abaAtual === 'ma' ? assuntosBombeiro : assuntosPI).forEach(item => {
                     const materia = item.materia || 'Outros';
                     if (!grupos[materia]) grupos[materia] = [];
                     grupos[materia].push(item);
@@ -1687,10 +1597,10 @@
                         const detalhe = getDetalhe(item.nome);
                         const comum = item.comum ? true : false;
                         const ma = item.materia === 'Regionais MA' || item.materia === 'Legislação PMMA';
-                        const selo = comum ? '<span class="selo-igual">🔥 Comum</span>' :
+                        const selo = comum ? '<span class="selo-igual">🔥 Base</span>' :
                             ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
 
-                        html += `<div class="assunto-item ${destacado}" style="${!temDia ? 'opacity:0.6;cursor:default;' : ''}">
+                        html += `<div class="assunto-item ${destacado}" data-card="${cardId}" data-nome="${item.nome}" style="${!temDia ? 'opacity:0.6;cursor:default;' : ''}">
                             <span>
                                 ${item.nome} 
                                 <span style="font-size:0.65rem;color:#3a5a7a;">(${item.qtd} questões)</span>
@@ -1707,6 +1617,9 @@
                     });
                 }
                 lista.innerHTML = html;
+                lista.querySelectorAll('[data-card]').forEach(item => item.addEventListener('click', e => {
+                    if (!e.target.closest('button') && item.dataset.card) irParaDia(item.dataset.card, item.dataset.nome);
+                }));
 
                 popout.classList.add('ativo');
                 overlay.classList.add('ativo');
@@ -1727,7 +1640,7 @@
             // ============================================================
             window.copiarAssunto = function(nome, detalhe, qtd, dia, comum, ma) {
                 let tipo = '📌 Específico';
-                if (comum) tipo = '🔥 COMUM aos dois concursos!';
+                if (comum) tipo = '🔥 BASE de estudo; confirmar no edital de Bombeiro';
                 else if (ma) tipo = '🟠 Específico do PM-MA';
                 else tipo = '📌 Específico do PM-PI';
 
@@ -1750,7 +1663,7 @@
             // 14. IR PARA HOJE
             // ============================================================
             window.irParaHoje = function() {
-                const abaId = `aba${abaAtual.charAt(0).toUpperCase() + abaAtual.slice(1)}`;
+                const abaId = idAba[abaAtual];
                 const hojeCards = document.querySelectorAll(`#${abaId} .day-card.hoje`);
                 if (hojeCards.length > 0) {
                     const card = hojeCards[0];
@@ -1818,6 +1731,9 @@
                     } else {
                         delete confirmacoes[id];
                     }
+                    document.querySelectorAll('.check-confirm').forEach(cb => {
+                        if (cb.dataset.id === id) cb.checked = e.target.checked;
+                    });
                     salvarConfirmacoes(confirmacoes);
                     atualizarStats();
                 }
@@ -1847,7 +1763,7 @@
 
             // Scroll para hoje na aba Unificado (padrão)
             setTimeout(() => {
-                const hojeCards = document.querySelectorAll('#abaUnificado .day-card.hoje');
+                const hojeCards = document.querySelectorAll('#abaPI .day-card.hoje');
                 if (hojeCards.length > 0) {
                     const card = hojeCards[0];
                     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1855,7 +1771,7 @@
                     setTimeout(() => card.classList.remove('destaque'), 3000);
                     toast(`📅 Hoje é ${card.querySelector('.day-header .day')?.textContent || ''} - Estude!`);
                 } else {
-                    const primeiroCard = document.querySelector('#abaUnificado .day-card');
+                    const primeiroCard = document.querySelector('#abaPI .day-card');
                     if (primeiroCard) {
                         primeiroCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
@@ -1869,9 +1785,7 @@
                 } else if (diffPI > 0) {
                     toast(`📚 Faltam ${diffPI} dias para o PM-PI. Vamos com calma!`);
                 }
-                if (diffMA > 0) {
-                    toast(`📚 PM-MA: ${diffMA} dias (${diffMA - diffPI} dias após o PM-PI)`);
-                }
+
             }, 1000);
 
         })();
