@@ -781,26 +781,6 @@
                 gap: 8px;
             }
         }
-
-        .topic, .detalhe-materia, .popout-assuntos .assunto-item { cursor: auto; user-select: text; }
-        .topic { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-        .topic-text { flex: 1 1 160px; }
-        .acao-assunto { border: 1px solid #b7cce0; background: #edf5ff; color: #183b60;
-            border-radius: 8px; padding: 8px 12px; min-height: 40px; cursor: pointer;
-            font: inherit; font-size: .8rem; display: inline-block; text-decoration: none; }
-        .acao-assunto:hover { background: #dbeafe; }
-        .acao-assunto:focus-visible, .fechar:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
-        .assunto-acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-        #orientacaoAssunto { padding: 18px; margin-bottom: 20px; background: #eff6ff;
-            border: 1px solid #93b9eb; border-radius: 12px; line-height: 1.6; font-size: .95rem; overflow-wrap: anywhere; }
-        #orientacaoAssunto h3 { color: #1e3a5f; margin: 0 0 8px; }
-        #orientacaoAssunto p { margin: 10px 0; }
-        #orientacaoAssunto ol { padding-left: 24px; }
-        .popout-assuntos .assunto-item { display: block; padding: 12px 8px; }
-        .popout-assuntos .assunto-item .info-dia { display: block; margin: 4px 0; font-size: .75rem; }
-        .copia-manual { display: block; width: 100%; min-height: 150px; margin-top: 10px; font: inherit; }
-        .popout-assuntos { width: min(760px, 95vw); max-width: 95vw; }
-
         @media print {
             body {
                 background: white;
@@ -833,6 +813,19 @@
                 display: block !important;
             }
         }
+
+        .btn-mini { display: inline-block; border: 0; border-radius: 20px; padding: 2px 8px;
+            font-size: .6rem; cursor: pointer; background: #e8edf4; color: #1e3a5f; }
+        .btn-mini:hover { background: #dbeafe; }
+        #orientacaoAssunto { background: #eff6ff; border: 1px solid #93b9eb; border-radius: 8px;
+            padding: 12px; margin-bottom: 12px; font-size: .8rem; line-height: 1.5; overflow-wrap: anywhere; }
+        #orientacaoAssunto p { margin: 8px 0; }
+        #orientacaoAssunto ol { padding-left: 20px; }
+        .assunto-acoes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .acao-assunto { border: 1px solid #b7cce0; background: #edf5ff; color: #183b60;
+            border-radius: 6px; padding: 5px 8px; cursor: pointer; font-size: .75rem; text-decoration: none; }
+        .copia-manual { display: block; width: 100%; min-height: 120px; margin-top: 10px; }
+        .detalhe-materia { user-select: text; }
     </style>
 </head>
 <body>
@@ -926,7 +919,7 @@
             <button class="fechar" aria-label="Fechar assuntos" onclick="fecharPopout()">✕</button>
             <h2 id="popoutTitulo">📚 Assuntos do planejamento</h2>
             <p style="font-size:0.8rem;color:#3a5a7a;margin-bottom:12px;">
-                👆 Use <strong>Ver orientação</strong> para estudar ou <strong>Ir ao dia</strong> para abrir o planejamento.
+                👆 <strong>Clique em qualquer assunto</strong> para ir direto ao dia de estudo. Use o pequeno botão <strong>💡 Orientação</strong> para ver onde estudar.
                 <span style="display:block;margin-top:4px;">O conteúdo de PM-PI foi mantido. A base de Bombeiro depende da confirmação do edital.</span>
                 <span style="display:block;margin-top:4px;">📋 Clique em <strong>📋 Copiar</strong> para copiar as informações.</span>
             </p>
@@ -1396,10 +1389,11 @@
 
                         function renderizarTopico(texto) {
                             const item = resolverAssunto(texto);
-                            return `<div class="topic"><span class="topic-text">${escaparHTML(texto)}</span>
+                            return `<div class="topic" ${item ? `data-abrir-assunto="${escaparHTML(item.nome)}"` : ''}>
+                                ${escaparHTML(texto)}
                                 ${item?.comum ? '<span class="selo-igual">🔥 Base</span>' : ''}
-                                ${item ? `<button class="acao-assunto" data-abrir-assunto="${escaparHTML(item.nome)}">📚 Ver orientação</button>
-                                <button class="acao-assunto" data-copiar-assunto="${escaparHTML(item.nome)}">📋 Copiar assunto</button>` : ''}</div>`;
+                                ${item ? '<span class="abrir-assunto">📚 ver</span>' : ''}
+                            </div>`;
                         }
                         const manhaItems = d.manha.map(renderizarTopico).join('');
                         const almocoItems = d.almoco.map(renderizarTopico).join('');
@@ -1419,7 +1413,8 @@
                             `<div class="detalhe-materia" style="border-left-color:${comum ? '#22c55e' : ma ? '#d48c2c' : '#1e3a5f'}">
                                 <div class="materia-nome">📖 Matéria ${idx+1}: ${nome} ${selo}</div>
                                 <div class="materia-desc">${detalhe}</div>
-                                <button class="acao-assunto" data-copiar-assunto="${escaparHTML(nome)}">📋 Copiar assunto</button>
+                                <button class="btn-mini" data-copiar-assunto="${escaparHTML(nome)}">📋 Copiar</button>
+                                <button class="btn-mini" data-orientacao="${escaparHTML(nome)}">💡 Orientação</button>
                                 <a href="https://www.youtube.com/results?search_query=${ytSearch}" target="_blank" class="link-youtube">▶ YouTube</a>
                                 <a href="#" onclick="event.preventDefault(); abrirPopoutPorAssunto('${nome.replace(/'/g, "\\'")}');" class="link-youtube" style="background:#3b82f6;">📚 Ver no pop-out</a>
                             </div>`;
@@ -1450,7 +1445,7 @@
                                 <strong>🍽️ ALMOÇO (12h-13h)</strong>
                                 ${almocoItems}
                             </div>
-                            <div class="obs">👆 Use Ver orientação para estudar; clique no cabeçalho para expandir os detalhes.</div>
+                            <div class="obs">👆 Clique em qualquer matéria para ver no pop-out</div>
                             <div class="detalhes-assunto" id="detalhes-${cardId}">
                                 <strong>📌 Detalhamento:</strong>
                                 ${detalhesHTML}
@@ -1466,7 +1461,7 @@
                         grid.appendChild(card);
 
                         card.addEventListener('click', function(e) {
-                            if (!e.target.closest('.day-header')) return;
+                            if (e.target.closest('.check-area, input, a, button, .topic, .detalhe-materia') || window.getSelection()?.toString()) return;
                             const detalhes = document.getElementById('detalhes-' + cardId);
                             if (detalhes) detalhes.classList.toggle('ativo');
                         });
@@ -1608,33 +1603,73 @@
 
             window.abrirPopout = function(assuntoParaDestacar) {
                 const popout = document.getElementById('popoutAssuntos');
+                const overlay = document.getElementById('popoutOverlay');
+                const lista = document.getElementById('listaAssuntosPopout');
                 if (!popout.classList.contains('ativo')) {
                     focoAnterior = document.activeElement;
                     overflowAnterior = document.body.style.overflow;
                 }
+                mostrarOrientacao(null);
+
                 mapaAssuntoCard = {}; mapaAssuntoDia = {};
                 mapearAssuntos(abaAtual === 'ma' ? semanasBombeiro : abaAtual === 'pi' ? semanasPI : semanasUnificado, abaAtual === 'ma' ? 'bm' : abaAtual === 'pi' ? 'pi' : 'uni');
+                let html = '';
                 const grupos = {};
                 (abaAtual === 'ma' ? assuntosBombeiro : assuntosPI).forEach(item => {
-                    (grupos[item.materia] ||= []).push(item);
+                    const materia = item.materia || 'Outros';
+                    if (!grupos[materia]) grupos[materia] = [];
+                    grupos[materia].push(item);
                 });
-                document.getElementById('listaAssuntosPopout').innerHTML = Object.entries(grupos).map(([materia, itens]) =>
-                    `<h3>📂 ${escaparHTML(materia)}</h3>` + itens.map(item => `<div class="assunto-item ${item.nome === assuntoParaDestacar ? 'destacado' : ''}" data-nome="${escaparHTML(item.nome)}">
-                        <strong>${escaparHTML(item.nome)}</strong> ${item.comum ? '<span class="selo-igual">🔥 Base</span>' : ''}
-                        <span class="info-dia">${mapaAssuntoDia[item.nome] ? '📅 Primeiro estudo: ' + escaparHTML(mapaAssuntoDia[item.nome]) : 'Sem data nesta aba'}</span>
-                        <div>${escaparHTML(getDetalhe(item.nome))}</div>
-                        <div class="assunto-acoes">
-                            <button class="acao-assunto" data-abrir-assunto="${escaparHTML(item.nome)}">📚 Ver orientação</button>
-                            <button class="acao-assunto" data-copiar-assunto="${escaparHTML(item.nome)}">📋 Copiar assunto</button>
-                            ${mapaAssuntoCard[item.nome] ? `<button class="acao-assunto" data-ir-dia="${mapaAssuntoCard[item.nome]}" data-assunto="${escaparHTML(item.nome)}">📅 Ir ao dia</button>` : ''}
-                        </div></div>`).join('')
-                ).join('');
-                mostrarOrientacao(assuntoParaDestacar);
+
+                for (let materia in grupos) {
+                    html += `<div style="font-weight:700;color:#1e3a5f;margin-top:10px;font-size:0.85rem;">📂 ${materia}</div>`;
+                    grupos[materia].forEach(item => {
+                        const cardId = mapaAssuntoCard[item.nome] || '';
+                        const diaInfo = mapaAssuntoDia[item.nome] || '';
+                        const temDia = cardId ? true : false;
+                        const destacado = assuntoParaDestacar && item.nome === assuntoParaDestacar ? 'destacado' :
+                            '';
+                        const detalhe = getDetalhe(item.nome);
+                        const comum = item.comum ? true : false;
+                        const ma = item.materia === 'Regionais MA' || item.materia === 'Legislação PMMA';
+                        const selo = comum ? '<span class="selo-igual">🔥 Base</span>' :
+                            ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
+
+                        html += `<div class="assunto-item ${destacado}" data-card="${cardId}" data-nome="${item.nome}" style="${!temDia ? 'opacity:0.6;cursor:default;' : ''}">
+                            <span>
+                                ${item.nome} 
+                                <span style="font-size:0.65rem;color:#3a5a7a;">(${item.qtd} questões)</span>
+                                ${temDia ? `<span class="info-dia">📅 ${diaInfo}</span>` : ''}
+                                ${selo}
+                                ${destacado ? ' ⭐' : ''}
+                                <button class="btn-copiar" data-copiar-assunto="${escaparHTML(item.nome)}">📋 Copiar</button>
+                                <button class="btn-mini" data-orientacao="${escaparHTML(item.nome)}">💡 Orientação</button>
+                            </span>
+                            <span style="display:flex;align-items:center;gap:6px;">
+                                <span class="qtd">${item.qtd}</span>
+                                ${temDia ? '<span class="seta">➜</span>' : '⛔'}
+                            </span>
+                        </div>`;
+                    });
+                }
+                lista.innerHTML = html;
+                lista.querySelectorAll('[data-card]').forEach(item => item.addEventListener('click', e => {
+                    if (!e.target.closest('button') && !window.getSelection()?.toString() && item.dataset.card) irParaDia(item.dataset.card, item.dataset.nome);
+                }));
+
                 popout.classList.add('ativo');
-                document.getElementById('popoutOverlay').classList.add('ativo');
+                overlay.classList.add('ativo');
                 document.body.style.overflow = 'hidden';
-                popout.scrollTop = 0;
                 popout.querySelector('.fechar').focus({ preventScroll: true });
+
+                if (assuntoParaDestacar) {
+                    setTimeout(() => {
+                        const destacado = popout.querySelector('.assunto-item.destacado');
+                        if (destacado) {
+                            destacado.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }, 300);
+                }
             };
 
             async function copiarTexto(texto) {
@@ -1662,12 +1697,19 @@
             }
 
             document.addEventListener('click', function(e) {
-                const botao = e.target.closest('[data-abrir-assunto], [data-copiar-assunto], [data-copiar-busca], [data-copiar-orientacao], [data-ir-dia]');
+                const botao = e.target.closest('[data-orientacao], [data-abrir-assunto], [data-copiar-assunto], [data-copiar-busca], [data-copiar-orientacao], [data-ir-dia]');
                 if (!botao) return;
+                if (window.getSelection()?.toString() && botao.classList.contains('topic')) return;
                 if (botao.dataset.irDia) { irParaDia(botao.dataset.irDia, botao.dataset.assunto); return; }
-                const nome = botao.dataset.abrirAssunto || botao.dataset.copiarAssunto || botao.dataset.copiarBusca || botao.dataset.copiarOrientacao;
+                const nome = botao.dataset.orientacao || botao.dataset.abrirAssunto || botao.dataset.copiarAssunto || botao.dataset.copiarBusca || botao.dataset.copiarOrientacao;
                 const item = todosAssuntos.find(a => a.nome === nome);
                 if (!item) return;
+                if (botao.dataset.orientacao) {
+                    if (!document.getElementById('popoutAssuntos').classList.contains('ativo')) abrirPopout();
+                    mostrarOrientacao(nome);
+                    document.getElementById('popoutAssuntos').scrollTop = 0;
+                    return;
+                }
                 if (botao.dataset.abrirAssunto) { abrirPopoutPorAssunto(nome); return; }
                 const guia = getOrientacao(item);
                 const texto = botao.dataset.copiarBusca ? guia.busca : botao.dataset.copiarOrientacao ?
