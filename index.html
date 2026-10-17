@@ -685,7 +685,7 @@
             padding: 6px 12px;
             border-radius: 30px;
             font-size: 0.75rem;
-            z-index: 1001;
+            z-index: 10000;
             opacity: 0;
             transition: opacity 0.2s;
             pointer-events: none;
@@ -781,6 +781,26 @@
                 gap: 8px;
             }
         }
+
+        .topic, .detalhe-materia, .popout-assuntos .assunto-item { cursor: auto; user-select: text; }
+        .topic { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+        .topic-text { flex: 1 1 160px; }
+        .acao-assunto { border: 1px solid #b7cce0; background: #edf5ff; color: #183b60;
+            border-radius: 8px; padding: 8px 12px; min-height: 40px; cursor: pointer;
+            font: inherit; font-size: .8rem; display: inline-block; text-decoration: none; }
+        .acao-assunto:hover { background: #dbeafe; }
+        .acao-assunto:focus-visible, .fechar:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
+        .assunto-acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        #orientacaoAssunto { padding: 18px; margin-bottom: 20px; background: #eff6ff;
+            border: 1px solid #93b9eb; border-radius: 12px; line-height: 1.6; font-size: .95rem; overflow-wrap: anywhere; }
+        #orientacaoAssunto h3 { color: #1e3a5f; margin: 0 0 8px; }
+        #orientacaoAssunto p { margin: 10px 0; }
+        #orientacaoAssunto ol { padding-left: 24px; }
+        .popout-assuntos .assunto-item { display: block; padding: 12px 8px; }
+        .popout-assuntos .assunto-item .info-dia { display: block; margin: 4px 0; font-size: .75rem; }
+        .copia-manual { display: block; width: 100%; min-height: 150px; margin-top: 10px; font: inherit; }
+        .popout-assuntos { width: min(760px, 95vw); max-width: 95vw; }
+
         @media print {
             body {
                 background: white;
@@ -902,14 +922,15 @@
 
         <!-- ===== POP-OUT ===== -->
         <div class="popout-overlay" id="popoutOverlay" onclick="fecharPopout()"></div>
-        <div class="popout-assuntos" id="popoutAssuntos">
-            <button class="fechar" onclick="fecharPopout()">✕</button>
-            <h2>📚 Assuntos do planejamento</h2>
+        <div class="popout-assuntos" id="popoutAssuntos" role="dialog" aria-modal="true" aria-labelledby="popoutTitulo" tabindex="-1">
+            <button class="fechar" aria-label="Fechar assuntos" onclick="fecharPopout()">✕</button>
+            <h2 id="popoutTitulo">📚 Assuntos do planejamento</h2>
             <p style="font-size:0.8rem;color:#3a5a7a;margin-bottom:12px;">
-                👆 <strong>Clique em qualquer assunto</strong> para ir direto ao dia de estudo.
+                👆 Use <strong>Ver orientação</strong> para estudar ou <strong>Ir ao dia</strong> para abrir o planejamento.
                 <span style="display:block;margin-top:4px;">O conteúdo de PM-PI foi mantido. A base de Bombeiro depende da confirmação do edital.</span>
                 <span style="display:block;margin-top:4px;">📋 Clique em <strong>📋 Copiar</strong> para copiar as informações.</span>
             </p>
+            <section id="orientacaoAssunto" hidden></section>
             <div id="listaAssuntosPopout"></div>
         </div>
 
@@ -921,7 +942,7 @@
     </div>
 
     <!-- TOAST -->
-    <div id="toast" class="toast"></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <script>
         (function() {
@@ -1211,13 +1232,45 @@
                 'Constituição do Estado do Piauí': 'Organização do estado. Só PM-PI.'
             };
 
+            function resolverAssunto(titulo) {
+                const limpo = titulo.replace(/\([^)]*(?:q|leitura)\)/g, '').trim();
+                return todosAssuntos.find(item => item.nome === limpo) ||
+                    [...todosAssuntos].sort((a, b) => b.nome.length - a.nome.length)
+                        .find(item => limpo.endsWith(': ' + item.nome)) || null;
+            }
+
             function getDetalhe(titulo) {
-                for (let key in detalhesMap) {
-                    if (titulo.includes(key) || key.includes(titulo)) {
-                        return detalhesMap[key].replace(/🔥 /g, '').replace(/Comum aos dois concursos!/g, '').replace(/Só PM-PI\./g, '').trim();
-                    }
-                }
-                return 'Consulte o material PDF para mais detalhes.';
+                const nome = resolverAssunto(titulo)?.nome || titulo;
+                return (detalhesMap[nome] || 'Consulte o material PDF para mais detalhes.')
+                    .replace(/🔥 /g, '').replace(/Comum aos dois concursos!/g, '').replace(/Só PM-PI\./g, '').trim();
+            }
+
+            const orientacoesQC = {
+                'Proporcionalidade': {
+                    busca: 'Regra de três simples e composta',
+                    caminho: 'Matemática → Regra de Três',
+                    nota: 'Dos 19 cadernos de Raciocínio Lógico que você listou, o item 14 — Raciocínio Matemático — é o mais próximo para procurar esse conteúdo. Ele é amplo: confira se as questões são de regra de três. Para praticar só esse assunto, prefira a categoria específica em Matemática no link abaixo.',
+                    passos: ['Revise razão, proporção e grandezas diretamente e inversamente proporcionais.', 'Estude regra de três simples (duas grandezas), direta e inversa.', 'Passe para regra de três composta (três ou mais grandezas). Compare cada grandeza com a incógnita.', 'Resolva 10 questões e revise os erros antes de gerar outro caderno.'],
+                    url: 'https://www.qconcursos.com/questoes-de-concursos/disciplinas/matematica-matematica/regra-de-tres/questoes'
+                },
+                'Conjuntos': { busca: 'Diagramas de Venn (Conjuntos)', caminho: 'Na sua lista: 3. Diagramas de Venn (Conjuntos)', nota: 'Esse caderno corresponde ao estudo de operações com conjuntos e diagramas. Confira o conteúdo de cada questão.', passos: ['Revise união, interseção, diferença e complemento.', 'Pratique problemas com dois e três conjuntos.'] },
+                'Raciocínio Lógico': { busca: 'Proposições, tabelas-verdade, equivalência lógica e negação', caminho: 'Na sua lista: 5. Fundamentos de Lógica → 4. Equivalência Lógica e Negação de Proposições', nota: 'Comece por 5.1 (proposições e operadores) e 5.2 (tabelas-verdade). Depois faça 4.1 (equivalências) e 4.2 (negação e Leis de Morgan). O item 17 ajuda a revisar tautologia, contradição e contingência.', passos: ['Aprenda os operadores e construa tabelas-verdade.', 'Pratique equivalências e negações separadamente antes de misturar.'] },
+                'Equações': { busca: 'Equações de primeiro e segundo graus', caminho: 'Procure em Matemática por equações de 1º e 2º grau.', nota: 'O item 14 — Raciocínio Matemático — é amplo e pode reunir problemas com equações. Confira o assunto das questões antes de usar o caderno.', passos: ['Revise equações de 1º grau e problemas com incógnitas.', 'Estude equações de 2º grau e confira as soluções por substituição.'] },
+                'Geometria Plana': { busca: 'Geometria plana áreas perímetros triângulos quadriláteros circunferência', caminho: 'Na sua lista: 6. Geometria Básica', nota: 'Confira se o caderno cobre as figuras planas do planejamento. Procure também por Geometria Plana em Matemática; trigonometria é um assunto separado.', passos: ['Revise propriedades e ângulos das figuras.', 'Pratique perímetros e áreas, conferindo as unidades.'] },
+                'Matemática Financeira': { busca: 'Juros simples e juros compostos', caminho: 'Procure em Matemática Financeira por juros simples e compostos.', nota: 'Nenhum dos 19 títulos enviados é específico de juros. Não escolha um caderno apenas por ele se chamar Raciocínio Matemático: confirme o conteúdo ou use o filtro de Matemática Financeira.', passos: ['Revise porcentagem, capital, taxa e tempo.', 'Compare juros simples e compostos, usando taxa e tempo na mesma unidade.'] }
+            };
+
+            function getOrientacao(item) {
+                return orientacoesQC[item.nome] || {
+                    busca: item.nome,
+                    caminho: `No filtro de disciplinas do Qconcursos, procure ${item.materia}; depois busque o assunto ${item.nome}.`,
+                    nota: 'Sugestão de busca: os nomes dos filtros podem variar. Confira o tema das questões antes de criar o caderno. Se não encontrar o título exato, use as palavras do conteúdo abaixo.',
+                    passos: ['Leia no PDF: ' + getDetalhe(item.nome), 'Resolva as questões previstas no dia, leia os comentários e anote os erros.']
+                };
+            }
+
+            function escaparHTML(texto) {
+                return String(texto).replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
             }
 
             function isComum(nome) {
@@ -1287,18 +1340,10 @@
                         const cardId = `${prefixo}_${d.iso}`;
                         const infoDia = `${d.dia}, ${d.data}`;
                         d.manha.forEach(topic => {
-                            let nome = topic.replace(/📖 /g, '').replace(/\([^)]*(?:q|leitura)\)/g, '').replace(/[🔥🟠]/gu, '')
-                                .trim();
-                            nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
-                            for (let item of [...todosAssuntos].sort((a, b) => Number(b.nome === nome) - Number(a.nome === nome) || b.nome.length - a.nome.length)) {
-                                if (nome.includes(item.nome) || item.nome.includes(nome)) {
-                                    if (mapaAssuntoCard[item.nome]) break;
-                                    mapaAssuntoCard[item.nome] = cardId;
-                                    mapaAssuntoDia[item.nome] = infoDia;
-                                    break;
-                                }
-                            }
-
+                            const item = resolverAssunto(topic);
+                            if (!item || mapaAssuntoCard[item.nome]) return;
+                            mapaAssuntoCard[item.nome] = cardId;
+                            mapaAssuntoDia[item.nome] = infoDia;
                         });
                     });
                 });
@@ -1349,55 +1394,21 @@
 
                         const isHoje = d.iso === dataISO(today);
 
-                        const manhaItems = d.manha.map(m => {
-                            let nome = m.replace(/📖 /g, '').replace(/\([^)]*(?:q|leitura)\)/g, '').replace(/[🔥🟠]/gu, '')
-                                .trim();
-                            nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
-                            let nomeExato = nome;
-                            for (let item of [...todosAssuntos].sort((a, b) => Number(b.nome === nome) - Number(a.nome === nome) || b.nome.length - a.nome.length)) {
-                                if (nome.includes(item.nome) || item.nome.includes(nome)) {
-                                    nomeExato = item.nome;
-                                    break;
-                                }
-                            }
-                            const comum = isComum(nomeExato);
-                            const ma = isMA(nomeExato);
-                            const selo = comum ? '<span class="selo-igual">🔥 Base</span>' :
-                                ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
-                            return `<div class="topic" onclick="event.stopPropagation(); abrirPopoutPorAssunto('${nomeExato.replace(/'/g, "\\'")}')">
-                                        ${m} 
-                                        ${selo}
-                                        <span class="abrir-assunto">📚 ver</span>
-                                    </div>`;
-                        }).join('');
-
-                        const almocoItems = d.almoco.map(a => {
-                            let nome = a.replace(/📖 /g, '').replace(/\([^)]*(?:q|leitura)\)/g, '').replace(/[🔥🟠]/gu, '')
-                                .trim();
-                            nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
-                            let nomeExato = nome;
-                            for (let item of [...todosAssuntos].sort((a, b) => Number(b.nome === nome) - Number(a.nome === nome) || b.nome.length - a.nome.length)) {
-                                if (nome.includes(item.nome) || item.nome.includes(nome)) {
-                                    nomeExato = item.nome;
-                                    break;
-                                }
-                            }
-                            const comum = isComum(nomeExato);
-                            const ma = isMA(nomeExato);
-                            const selo = comum ? '<span class="selo-igual">🔥 Base</span>' :
-                                ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
-                            return `<div class="topic" onclick="event.stopPropagation(); abrirPopoutPorAssunto('${nomeExato.replace(/'/g, "\\'")}')">
-                                        ${a}
-                                        ${selo}
-                                        <span class="abrir-assunto">📚 ver</span>
-                                    </div>`;
-                        }).join('');
+                        function renderizarTopico(texto) {
+                            const item = resolverAssunto(texto);
+                            return `<div class="topic"><span class="topic-text">${escaparHTML(texto)}</span>
+                                ${item?.comum ? '<span class="selo-igual">🔥 Base</span>' : ''}
+                                ${item ? `<button class="acao-assunto" data-abrir-assunto="${escaparHTML(item.nome)}">📚 Ver orientação</button>
+                                <button class="acao-assunto" data-copiar-assunto="${escaparHTML(item.nome)}">📋 Copiar assunto</button>` : ''}</div>`;
+                        }
+                        const manhaItems = d.manha.map(renderizarTopico).join('');
+                        const almocoItems = d.almoco.map(renderizarTopico).join('');
 
                         let detalhesHTML = '';
                         d.manha.forEach((m, idx) => {
-                            let nome = m.replace(/📖 /g, '').replace(/\([^)]*(?:q|leitura)\)/g, '').replace(/[🔥🟠]/gu, '')
-                                .trim();
-                            nome = nome.replace(/^[A-ZÁÀÂÃÉÊÍÓÔÕÚÇ ]+:/, '').trim();
+                            const item = resolverAssunto(m);
+                            if (!item) return;
+                            const nome = item.nome;
                             const detalhe = getDetalhe(nome);
                             const ytSearch = encodeURIComponent(nome + ' concurso');
                             const comum = isComum(nome);
@@ -1408,6 +1419,7 @@
                             `<div class="detalhe-materia" style="border-left-color:${comum ? '#22c55e' : ma ? '#d48c2c' : '#1e3a5f'}">
                                 <div class="materia-nome">📖 Matéria ${idx+1}: ${nome} ${selo}</div>
                                 <div class="materia-desc">${detalhe}</div>
+                                <button class="acao-assunto" data-copiar-assunto="${escaparHTML(nome)}">📋 Copiar assunto</button>
                                 <a href="https://www.youtube.com/results?search_query=${ytSearch}" target="_blank" class="link-youtube">▶ YouTube</a>
                                 <a href="#" onclick="event.preventDefault(); abrirPopoutPorAssunto('${nome.replace(/'/g, "\\'")}');" class="link-youtube" style="background:#3b82f6;">📚 Ver no pop-out</a>
                             </div>`;
@@ -1438,7 +1450,7 @@
                                 <strong>🍽️ ALMOÇO (12h-13h)</strong>
                                 ${almocoItems}
                             </div>
-                            <div class="obs">👆 Clique em qualquer matéria para ver no pop-out</div>
+                            <div class="obs">👆 Use Ver orientação para estudar; clique no cabeçalho para expandir os detalhes.</div>
                             <div class="detalhes-assunto" id="detalhes-${cardId}">
                                 <strong>📌 Detalhamento:</strong>
                                 ${detalhesHTML}
@@ -1454,8 +1466,7 @@
                         grid.appendChild(card);
 
                         card.addEventListener('click', function(e) {
-                            if (e.target.closest('.check-area') || e.target.closest('input') || e.target
-                                .closest('a')) return;
+                            if (!e.target.closest('.day-header')) return;
                             const detalhes = document.getElementById('detalhes-' + cardId);
                             if (detalhes) detalhes.classList.toggle('ativo');
                         });
@@ -1571,93 +1582,99 @@
             // ============================================================
             // 12. POP-OUT
             // ============================================================
+            let focoAnterior = null;
+            let overflowAnterior = '';
+
+            function mostrarOrientacao(nome) {
+                const item = todosAssuntos.find(a => a.nome === nome);
+                const painel = document.getElementById('orientacaoAssunto');
+                if (!item) { painel.hidden = true; painel.innerHTML = ''; return; }
+                const guia = getOrientacao(item);
+                painel.hidden = false;
+                painel.innerHTML = `<h3>${escaparHTML(item.nome)}</h3>
+                    <p>${escaparHTML(getDetalhe(item.nome))}</p>
+                    <p><strong>Onde estudar no Qconcursos</strong><br>${escaparHTML(guia.caminho)}</p>
+                    <p>${escaparHTML(guia.nota)}</p>
+                    <p><strong>Termo para buscar:</strong> ${escaparHTML(guia.busca)}</p>
+                    <strong>Como estudar</strong><ol>${guia.passos.map(p => `<li>${escaparHTML(p)}</li>`).join('')}</ol>
+                    <div class="assunto-acoes">
+                        <button class="acao-assunto" data-copiar-assunto="${escaparHTML(item.nome)}">📋 Copiar assunto</button>
+                        <button class="acao-assunto" data-copiar-busca="${escaparHTML(item.nome)}">🔎 Copiar termo de busca</button>
+                        <button class="acao-assunto" data-copiar-orientacao="${escaparHTML(item.nome)}">📋 Copiar orientação</button>
+                        ${guia.url ? `<a class="acao-assunto" href="${guia.url}" target="_blank" rel="noopener noreferrer">Abrir questões de regra de três ↗</a>` : '<a class="acao-assunto" href="https://www.qconcursos.com/questoes-de-concursos" target="_blank" rel="noopener noreferrer">Abrir Qconcursos ↗</a>'}
+                    </div>`;
+                document.getElementById('popoutAssuntos').scrollTop = 0;
+            }
+
             window.abrirPopout = function(assuntoParaDestacar) {
                 const popout = document.getElementById('popoutAssuntos');
-                const overlay = document.getElementById('popoutOverlay');
-                const lista = document.getElementById('listaAssuntosPopout');
-
+                if (!popout.classList.contains('ativo')) {
+                    focoAnterior = document.activeElement;
+                    overflowAnterior = document.body.style.overflow;
+                }
                 mapaAssuntoCard = {}; mapaAssuntoDia = {};
                 mapearAssuntos(abaAtual === 'ma' ? semanasBombeiro : abaAtual === 'pi' ? semanasPI : semanasUnificado, abaAtual === 'ma' ? 'bm' : abaAtual === 'pi' ? 'pi' : 'uni');
-                let html = '';
                 const grupos = {};
                 (abaAtual === 'ma' ? assuntosBombeiro : assuntosPI).forEach(item => {
-                    const materia = item.materia || 'Outros';
-                    if (!grupos[materia]) grupos[materia] = [];
-                    grupos[materia].push(item);
+                    (grupos[item.materia] ||= []).push(item);
                 });
-
-                for (let materia in grupos) {
-                    html += `<div style="font-weight:700;color:#1e3a5f;margin-top:10px;font-size:0.85rem;">📂 ${materia}</div>`;
-                    grupos[materia].forEach(item => {
-                        const cardId = mapaAssuntoCard[item.nome] || '';
-                        const diaInfo = mapaAssuntoDia[item.nome] || '';
-                        const temDia = cardId ? true : false;
-                        const destacado = assuntoParaDestacar && item.nome === assuntoParaDestacar ? 'destacado' :
-                            '';
-                        const detalhe = getDetalhe(item.nome);
-                        const comum = item.comum ? true : false;
-                        const ma = item.materia === 'Regionais MA' || item.materia === 'Legislação PMMA';
-                        const selo = comum ? '<span class="selo-igual">🔥 Base</span>' :
-                            ma ? '<span class="selo-ma">🟠 PM-MA</span>' : '';
-
-                        html += `<div class="assunto-item ${destacado}" data-card="${cardId}" data-nome="${item.nome}" style="${!temDia ? 'opacity:0.6;cursor:default;' : ''}">
-                            <span>
-                                ${item.nome} 
-                                <span style="font-size:0.65rem;color:#3a5a7a;">(${item.qtd} questões)</span>
-                                ${temDia ? `<span class="info-dia">📅 ${diaInfo}</span>` : ''}
-                                ${selo}
-                                ${destacado ? ' ⭐' : ''}
-                                <button class="btn-copiar" onclick="event.stopPropagation(); copiarAssunto('${item.nome.replace(/'/g, "\\'")}', '${detalhe.replace(/'/g, "\\'")}', '${item.qtd}', '${temDia ? diaInfo : 'Sem data'}', ${comum}, ${ma})">📋 Copiar</button>
-                            </span>
-                            <span style="display:flex;align-items:center;gap:6px;">
-                                <span class="qtd">${item.qtd}</span>
-                                ${temDia ? '<span class="seta">➜</span>' : '⛔'}
-                            </span>
-                        </div>`;
-                    });
-                }
-                lista.innerHTML = html;
-                lista.querySelectorAll('[data-card]').forEach(item => item.addEventListener('click', e => {
-                    if (!e.target.closest('button') && item.dataset.card) irParaDia(item.dataset.card, item.dataset.nome);
-                }));
-
+                document.getElementById('listaAssuntosPopout').innerHTML = Object.entries(grupos).map(([materia, itens]) =>
+                    `<h3>📂 ${escaparHTML(materia)}</h3>` + itens.map(item => `<div class="assunto-item ${item.nome === assuntoParaDestacar ? 'destacado' : ''}" data-nome="${escaparHTML(item.nome)}">
+                        <strong>${escaparHTML(item.nome)}</strong> ${item.comum ? '<span class="selo-igual">🔥 Base</span>' : ''}
+                        <span class="info-dia">${mapaAssuntoDia[item.nome] ? '📅 Primeiro estudo: ' + escaparHTML(mapaAssuntoDia[item.nome]) : 'Sem data nesta aba'}</span>
+                        <div>${escaparHTML(getDetalhe(item.nome))}</div>
+                        <div class="assunto-acoes">
+                            <button class="acao-assunto" data-abrir-assunto="${escaparHTML(item.nome)}">📚 Ver orientação</button>
+                            <button class="acao-assunto" data-copiar-assunto="${escaparHTML(item.nome)}">📋 Copiar assunto</button>
+                            ${mapaAssuntoCard[item.nome] ? `<button class="acao-assunto" data-ir-dia="${mapaAssuntoCard[item.nome]}" data-assunto="${escaparHTML(item.nome)}">📅 Ir ao dia</button>` : ''}
+                        </div></div>`).join('')
+                ).join('');
+                mostrarOrientacao(assuntoParaDestacar);
                 popout.classList.add('ativo');
-                overlay.classList.add('ativo');
+                document.getElementById('popoutOverlay').classList.add('ativo');
                 document.body.style.overflow = 'hidden';
+                popout.scrollTop = 0;
+                popout.querySelector('.fechar').focus({ preventScroll: true });
+            };
 
-                if (assuntoParaDestacar) {
-                    setTimeout(() => {
-                        const destacado = popout.querySelector('.assunto-item.destacado');
-                        if (destacado) {
-                            destacado.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }
-                    }, 300);
+            async function copiarTexto(texto) {
+                try {
+                    if (!navigator.clipboard?.writeText) throw new Error('Clipboard indisponível');
+                    await navigator.clipboard.writeText(texto);
+                    toast('📋 Copiado!');
+                } catch {
+                    const campo = document.createElement('textarea');
+                    campo.value = texto;
+                    campo.className = 'copia-manual';
+                    campo.readOnly = true;
+                    campo.setAttribute('aria-label', 'Texto para copiar manualmente');
+                    const painel = document.getElementById('popoutAssuntos');
+                    const destino = painel.classList.contains('ativo') ? painel : document.body;
+                    destino.querySelector('.copia-manual')?.remove();
+                    destino.appendChild(campo);
+                    const foco = document.activeElement;
+                    campo.focus(); campo.select();
+                    let copiado = false;
+                    try { copiado = document.execCommand('copy'); } catch {}
+                    if (copiado) { campo.remove(); foco?.focus({ preventScroll: true }); toast('📋 Copiado!'); }
+                    else { campo.scrollIntoView({ block: 'center' }); toast('Selecione o texto e use Copiar ou Ctrl+C.'); }
                 }
-            };
+            }
 
-            // ============================================================
-            // 13. COPIAR ASSUNTO
-            // ============================================================
-            window.copiarAssunto = function(nome, detalhe, qtd, dia, comum, ma) {
-                let tipo = '📌 Específico';
-                if (comum) tipo = '🔥 BASE de estudo; confirmar no edital de Bombeiro';
-                else if (ma) tipo = '🟠 Específico do PM-MA';
-                else tipo = '📌 Específico do PM-PI';
-
-                const texto =
-                `📚 ASSUNTO: ${nome}\n📊 Questões: ${qtd}\n📅 Data: ${dia}\n${tipo}\n📝 Detalhe: ${detalhe}`;
-                navigator.clipboard.writeText(texto).then(() => {
-                    toast(`📋 "${nome}" copiado!`);
-                }).catch(() => {
-                    const textarea = document.createElement('textarea');
-                    textarea.value = texto;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
-                    toast(`📋 "${nome}" copiado!`);
-                });
-            };
+            document.addEventListener('click', function(e) {
+                const botao = e.target.closest('[data-abrir-assunto], [data-copiar-assunto], [data-copiar-busca], [data-copiar-orientacao], [data-ir-dia]');
+                if (!botao) return;
+                if (botao.dataset.irDia) { irParaDia(botao.dataset.irDia, botao.dataset.assunto); return; }
+                const nome = botao.dataset.abrirAssunto || botao.dataset.copiarAssunto || botao.dataset.copiarBusca || botao.dataset.copiarOrientacao;
+                const item = todosAssuntos.find(a => a.nome === nome);
+                if (!item) return;
+                if (botao.dataset.abrirAssunto) { abrirPopoutPorAssunto(nome); return; }
+                const guia = getOrientacao(item);
+                const texto = botao.dataset.copiarBusca ? guia.busca : botao.dataset.copiarOrientacao ?
+                    `${item.nome}\n${getDetalhe(item.nome)}\n\nOnde estudar: ${guia.caminho}\n${guia.nota}\nBuscar: ${guia.busca}\n\n${guia.passos.map((p, i) => `${i+1}. ${p}`).join('\n')}${guia.url ? '\n' + guia.url : ''}` :
+                    `${item.nome}\n${getDetalhe(item.nome)}`;
+                copiarTexto(texto);
+            });
 
             // ============================================================
             // 14. IR PARA HOJE
@@ -1700,24 +1717,34 @@
             // 16. ABRIR POP-OUT POR ASSUNTO
             // ============================================================
             window.abrirPopoutPorAssunto = function(nomeAssunto) {
-                if (document.getElementById('popoutAssuntos').classList.contains('ativo')) {
-                    fecharPopout();
-                }
-                abrirPopout(nomeAssunto);
-                toast(`📚 Mostrando "${nomeAssunto}"`);
+                const item = resolverAssunto(nomeAssunto);
+                if (!item) { toast('Este item é um lembrete do planejamento.'); return; }
+                abrirPopout(item.nome);
             };
 
-            // ============================================================
-            // 17. FECHAR POP-OUT
-            // ============================================================
             window.fecharPopout = function() {
-                document.getElementById('popoutAssuntos').classList.remove('ativo');
+                const popout = document.getElementById('popoutAssuntos');
+                if (!popout.classList.contains('ativo')) return;
+                popout.classList.remove('ativo');
                 document.getElementById('popoutOverlay').classList.remove('ativo');
-                document.body.style.overflow = '';
+                document.body.style.overflow = overflowAnterior;
+                popout.querySelector('.copia-manual')?.remove();
+                if (focoAnterior?.isConnected) focoAnterior.focus({ preventScroll: true });
             };
 
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') fecharPopout();
+                const popout = document.getElementById('popoutAssuntos');
+                if (!popout.classList.contains('ativo')) return;
+                if (e.key === 'Escape') { e.preventDefault(); fecharPopout(); }
+                if (e.key === 'Tab') {
+                    const itens = [...popout.querySelectorAll('button, a[href], textarea')].filter(el => !el.closest('[hidden]'));
+                    const primeiro = itens[0], ultimo = itens.at(-1);
+                    if (e.shiftKey && (document.activeElement === primeiro || !popout.contains(document.activeElement))) {
+                        e.preventDefault(); ultimo.focus();
+                    } else if (!e.shiftKey && (document.activeElement === ultimo || !popout.contains(document.activeElement))) {
+                        e.preventDefault(); primeiro.focus();
+                    }
+                }
             });
 
             // ============================================================
