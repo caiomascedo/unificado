@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>📋 PM-PI & Bombeiro 2026 · Estudo Unificado</title>
+    <title>📋 PM-PI 2026 · Plano de estudos PM-PI</title>
     <style>
         * {
             margin: 0;
@@ -833,7 +833,7 @@
 
         <!-- HEADER -->
         <div class="header">
-            <h1>📋 PM-PI & Bombeiro 2026 · <small>Estudo Unificado</small></h1>
+            <h1>📋 PM-PI 2026 · <small>Plano de estudos PM-PI</small></h1>
             <div class="meta">🗓️ <span id="todayDisplay"></span> · ⏳ <span id="daysLeftPI"></span> dias PM-PI</div>
         </div>
 
@@ -859,16 +859,12 @@
         <!-- ===== COMPARATIVO ===== -->
         <div class="comparativo">
             <div class="item"><span>🎯 PM-PI: 04/12/2026 (previsão)</span> <span class="selo">Foco agora</span></div>
-            <div class="item"><span>🚒 Bombeiro: início em 19/10/2026</span> <span class="selo ma">Próxima semana</span></div>
-            <div class="item"><span>📚 Base para Bombeiro:</span> <strong>Português, Matemática, Raciocínio Lógico e Informática — conferir no edital</strong></div>
-            <div class="item"><span>📌 Planejamento:</span> <strong>PM-PI: 12/10 a 04/12 · Bombeiro: base provisória, estado e prova a confirmar</strong></div>
+            <div class="item"><span>📌 Planejamento:</span> <strong>PM-PI: 24/10 a 04/12 · Português e Matemática/RLM em dias alternados, com legislação e outra matéria</strong></div>
         </div>
 
         <!-- ===== ABAS ===== -->
         <div class="abas-container" id="abasContainer">
             <button class="aba-btn ativo" data-aba="pi">🚔 PM-PI <span class="badge-concurso">04/12*</span></button>
-            <button class="aba-btn" data-aba="ma">🚒 Bombeiro <span class="badge-concurso ma">19/10</span></button>
-            <button class="aba-btn" data-aba="unificado">🔥 Unificado <span class="badge-concurso">Os dois</span></button>
         </div>
 
         <!-- ===== TOOLBAR ===== -->
@@ -882,7 +878,6 @@
             <div class="popout-area">
                 <button class="btn-popout" onclick="abrirPopout()">📚 Todos os assuntos</button>
                 <button class="btn btn-success" onclick="irParaHoje()">📅 Hoje</button>
-                <button class="btn btn-warning" onclick="alternarAba()">🔄 Alternar concurso</button>
                 <button class="btn" onclick="resetarConfirmacoes()">↺ Resetar</button>
                 <a href="https://www.youtube.com/results?search_query=pm+pi+2026+concurso+soldado" target="_blank" class="btn btn-youtube">▶ YouTube</a>
                 <button class="btn btn-outline" onclick="window.print()">🖨️ Imprimir</button>
@@ -903,16 +898,6 @@
             <div id="semanasContainerPI"></div>
         </div>
 
-        <!-- ===== CONTEÚDO PM-MA ===== -->
-        <div class="conteudo-aba" id="abaMA">
-            <div id="semanasContainerMA"></div>
-        </div>
-
-        <!-- ===== CONTEÚDO UNIFICADO ===== -->
-        <div class="conteudo-aba" id="abaUnificado">
-            <div id="semanasContainerUnificado"></div>
-        </div>
-
         <!-- ===== POP-OUT ===== -->
         <div class="popout-overlay" id="popoutOverlay" onclick="fecharPopout()"></div>
         <div class="popout-assuntos" id="popoutAssuntos" role="dialog" aria-modal="true" aria-labelledby="popoutTitulo" tabindex="-1">
@@ -920,7 +905,7 @@
             <h2 id="popoutTitulo">📚 Assuntos do planejamento</h2>
             <p style="font-size:0.8rem;color:#3a5a7a;margin-bottom:12px;">
                 👆 <strong>Clique em qualquer assunto</strong> para ir direto ao dia de estudo. Use o pequeno botão <strong>💡 Orientação</strong> para ver onde estudar.
-                <span style="display:block;margin-top:4px;">O conteúdo de PM-PI foi mantido. A base de Bombeiro depende da confirmação do edital.</span>
+                <span style="display:block;margin-top:4px;">Conteúdo completo de PM-PI, organizado de 24/10 até a prova prevista em 04/12.</span>
                 <span style="display:block;margin-top:4px;">📋 Clique em <strong>📋 Copiar</strong> para copiar as informações.</span>
             </p>
             <section id="orientacaoAssunto" hidden></section>
@@ -929,8 +914,8 @@
 
         <!-- ===== FOOTER ===== -->
         <div class="footer">
-            <span>🎯 20 a 30 questões por dia · QConcursos + PDF · TAF 6h-7h</span>
-            <span>💾 dados salvos no navegador (localStorage)</span>
+            <span>🎯 40 questões por dia · QConcursos + PDF · TAF 6h-7h</span>
+            <span>💾 Progresso salvo neste navegador · histórico anterior preservado</span>
         </div>
     </div>
 
@@ -945,8 +930,7 @@
             const today = new Date();
             const options = { day: 'numeric', month: 'short', year: 'numeric' };
             document.getElementById('todayDisplay').innerText = today.toLocaleDateString('pt-BR', options);
-            const inicioEstudos = new Date(2026, 9, 12);
-            const inicioBombeiro = new Date(2026, 9, 19);
+            const inicioEstudos = new Date(2026, 9, 24);
             const provaPI = new Date(2026, 11, 4);
             today.setHours(0, 0, 0, 0);
             const diffPI = Math.ceil((provaPI - today) / (1000 * 60 * 60 * 24));
@@ -1155,10 +1139,7 @@
             ];
 
 
-            const materiasBaseBombeiro = ['Português', 'Matemática', 'Raciocínio Lógico', 'Informática'];
-            todosAssuntos.forEach(item => { item.comum = materiasBaseBombeiro.includes(item.materia); });
             const assuntosPI = todosAssuntos;
-            const assuntosBombeiro = todosAssuntos.filter(item => item.comum);
 
             // ============================================================
             // 5. DETALHES DOS ASSUNTOS
@@ -1292,15 +1273,23 @@
                     const semana = Math.floor(indice / 7);
                     if (!semanas[semana]) semanas[semana] = { dias: [] };
                     const diaProva = data.getTime() === provaPI.getTime();
-                    const revisao = data >= new Date(2026, 10, 27) || indice * 2 >= assuntos.length;
-                    const temas = [assuntos[(indice * 2) % assuntos.length], assuntos[(indice * 2 + 1) % assuntos.length]];
-                    let manha = temas.map(item => `📖 ${item.materia.toUpperCase()}: ${item.nome} (${revisao ? 'revisão · ' : ''}10 q)`);
-                    let almoco = ['Revisão dos erros do dia (10 q)'];
+                    const revisao = data >= new Date(2026, 10, 27);
+                    const portugues = assuntos.filter(item => item.materia === 'Português');
+                    const matematica = assuntos.filter(item => ['Matemática', 'Raciocínio Lógico'].includes(item.materia));
+                    const legislacao = assuntos.filter(item => item.materia === 'Legislação PMPI');
+                    const prioridade = ['Direito Constitucional', 'Direito Penal', 'Direito Administrativo', 'Regionais PI'];
+                    const outras = assuntos.filter(item => !['Português', 'Matemática', 'Raciocínio Lógico', 'Legislação PMPI'].includes(item.materia)).sort((a,b) => {
+                        const ordem = materia => prioridade.includes(materia) ? prioridade.indexOf(materia) : prioridade.length;
+                        return ordem(a.materia) - ordem(b.materia);
+                    });
+                    const base = indice % 2 === 0 ? portugues[Math.floor(indice / 2) % portugues.length] : matematica[Math.floor(indice / 2) % matematica.length];
+                    const temas = [base, legislacao[indice % legislacao.length], outras[indice % outras.length]];
+                    let manha = temas.map(item => `📖 ${item.materia.toUpperCase()}: ${item.nome} (${revisao ? 'revisão · ' : ''}${item === temas[0] || item === temas[1] ? 15 : 10} q)`);
+                    let almoco = ['Revisão dos erros das matérias do dia (10 minutos)'];
                     if (diaProva && tipo === 'pi') {
                         manha = ['🎯 DIA DA PROVA PM-PI (data prevista)', 'Documentos, local de prova e revisão leve'];
                         almoco = ['Boa prova! Sem novas matérias hoje.'];
                     }
-                    if (tipo === 'bombeiro') almoco.push('Base provisória: confirmar matérias específicas no edital de Bombeiro.');
                     semanas[semana].dias.push({
                         dia: data.toLocaleDateString('pt-BR', { weekday: 'short' }),
                         data: formatarData(data), iso: dataISO(data), manha, almoco,
@@ -1312,15 +1301,6 @@
                 }));
             }
             const semanasPI = gerarSemanas(assuntosPI, inicioEstudos, 'pi');
-            const semanasBombeiro = gerarSemanas(assuntosBombeiro, inicioBombeiro, 'bombeiro');
-            const diasBombeiro = new Map(semanasBombeiro.flatMap(s => s.dias).map(d => [d.iso, d]));
-            const semanasUnificado = semanasPI.map(semana => ({ ...semana,
-                dias: semana.dias.map(dia => {
-                    const bombeiro = diasBombeiro.get(dia.iso);
-                    return { ...dia, manha: [...dia.manha, ...(bombeiro && dia.estudo ? ['🚒 BOMBEIRO (base): ' + bombeiro.manha[0].replace('📖 ', '').replace('(10 q)', '(leitura)')] : [])] };
-                })
-            }));
-
             // ============================================================
             // 7. MAPEAMENTO DE ASSUNTOS PARA CARDS
             // ============================================================
@@ -1342,12 +1322,12 @@
                 });
             }
 
-            mapearAssuntos(semanasUnificado, 'uni');
+            mapearAssuntos(semanasPI, 'pi');
 
             // ============================================================
             // 8. LOCALSTORAGE
             // ============================================================
-            const STORAGE_KEY = 'pm_pi_bombeiro_2026_10_confirmacoes';
+            const STORAGE_KEY = 'pm_pi_2026_10_24_confirmacoes'; // O progresso anterior permanece na chave antiga.
 
             function carregarConfirmacoes() {
                 try {
@@ -1475,14 +1455,11 @@
             }
 
             // Renderiza
-            const cardIdsUnificado = renderizarSemanas(semanasUnificado, 'semanasContainerUnificado', 'uni');
             // Planos por concurso
             const cardIdsPI = renderizarSemanas(semanasPI, 'semanasContainerPI', 'pi');
-            // Base de Bombeiro, com início na próxima semana
-            const cardIdsMA = renderizarSemanas(semanasBombeiro, 'semanasContainerMA', 'bm');
 
-            const idsPorAba = { unificado: cardIdsUnificado, pi: cardIdsPI, ma: cardIdsMA };
-            const idAba = { unificado: 'abaUnificado', pi: 'abaPI', ma: 'abaMA' };
+            const idsPorAba = { pi: cardIdsPI };
+            const idAba = { pi: 'abaPI' };
             let abaAtual = 'pi';
 
             // ============================================================
@@ -1511,9 +1488,7 @@
                     document.getElementById('hojeStatus').innerText = '📅 Dia de estudo!';
                 } else {
                     const diaSemana = today.getDay();
-                    if (abaAtual === 'ma' && today < inicioBombeiro) {
-                        document.getElementById('hojeStatus').innerText = 'Início em 19/10';
-                    } else if (diaSemana === 0 || diaSemana === 6) {
+                    if (diaSemana === 0 || diaSemana === 6) {
                         document.getElementById('hojeStatus').innerText = '📅 Fim de semana';
                     } else {
                         document.getElementById('hojeStatus').innerText = '📅 Sem estudos hoje';
@@ -1536,7 +1511,7 @@
             function alternarAba(aba) {
                 if (aba) abaAtual = aba;
                 else {
-                    const ordem = ['unificado', 'pi', 'ma'];
+                    const ordem = ['pi'];
                     const idx = ordem.indexOf(abaAtual);
                     abaAtual = ordem[(idx + 1) % ordem.length];
                 }
@@ -1550,7 +1525,7 @@
                     el.classList.toggle('ativo', id === idAba[abaAtual]);
                 });
 
-                const nomes = { unificado: 'Unificado', pi: 'PM-PI', ma: 'Bombeiro' };
+                const nomes = { pi: 'PM-PI' };
                 atualizarStats();
                 toast(`📚 Mudou para ${nomes[abaAtual]}`);
 
@@ -1612,10 +1587,10 @@
                 mostrarOrientacao(null);
 
                 mapaAssuntoCard = {}; mapaAssuntoDia = {};
-                mapearAssuntos(abaAtual === 'ma' ? semanasBombeiro : abaAtual === 'pi' ? semanasPI : semanasUnificado, abaAtual === 'ma' ? 'bm' : abaAtual === 'pi' ? 'pi' : 'uni');
+                mapearAssuntos(semanasPI, 'pi');
                 let html = '';
                 const grupos = {};
-                (abaAtual === 'ma' ? assuntosBombeiro : assuntosPI).forEach(item => {
+                assuntosPI.forEach(item => {
                     const materia = item.materia || 'Outros';
                     if (!grupos[materia]) grupos[materia] = [];
                     grupos[materia].push(item);
