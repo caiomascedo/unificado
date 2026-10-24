@@ -826,6 +826,17 @@
             border-radius: 6px; padding: 5px 8px; cursor: pointer; font-size: .75rem; text-decoration: none; }
         .copia-manual { display: block; width: 100%; min-height: 120px; margin-top: 10px; }
         .detalhe-materia { user-select: text; }
+
+        .qc-acoes { display:inline-flex; flex-wrap:wrap; align-items:center; gap:5px 8px; margin:5px 0; max-width:100%; vertical-align:middle; }
+        .btn-questoes-pmpi { display:inline-flex; align-items:center; min-height:32px; padding:5px 12px; border-radius:18px; background:#17623a; color:#fff; font-size:.72rem; font-weight:700; text-decoration:none; white-space:normal; }
+        .btn-questoes-pmpi:hover { background:#104c2c; }
+        .btn-questoes-pmpi:focus-visible, .qc-alternativa:focus-visible { outline:3px solid #e6a21b; outline-offset:3px; }
+        .qc-banca { font-size:.65rem; color:#38516a; }
+        .qc-alternativa { font-size:.65rem; color:#164c84; text-decoration:underline; }
+        .qc-nota { flex-basis:100%; font-size:.65rem; line-height:1.4; color:#684a11; }
+        .qc-orientacao { margin:8px 0; padding:10px; border:1px solid #b4d9c1; border-radius:10px; background:#f0faf3; }
+        .qc-orientacao p { margin:3px 0; }
+        @media (max-width:480px) { .qc-acoes { display:flex; } .btn-questoes-pmpi { min-height:40px; } }
     </style>
 </head>
 <body>
@@ -1235,6 +1246,705 @@
                 'Matemática Financeira': { busca: 'Juros simples e juros compostos', caminho: 'Procure em Matemática Financeira por juros simples e compostos.', nota: 'Nenhum dos 19 títulos enviados é específico de juros. Não escolha um caderno apenas por ele se chamar Raciocínio Matemático: confirme o conteúdo ou use o filtro de Matemática Financeira.', passos: ['Revise porcentagem, capital, taxa e tempo.', 'Compare juros simples e compostos, usando taxa e tempo na mesma unidade.'] }
             };
 
+
+            // Destinos conferidos no catálogo oficial do Qconcursos em 24/10/2026.
+            // Os filtros são explícitos: nunca inferir um assunto pelo texto de outro.
+            const questoesPMPI = {
+    "Interpretação de Textos": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14655&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14655&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Interpretação de Textos"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Sintaxe": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=16006&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=16006&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Sintaxe"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Morfologia": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14625&subject_ids%5B%5D=16170&subject_ids%5B%5D=16157&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14625&subject_ids%5B%5D=16170&subject_ids%5B%5D=16157&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Morfologia",
+            "Morfologia - Verbos",
+            "Morfologia - Pronomes"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Pontuação": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14647&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14647&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Pontuação"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Regência e Crase": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=16011&subject_ids%5B%5D=15727&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=16011&subject_ids%5B%5D=15727&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Regência",
+            "Crase"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Concordância": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=16012&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=16012&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Concordância verbal, Concordância nominal"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Figuras de Linguagem": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14661&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14661&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Figuras de Linguagem"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Ortografia e Acentuação": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14621&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14621&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Ortografia"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Semântica": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14657&subject_ids%5B%5D=16331&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=1&subject_ids%5B%5D=14657&subject_ids%5B%5D=16331&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Significação Contextual de Palavras e Expressões. Sinônimos e Antônimos.",
+            "Denotação e Conotação"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Conjuntos": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=4&subject_ids%5B%5D=15453&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=4&subject_ids%5B%5D=15453&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Diagramas de Venn (Conjuntos)"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Proporcionalidade": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=13&subject_ids%5B%5D=20317&subject_ids%5B%5D=20319&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=13&subject_ids%5B%5D=20317&subject_ids%5B%5D=20319&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Razão e Proporção; e Números Proporcionais",
+            "Regra de Três"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Equações": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=13&subject_ids%5B%5D=20297&subject_ids%5B%5D=14556&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=13&subject_ids%5B%5D=20297&subject_ids%5B%5D=14556&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Equação de 2º Grau e Problemas de 2º Grau",
+            "Função de 1º Grau ou Função Afim, Problemas com Equação e Inequações"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Raciocínio Lógico": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=4&subject_ids%5B%5D=15441&subject_ids%5B%5D=15446&subject_ids%5B%5D=15450&subject_ids%5B%5D=28016&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=4&subject_ids%5B%5D=15441&subject_ids%5B%5D=15446&subject_ids%5B%5D=15450&subject_ids%5B%5D=28016&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Fundamentos de Lógica",
+            "Equivalência Lógica e Negação de Proposições",
+            "Lógica de Argumentação - Diagramas e Operadores Lógicos",
+            "Tautologia, Contradição e Contingência"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Geometria Plana": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=13&subject_ids%5B%5D=14570&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=13&subject_ids%5B%5D=14570&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Geometria Plana"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Matemática Financeira": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=13&subject_ids%5B%5D=14581&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=13&subject_ids%5B%5D=14581&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Matemática Financeira"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Windows 10": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=46&subject_ids%5B%5D=19793&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=46&subject_ids%5B%5D=19793&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Windows 10"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Word 2019": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=46&subject_ids%5B%5D=27893&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=46&subject_ids%5B%5D=27893&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Microsoft Word 2019"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Excel 2019": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=46&subject_ids%5B%5D=27894&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=46&subject_ids%5B%5D=27894&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Microsoft Excel 2019"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Internet": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=46&subject_ids%5B%5D=237&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=46&subject_ids%5B%5D=237&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Internet"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Hardware": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=46&subject_ids%5B%5D=4849&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=46&subject_ids%5B%5D=4849&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Hardware - Dispositivos de Armazenamento, Memórias e Periféricos"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Política Brasileira": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=56&subject_ids%5B%5D=16799&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=56&subject_ids%5B%5D=16799&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Política no Brasil"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Meio Ambiente": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=56&subject_ids%5B%5D=16806&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=56&subject_ids%5B%5D=16806&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Meio Ambiente, Sustentabilidade e Aquecimento Global na Atualidade"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Segurança Pública": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=56&subject_ids%5B%5D=16805&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=56&subject_ids%5B%5D=16805&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Segurança Pública"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "História do Brasil - República Velha": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=550&subject_ids%5B%5D=14910&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=550&subject_ids%5B%5D=14910&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "República Oligárquica - 1889 a 1930"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "História do Brasil - Era Vargas": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=550&subject_ids%5B%5D=14913&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=550&subject_ids%5B%5D=14913&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Era Vargas – 1930-1954"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "História do Brasil - Golpe e Ditadura": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=550&subject_ids%5B%5D=14915&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=550&subject_ids%5B%5D=14915&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "República Autoritária : 1964- 1984"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "História do Brasil - Redemocratização": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=550&subject_ids%5B%5D=14918&subject_ids%5B%5D=14919&subject_ids%5B%5D=14920&subject_ids%5B%5D=14921&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=550&subject_ids%5B%5D=14918&subject_ids%5B%5D=14919&subject_ids%5B%5D=14920&subject_ids%5B%5D=14921&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Reconstrução Democrática : Governo Sarney",
+            "Reconstrução Democrática: Governo Collor e o Impeachment",
+            "Reconstrução Democrática: Governos FHC",
+            "Reconstrução Democrática: Governos Lula e Dilma – (PT no poder)"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Geografia do Brasil - População": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=73&subject_ids%5B%5D=14728&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=73&subject_ids%5B%5D=14728&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "População brasileira"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Geografia do Brasil - Economia": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=73&subject_ids%5B%5D=14720&subject_ids%5B%5D=14737&subject_ids%5B%5D=14740&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=73&subject_ids%5B%5D=14720&subject_ids%5B%5D=14737&subject_ids%5B%5D=14740&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Agricultura brasileira",
+            "Indústria brasileira",
+            "Produção e consumo no Brasil"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Geografia do Brasil - Recursos Naturais": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=73&subject_ids%5B%5D=14741&exclude_nullified=true&exclude_outdated=true&q=Brasil&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=73&subject_ids%5B%5D=14741&exclude_nullified=true&exclude_outdated=true&q=Brasil",
+        "banca": "FCC",
+        "fontes": [
+            "Fontes de energia e recursos naturais"
+        ],
+        "nota": "Fontes de energia e recursos naturais com busca por Brasil dentro do assunto.",
+        "busca": true,
+        "semQuestoes": false
+    },
+    "Direitos Individuais (art. 5º)": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=3&subject_ids%5B%5D=16321&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=3&subject_ids%5B%5D=16321&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Direitos Individuais"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Direitos Sociais": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=3&subject_ids%5B%5D=436&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=3&subject_ids%5B%5D=436&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Direitos Sociais"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Nacionalidade": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=3&subject_ids%5B%5D=438&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=3&subject_ids%5B%5D=438&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Direitos da Nacionalidade"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Segurança Pública (art. 144)": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=3&subject_ids%5B%5D=16306&exclude_nullified=true&exclude_outdated=true&q=seguran%C3%A7a+p%C3%BAblica&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=3&subject_ids%5B%5D=16306&exclude_nullified=true&exclude_outdated=true&q=seguran%C3%A7a+p%C3%BAblica",
+        "banca": "FCC",
+        "fontes": [
+            "Forças Armadas e Segurança Pública"
+        ],
+        "nota": "O Qconcursos reúne Forças Armadas e Segurança Pública. Este link acrescenta a busca por Segurança Pública dentro dessa categoria.",
+        "busca": true,
+        "semQuestoes": false
+    },
+    "PIDCP": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=214&subject_ids%5B%5D=18776&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=214&subject_ids%5B%5D=18776&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Pacto Internacional de Direitos Civis e Políticos"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Convenção contra Tortura": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=214&subject_ids%5B%5D=18780&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=214&subject_ids%5B%5D=18780&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Convenção contra a Tortura e Outros Tratamentos ou Penas Cruéis, Desumanos e Degradantes"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Teoria do Crime": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=16674&subject_ids%5B%5D=796&subject_ids%5B%5D=16691&subject_ids%5B%5D=1134&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=16674&subject_ids%5B%5D=796&subject_ids%5B%5D=16691&subject_ids%5B%5D=1134&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Teoria Geral do Delito",
+            "Tipicidade",
+            "Antijuridicidade",
+            "Culpabilidade"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Crimes contra a Pessoa": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17293&subject_ids%5B%5D=17298&subject_ids%5B%5D=17303&subject_ids%5B%5D=17310&subject_ids%5B%5D=17311&subject_ids%5B%5D=17317&subject_ids%5B%5D=17322&subject_ids%5B%5D=17323&subject_ids%5B%5D=17324&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17293&subject_ids%5B%5D=17298&subject_ids%5B%5D=17303&subject_ids%5B%5D=17310&subject_ids%5B%5D=17311&subject_ids%5B%5D=17317&subject_ids%5B%5D=17322&subject_ids%5B%5D=17323&subject_ids%5B%5D=17324&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Crimes contra a vida",
+            "Lesões corporais",
+            "Periclitação da vida e da saúde",
+            "Rixa",
+            "Crimes contra a honra",
+            "Crimes contra a liberdade pessoal",
+            "Crimes contra a inviolabilidade do domicílio",
+            "Crimes contra a inviolabilidade de correspondência",
+            "Crimes contra a inviolabilidade de segredos"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Crimes contra o Patrimônio": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17325&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17325&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Crimes contra o patrimônio"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Crimes contra a Administração Pública": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17398&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17398&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Crimes contra a administração pública"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Crimes contra a Fé Pública": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17383&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17383&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Crimes contra a fé pública"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Penas e Aplicação": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17210&subject_ids%5B%5D=17215&subject_ids%5B%5D=17228&subject_ids%5B%5D=17234&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17210&subject_ids%5B%5D=17215&subject_ids%5B%5D=17228&subject_ids%5B%5D=17234&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Sanções penais",
+            "Penas privativas de liberdade",
+            "Modalidades das Penas Restritivas de Direito",
+            "Pena de multa"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Lei Maria da Penha": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=10&subject_ids%5B%5D=23514&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=10&subject_ids%5B%5D=23514&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Lei Maria da Penha - Lei nº 11.340 de 2006"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Juizados Especiais Criminais": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=10&subject_ids%5B%5D=6423&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=10&subject_ids%5B%5D=6423&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Procedimento comum sumaríssimo - Lei nº 9.099 de 1995 - Lei dos Juizados Especiais Criminais - JECRIM"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Lei Ambiental (9.605/98)": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=76&subject_ids%5B%5D=18545&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=76&subject_ids%5B%5D=18545&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Lei de Crimes Ambientais - Lei nº 9.605 de 1998"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "ECA - Crimes": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=233&subject_ids%5B%5D=21021&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=233&subject_ids%5B%5D=21021&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Crimes Praticados contra a Criança e o Adolescente"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Abuso de Autoridade": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17461&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=9&subject_ids%5B%5D=17461&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Lei do Abuso de Autoridade – Lei nº 4.898 de 1965 e Lei n° 13.869 de 2019"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Regime Jurídico Administrativo": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=2&subject_ids%5B%5D=15938&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=2&subject_ids%5B%5D=15938&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Regime jurídico administrativo"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Poderes Administrativos": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=2&subject_ids%5B%5D=16022&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=2&subject_ids%5B%5D=16022&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Poderes da Administração"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Responsabilidade Civil do Estado": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=2&subject_ids%5B%5D=10&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=2&subject_ids%5B%5D=10&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Responsabilidade civil do estado"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Improbidade Administrativa": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=2&subject_ids%5B%5D=16073&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=2&subject_ids%5B%5D=16073&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Improbidade administrativa - Lei nº 8.429 de 1992 e Lei nº 14.230 de 2021"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Organização Administrativa": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=2&subject_ids%5B%5D=775&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=2&subject_ids%5B%5D=775&exclude_nullified=true&exclude_outdated=true",
+        "banca": "FCC",
+        "fontes": [
+            "Organização da Administração Pública"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Lei Orgânica (14.751/2023)": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=53&subject_ids%5B%5D=32198&exclude_nullified=true&exclude_outdated=true",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=53&subject_ids%5B%5D=32198&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "banca": "Todas as bancas",
+        "fontes": [
+            "Lei nº 14.751 de 2023 - Lei Orgânica Nacional das Polícias Militares e dos Corpos de Bombeiros Militares dos Estados, do Distrito Federal e dos Territórios"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "R-200 (Decreto 88.777/83)": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=53&subject_ids%5B%5D=19786&exclude_nullified=true&exclude_outdated=true",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=53&subject_ids%5B%5D=19786&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "banca": "Todas as bancas",
+        "fontes": [
+            "Decreto nº 88.777 de 1983 - Regulamento para as Policias Militares e Corpos de Bombeiros Militares"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Estatuto do PM (Lei 3.808/81)": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=61&subject_ids%5B%5D=12867&exclude_nullified=true&exclude_outdated=true",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=61&subject_ids%5B%5D=12867&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "banca": "Todas as bancas",
+        "fontes": [
+            "Lei nº 3.808, de 1981 - Estatuto dos Policiais Militares do Piauí"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "Constituição do Estado do Piauí": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=61&subject_ids%5B%5D=5512&exclude_nullified=true&exclude_outdated=true",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=61&subject_ids%5B%5D=5512&exclude_nullified=true&exclude_outdated=true&examining_board_ids%5B%5D=1",
+        "banca": "Todas as bancas",
+        "fontes": [
+            "Constituição do Estado do Piauí"
+        ],
+        "nota": "",
+        "busca": false,
+        "semQuestoes": false
+    },
+    "História do Piauí": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=521&subject_ids%5B%5D=21506&exclude_nullified=true&exclude_outdated=true&q=hist%C3%B3ria",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=521&subject_ids%5B%5D=21506&exclude_nullified=true&exclude_outdated=true&q=hist%C3%B3ria&examining_board_ids%5B%5D=1",
+        "banca": "Todas as bancas",
+        "fontes": [
+            "História e Geografia do Estado do Piauí"
+        ],
+        "nota": "Busca por palavra dentro do tema Piauí. O catálogo reúne História e Geografia na mesma categoria.",
+        "busca": true,
+        "semQuestoes": false
+    },
+    "Geografia do Piauí": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=521&subject_ids%5B%5D=21506&exclude_nullified=true&exclude_outdated=true&q=geografia",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=521&subject_ids%5B%5D=21506&exclude_nullified=true&exclude_outdated=true&q=geografia&examining_board_ids%5B%5D=1",
+        "banca": "Todas as bancas",
+        "fontes": [
+            "História e Geografia do Estado do Piauí"
+        ],
+        "nota": "Busca por palavra dentro do tema Piauí. O catálogo reúne História e Geografia na mesma categoria.",
+        "busca": true,
+        "semQuestoes": false
+    },
+    "Código de Ética (Lei 7.725/2022)": {
+        "url": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=61&subject_ids%5B%5D=16897&exclude_nullified=true&exclude_outdated=true&q=7.725",
+        "alternativa": "https://elite.qconcursos.com/questoes-de-concursos/questoes?discipline_ids%5B%5D=61&subject_ids%5B%5D=16897&exclude_nullified=true&exclude_outdated=true&q=7.725&examining_board_ids%5B%5D=1",
+        "banca": "Todas as bancas",
+        "fontes": [
+            "Legislação do Estado do Piauí"
+        ],
+        "nota": "Busca pelo número da Lei 7.725 dentro da legislação do Piauí. Confira a referência da lei no enunciado.",
+        "busca": true,
+        "semQuestoes": true
+    }
+};
+
+            function renderizarQuestoesPMPI(nome) {
+                const destino = questoesPMPI[nome];
+                if (!destino) return '';
+                const assunto = escaparHTML(nome);
+                const titulo = escaparHTML(destino.fontes.join(' + '));
+                const label = destino.semQuestoes ? '🔎 Conferir busca da Lei 7.725' : '📝 Responder questões PMPI';
+                const alternativa = destino.banca === 'FCC' ? 'Todas as bancas' : 'Somente FCC';
+                const nota = destino.semQuestoes ? 'Não foram localizadas questões da Lei 7.725/2022 nesta busca. Nenhuma outra lei foi usada em seu lugar.' : destino.nota;
+                return `<span class="qc-acoes" data-qc-assunto="${assunto}">
+                    <a class="btn-questoes-pmpi" href="${escaparHTML(destino.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escaparHTML(label)}: ${assunto}" title="${titulo}">${label}</a>
+                    <span class="qc-banca">${destino.banca}${destino.busca ? ' · busca por termo' : ''}</span>
+                    ${destino.semQuestoes ? '' : `<a class="qc-alternativa" href="${escaparHTML(destino.alternativa)}" target="_blank" rel="noopener noreferrer" aria-label="${alternativa}: ${assunto}">${alternativa}</a>`}
+                    ${nota ? `<small class="qc-nota">${escaparHTML(nota)}</small>` : ''}
+                </span>`;
+            }
+
             function getOrientacao(item) {
                 return orientacoesQC[item.nome] || {
                     busca: item.nome,
@@ -1396,6 +2106,7 @@
                                 <div class="materia-desc">${detalhe}</div>
                                 <button class="btn-mini" data-copiar-assunto="${escaparHTML(nome)}">📋 Copiar</button>
                                 <button class="btn-mini" data-orientacao="${escaparHTML(nome)}">💡 Orientação</button>
+                                ${renderizarQuestoesPMPI(nome)}
                                 <a href="https://www.youtube.com/results?search_query=${ytSearch}" target="_blank" class="link-youtube">▶ YouTube</a>
                                 <a href="#" onclick="event.preventDefault(); abrirPopoutPorAssunto('${nome.replace(/'/g, "\\'")}');" class="link-youtube" style="background:#3b82f6;">📚 Ver no pop-out</a>
                             </div>`;
@@ -1564,6 +2275,7 @@
                 painel.hidden = false;
                 painel.innerHTML = `<h3>${escaparHTML(item.nome)}</h3>
                     <p>${escaparHTML(getDetalhe(item.nome))}</p>
+                    <div class="qc-orientacao"><strong>Questões vinculadas ao cronograma PMPI</strong><p>${escaparHTML(questoesPMPI[item.nome].fontes.join(" + "))}</p><p>Treino do assunto para o PMPI. A indicação de banca aparece junto ao botão; as questões podem vir de outras provas.</p></div>
                     <p><strong>Onde estudar no Qconcursos</strong><br>${escaparHTML(guia.caminho)}</p>
                     <p>${escaparHTML(guia.nota)}</p>
                     <p><strong>Termo para buscar:</strong> ${escaparHTML(guia.busca)}</p>
@@ -1572,7 +2284,7 @@
                         <button class="acao-assunto" data-copiar-assunto="${escaparHTML(item.nome)}">📋 Copiar assunto</button>
                         <button class="acao-assunto" data-copiar-busca="${escaparHTML(item.nome)}">🔎 Copiar termo de busca</button>
                         <button class="acao-assunto" data-copiar-orientacao="${escaparHTML(item.nome)}">📋 Copiar orientação</button>
-                        ${guia.url ? `<a class="acao-assunto" href="${guia.url}" target="_blank" rel="noopener noreferrer">Abrir questões de regra de três ↗</a>` : '<a class="acao-assunto" href="https://www.qconcursos.com/questoes-de-concursos" target="_blank" rel="noopener noreferrer">Abrir Qconcursos ↗</a>'}
+                        ${renderizarQuestoesPMPI(item.nome)}
                     </div>`;
                 document.getElementById('popoutAssuntos').scrollTop = 0;
             }
@@ -1620,6 +2332,7 @@
                                 ${destacado ? ' ⭐' : ''}
                                 <button class="btn-copiar" data-copiar-assunto="${escaparHTML(item.nome)}">📋 Copiar</button>
                                 <button class="btn-mini" data-orientacao="${escaparHTML(item.nome)}">💡 Orientação</button>
+                                ${renderizarQuestoesPMPI(item.nome)}
                             </span>
                             <span style="display:flex;align-items:center;gap:6px;">
                                 <span class="qtd">${item.qtd}</span>
@@ -1630,7 +2343,7 @@
                 }
                 lista.innerHTML = html;
                 lista.querySelectorAll('[data-card]').forEach(item => item.addEventListener('click', e => {
-                    if (!e.target.closest('button') && !window.getSelection()?.toString() && item.dataset.card) irParaDia(item.dataset.card, item.dataset.nome);
+                    if (!e.target.closest('button, a, .qc-acoes') && !window.getSelection()?.toString() && item.dataset.card) irParaDia(item.dataset.card, item.dataset.nome);
                 }));
 
                 popout.classList.add('ativo');
