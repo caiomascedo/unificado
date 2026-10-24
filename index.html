@@ -831,6 +831,9 @@
         .btn-questoes-pmpi { display:inline-flex; align-items:center; min-height:32px; padding:5px 12px; border-radius:18px; background:#17623a; color:#fff; font-size:.72rem; font-weight:700; text-decoration:none; white-space:normal; }
         .btn-questoes-pmpi:hover { background:#104c2c; }
         .btn-questoes-pmpi:focus-visible, .qc-alternativa:focus-visible { outline:3px solid #e6a21b; outline-offset:3px; }
+        .btn-caderno-erros {display:inline-flex;align-items:center;min-height:32px;padding:5px 12px;border-radius:18px;background:#713d21;color:#fff;font-size:.72rem;font-weight:700;text-decoration:none;}
+        .btn-caderno-erros:hover {background:#532b17;}
+        .btn-caderno-erros:focus-visible {outline:3px solid #e6a21b;outline-offset:3px;}
         .qc-banca { font-size:.65rem; color:#38516a; }
         .qc-alternativa { font-size:.65rem; color:#164c84; text-decoration:underline; }
         .qc-nota { flex-basis:100%; font-size:.65rem; line-height:1.4; color:#684a11; }
@@ -890,6 +893,7 @@
             <div class="popout-area">
                 <button class="btn-popout" onclick="abrirPopout()">📚 Todos os assuntos</button>
                 <button class="btn btn-success" onclick="irParaHoje()">📅 Hoje</button>
+            <a class="btn" href="https://caiomascedo.github.io/flashcard/?view=caderno-erros" target="_blank" rel="noopener noreferrer">📕 Caderno de erros</a>
                 <button class="btn" onclick="resetarConfirmacoes()">↺ Resetar</button>
                 <a href="https://www.youtube.com/results?search_query=pm+pi+2026+concurso+soldado" target="_blank" class="btn btn-youtube">▶ YouTube</a>
                 <button class="btn btn-outline" onclick="window.print()">🖨️ Imprimir</button>
@@ -1929,6 +1933,18 @@
     }
 };
 
+            function linkCadernoErros(nome) {
+                const item=todosAssuntos.find(a=>a.nome===nome);
+                const url=new URL('https://caiomascedo.github.io/flashcard/');
+                url.searchParams.set('view','caderno-erros');
+                if(item){url.searchParams.set('materia',item.materia);url.searchParams.set('assunto',item.nome);url.searchParams.set('qc',questoesPMPI[nome].url);}
+                return url.href;
+            }
+            function linkQuestoesErradas(nome) {
+                const url=new URL(questoesPMPI[nome].url);
+                url.searchParams.set('my_questions','wrong');url.searchParams.delete('page');
+                return url.href;
+            }
             function renderizarQuestoesPMPI(nome) {
                 const destino = questoesPMPI[nome];
                 if (!destino) return '';
@@ -1939,6 +1955,8 @@
                 const nota = destino.semQuestoes ? 'Não foram localizadas questões da Lei 7.725/2022 nesta busca. Nenhuma outra lei foi usada em seu lugar.' : destino.nota;
                 return `<span class="qc-acoes" data-qc-assunto="${assunto}">
                     <a class="btn-questoes-pmpi" href="${escaparHTML(destino.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escaparHTML(label)}: ${assunto}" title="${titulo}">${label}</a>
+                    <a class="btn-caderno-erros" href="${escaparHTML(linkCadernoErros(nome))}" target="_blank" rel="noopener noreferrer" aria-label="📕 Caderno de erros nos Flashcards: ${assunto}">📕 Caderno de erros</a>
+                    <a class="qc-alternativa" href="${escaparHTML(linkQuestoesErradas(nome))}" target="_blank" rel="noopener noreferrer" aria-label="Minhas questões erradas no Qconcursos: ${assunto}">❌ Minhas erradas no Qconcursos</a>
                     <span class="qc-banca">${destino.banca}${destino.busca ? ' · busca por termo' : ''}</span>
                     ${destino.semQuestoes ? '' : `<a class="qc-alternativa" href="${escaparHTML(destino.alternativa)}" target="_blank" rel="noopener noreferrer" aria-label="${alternativa}: ${assunto}">${alternativa}</a>`}
                     ${nota ? `<small class="qc-nota">${escaparHTML(nota)}</small>` : ''}
@@ -2535,6 +2553,14 @@
                     }
                 }
             }, 500);
+
+
+            function abrirAssuntoRecebido() {
+                const nome=new URLSearchParams(location.hash.slice(1)).get('assunto');
+                if(nome && todosAssuntos.some(a=>a.nome===nome)){abrirPopoutPorAssunto(nome);mostrarOrientacao(nome);}
+            }
+            window.addEventListener('hashchange',abrirAssuntoRecebido);
+            setTimeout(abrirAssuntoRecebido,700);
 
             // Mensagem de boas-vindas
             setTimeout(() => {
