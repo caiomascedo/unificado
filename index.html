@@ -832,6 +832,8 @@
         .btn-questoes-pmpi:hover { background:#104c2c; }
         .btn-questoes-pmpi:focus-visible, .qc-alternativa:focus-visible { outline:3px solid #e6a21b; outline-offset:3px; }
         .btn-caderno-erros {display:inline-flex;align-items:center;min-height:26px;padding:3px 9px;border-radius:14px;background:#713d21;color:#fff;font-size:.68rem;font-weight:700;text-decoration:none;}
+        .btn-rota-pmpi {background:#254e8b;}
+        .btn-rota-pmpi:hover {background:#193966;}
         .btn-caderno-erros:hover {background:#532b17;}
         .btn-caderno-erros:focus-visible {outline:3px solid #e6a21b;outline-offset:3px;}
         .qc-banca { font-size:.65rem; color:#38516a; }
@@ -1945,6 +1947,14 @@
                 url.searchParams.set('my_questions','wrong');url.searchParams.delete('page');
                 return url.href;
             }
+            function linkRotaPMPI(nome) {
+                const chave=nome.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+                const destino=new URL('https://rota-pmpi-28-dias.kaiuh100.chatgpt.site/');
+                destino.searchParams.set('origem','unificado');
+                destino.searchParams.set('assunto',chave);
+                destino.hash='questions';
+                return destino.href;
+            }
             function renderizarQuestoesPMPI(nome) {
                 const destino = questoesPMPI[nome];
                 if (!destino) return '';
@@ -1955,6 +1965,7 @@
                 const nota = destino.semQuestoes ? 'Não foram localizadas questões da Lei 7.725/2022 nesta busca. Nenhuma outra lei foi usada em seu lugar.' : destino.nota;
                 return `<span class="qc-acoes" data-qc-assunto="${assunto}">
                     <a class="btn-questoes-pmpi" href="${escaparHTML(destino.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escaparHTML(label)}: ${assunto}" title="${titulo}">${label}</a>
+                    <a class="btn-questoes-pmpi btn-rota-pmpi" href="${escaparHTML(linkRotaPMPI(nome))}" target="_blank" rel="noopener noreferrer" aria-label="🧭 Questões no Rota PMPI: ${assunto}" title="Abrir somente os tópicos correspondentes no banco PMPI do Rota">🧭 Questões no Rota</a>
                     <a class="btn-caderno-erros" href="${escaparHTML(linkCadernoErros(nome))}" target="_blank" rel="noopener noreferrer" aria-label="📕 Caderno de erros nos Flashcards: ${assunto}">📕 Caderno de erros</a>
                     <a class="qc-alternativa" href="${escaparHTML(linkQuestoesErradas(nome))}" target="_blank" rel="noopener noreferrer" aria-label="Minhas questões erradas no Qconcursos: ${assunto}">❌ Minhas erradas no Qconcursos</a>
                     <span class="qc-banca">${destino.banca}${destino.busca ? ' · busca por termo' : ''}</span>
